@@ -1,0 +1,2697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuntio Legal OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07070e;
+  --s1: #0e0e1a;
+  --s2: #161625;
+  --s3: #1e1e30;
+  --border: #252538;
+  --border2: #32324a;
+  --green: #00e5a0;
+  --green-dim: rgba(0,229,160,0.12);
+  --purple: #8b5cf6;
+  --purple-dim: rgba(139,92,246,0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --text: #e2e2f0;
+  --muted: #5a5a75;
+  --muted2: #8888a0;
+  --font: 'Bricolage Grotesque', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── NOISE TEXTURE ─── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:.4;
+}
+
+/* ─── LAYOUT ─── */
+.app { display:grid; grid-template-columns:280px 1fr; min-height:100vh; position:relative; z-index:1; }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  background: var(--s1);
+  border-right: 1px solid var(--border);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.brand-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--purple), var(--green));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand-sub {
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+/* VC Score in sidebar */
+.sidebar-score {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.score-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-family: var(--mono);
+  margin-bottom: 10px;
+}
+
+.score-ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.score-ring {
+  position: relative;
+  width: 60px; height: 60px;
+  flex-shrink: 0;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+
+.score-ring-bg { fill: none; stroke: var(--border2); stroke-width: 5; }
+.score-ring-fill {
+  fill: none;
+  stroke: url(#scoreGrad);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 163;
+  stroke-dashoffset: 163;
+  transition: stroke-dashoffset 1s cubic-bezier(.4,2,.6,1);
+}
+
+.score-num {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: var(--mono);
+  color: var(--green);
+}
+
+.score-details {}
+.score-pts {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+}
+.score-pts-label { font-size: 11px; color: var(--muted2); }
+.score-status {
+  margin-top: 6px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+/* Sidebar nav */
+.sidebar-nav { padding: 16px 12px; flex: 1; }
+
+.nav-section-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--mono);
+  padding: 0 12px;
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.nav-item:hover { background: var(--s2); }
+.nav-item.active {
+  background: var(--green-dim);
+  border-color: rgba(0,229,160,0.2);
+}
+
+.nav-item-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+.nav-item-label { font-size: 13px; font-weight: 600; flex: 1; }
+.nav-item.active .nav-item-label { color: var(--green); }
+
+.nav-badge {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 2px 6px;
+  border-radius: 99px;
+  background: var(--s3);
+  color: var(--muted2);
+  font-weight: 500;
+}
+
+.nav-badge.done { background: var(--green-dim); color: var(--green); }
+.nav-badge.urgent { background: rgba(239,68,68,0.15); color: var(--red); }
+
+.nav-progress {
+  height: 2px;
+  background: var(--border);
+  border-radius: 99px;
+  margin: 4px 12px 8px;
+  overflow: hidden;
+}
+
+.nav-progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 99px;
+  transition: width 0.5s ease;
+}
+
+/* ─── MAIN ─── */
+.main {
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+/* ─── VIEWS ─── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ─── DASHBOARD VIEW ─── */
+.dashboard-hero {
+  padding: 48px 48px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  font-family: var(--mono);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--green);
+}
+
+.hero-title {
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+
+.hero-title .hi { color: var(--green); }
+.hero-title .company { color: var(--purple); }
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--muted2);
+  line-height: 1.6;
+  max-width: 520px;
+  margin-bottom: 32px;
+}
+
+/* KPI CARDS */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0 48px 32px;
+}
+
+.kpi {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--kpi-color, var(--border));
+  border-radius: 99px 99px 0 0;
+}
+
+.kpi:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+.kpi-icon { font-size: 20px; margin-bottom: 12px; }
+.kpi-num {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--mono);
+  color: var(--kpi-color, var(--text));
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.kpi-label { font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* PHASE CARDS in dashboard */
+.phases-grid {
+  padding: 0 48px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.phases-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-family: var(--mono);
+}
+
+.phase-card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.phase-card:hover {
+  border-color: var(--border2);
+  background: var(--s2);
+  transform: translateX(4px);
+}
+
+.phase-card-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.phase-card-body { flex: 1; }
+.phase-card-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.phase-card-meta { font-size: 12px; color: var(--muted2); }
+
+.phase-card-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.phase-pct {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--mono);
+}
+
+.mini-bar {
+  width: 80px; height: 4px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.mini-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+/* ─── TASK LIST VIEW ─── */
+.task-view-header {
+  padding: 40px 48px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.task-view-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.task-view-info {}
+.task-view-phase { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); font-family: var(--mono); margin-bottom: 6px; }
+.task-view-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+.task-view-desc { font-size: 13px; color: var(--muted2); line-height: 1.5; }
+
+.task-list { padding: 24px 48px 48px; }
+
+/* ─── TASK ITEM ─── */
+.task-item {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.task-item:hover { border-color: var(--border2); }
+.task-item.completed { border-color: rgba(0,229,160,0.25); background: rgba(0,229,160,0.03); }
+.task-item.expanded { border-color: var(--purple); }
+
+.task-item-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  cursor: pointer;
+}
+
+.task-checkbox {
+  width: 24px; height: 24px;
+  border-radius: 7px;
+  border: 2px solid var(--border2);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  cursor: pointer;
+}
+
+.task-item.completed .task-checkbox {
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 0 20px rgba(0,229,160,0.35);
+}
+
+.task-checkbox-check {
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s;
+}
+
+.task-item.completed .task-checkbox-check { opacity: 1; transform: scale(1); }
+
+.task-item-info { flex: 1; min-width: 0; }
+
+.task-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  transition: color 0.2s;
+}
+
+.task-item.completed .task-item-title {
+  color: var(--muted2);
+  text-decoration: line-through;
+  text-decoration-color: var(--green);
+}
+
+.task-item-sub {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-item-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 10px;
+  font-family: var(--mono);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.tag-urgent { background: rgba(239,68,68,0.15); color: #f87171; }
+.tag-legal { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.tag-ip { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.tag-financial { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.tag-hr { background: rgba(236,72,153,0.15); color: #f472b6; }
+.tag-ops { background: rgba(0,229,160,0.15); color: var(--green); }
+
+.task-item-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.task-pts {
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--green);
+  background: var(--green-dim);
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,229,160,0.2);
+}
+
+.task-expand-btn {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  color: var(--muted2);
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.task-expand-btn:hover { border-color: var(--purple); color: var(--purple); }
+
+/* ─── TASK DETAIL PANEL ─── */
+.task-detail {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--s2);
+}
+
+.task-detail.open { display: block; }
+
+.task-detail-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+}
+
+.detail-tab {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.detail-tab:hover { color: var(--text); }
+.detail-tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+.detail-panel { display: none; padding: 24px; }
+.detail-panel.active { display: block; }
+
+/* LEARN TAB */
+.learn-section { margin-bottom: 24px; }
+.learn-section-title {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-family: var(--mono);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.learn-section-title::before {
+  content: '';
+  width: 16px; height: 1px;
+  background: var(--muted);
+}
+
+.learn-text {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.75;
+}
+
+.alert-box {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #fca5a5;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+.alert-box.green {
+  background: var(--green-dim);
+  border-color: rgba(0,229,160,0.25);
+  color: var(--green);
+}
+
+.alert-box.amber {
+  background: var(--amber-dim);
+  border-color: rgba(245,158,11,0.25);
+  color: var(--amber);
+}
+
+/* DOC TAB */
+.doc-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.doc-field-group { }
+.doc-field-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-family: var(--mono);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.doc-field-label .required { color: var(--red); }
+
+.doc-input, .doc-select, .doc-textarea {
+  width: 100%;
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  padding: 10px 14px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.doc-input:focus, .doc-select:focus, .doc-textarea:focus {
+  border-color: var(--purple);
+}
+
+.doc-select { cursor: pointer; }
+.doc-textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+
+.doc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.doc-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: var(--bg);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,160,0.3); }
+
+.btn-purple {
+  background: var(--purple);
+  color: white;
+}
+.btn-purple:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+
+.btn-ghost {
+  background: var(--s3);
+  color: var(--muted2);
+  border: 1px solid var(--border2);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--muted2); }
+
+.btn-amber {
+  background: var(--amber);
+  color: var(--bg);
+}
+.btn-amber:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.3); }
+
+/* SIGN TAB */
+.signers-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+.signer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.signer-avatar {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.signer-info { flex: 1; }
+.signer-name { font-size: 13px; font-weight: 700; }
+.signer-email { font-size: 11px; color: var(--muted2); font-family: var(--mono); }
+
+.signer-status {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-family: var(--mono);
+}
+
+.status-pending { background: var(--amber-dim); color: var(--amber); }
+.status-sent { background: rgba(59,130,246,0.15); color: var(--blue); }
+.status-signed { background: var(--green-dim); color: var(--green); }
+
+.sign-link-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.sign-link-url {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-btn {
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  color: var(--muted2);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--mono);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.copy-btn:hover { color: var(--green); border-color: var(--green); }
+.copy-btn.copied { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+
+/* DOC PREVIEW */
+.doc-preview {
+  background: white;
+  color: #1a1a2e;
+  border-radius: 10px;
+  padding: 32px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  line-height: 1.8;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  display: none;
+}
+
+.doc-preview.show { display: block; }
+
+/* ─── MODAL ─── */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(7,7,14,0.85);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-bg.open { display: flex; }
+
+.modal {
+  background: var(--s1);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  animation: popUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,229,160,0.1) 0%, transparent 70%);
+}
+
+.modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  font-family: var(--mono);
+  margin-bottom: 16px;
+  background: var(--green-dim);
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid rgba(0,229,160,0.2);
+}
+
+.modal-emoji { font-size: 48px; margin-bottom: 16px; display: block; }
+
+.modal h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.modal-pts {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--green);
+  font-family: var(--mono);
+  line-height: 1;
+  margin: 16px 0;
+}
+
+.modal-pts small { font-size: 16px; color: var(--muted2); font-weight: 400; }
+
+.modal p { font-size: 13px; color: var(--muted2); line-height: 1.7; margin-bottom: 10px; }
+
+.modal-why {
+  background: var(--green-dim);
+  border: 1px solid rgba(0,229,160,0.2);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 12px;
+  color: var(--green);
+  line-height: 1.6;
+  margin: 16px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+
+/* ─── CONFETTI ─── */
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2000;
+  font-size: 14px;
+  animation: confettiFly linear forwards;
+}
+
+@keyframes confettiFly {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes popUp {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--s2) 25%, var(--s3) 50%, var(--s2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--s1);
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; padding: 0 20px 20px; }
+  .dashboard-hero { padding: 24px 20px 0; }
+  .phases-grid { padding: 0 20px 32px; }
+  .task-list { padding: 16px 20px 32px; }
+  .task-view-header { padding: 24px 20px 16px; }
+  .doc-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#00e5a0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="app">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <div class="brand-icon">⚡</div>
+        <div>
+          <div class="brand-name">Nuntio</div>
+        </div>
+      </div>
+      <div class="brand-sub">Legal OS · v1.0</div>
+    </div>
+
+    <div class="sidebar-score">
+      <div class="score-label">VC Readiness Score</div>
+      <div class="score-ring-wrap">
+        <div class="score-ring">
+          <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle class="score-ring-bg" cx="30" cy="30" r="26"/>
+            <circle class="score-ring-fill" id="scoreRingFill" cx="30" cy="30" r="26"/>
+          </svg>
+          <div class="score-num" id="scoreRingNum">0%</div>
+        </div>
+        <div class="score-details">
+          <div class="score-pts" id="sidebarPts">0</div>
+          <div class="score-pts-label">de 100 puntos</div>
+          <div class="score-status" id="sidebarStatus" style="color:var(--muted2)">🔴 No iniciado</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+
+      <div class="nav-item active" onclick="showView('dashboard')" id="nav-dashboard">
+        <div class="nav-item-icon">🏠</div>
+        <div class="nav-item-label">Dashboard</div>
+      </div>
+
+      <div class="nav-section-label">Fases Legales</div>
+
+      <div class="nav-item" onclick="showView('phase-0')" id="nav-phase-0">
+        <div class="nav-item-icon">⚡</div>
+        <div class="nav-item-label">Fundadores</div>
+        <div class="nav-badge urgent" id="nav-badge-0">5</div>
+      </div>
+      <div class="nav-progress"><div class="nav-progress-fill" id="nav-bar-0" style="width:0%"></div></div>
+
+      <div class="nav-item" onclick="showView('phase-1')" id="nav-phase-1">
+        <div class="nav-item-icon">💎</div>
+        <div class="nav-item-label">Inversión</div>
+        <div class="nav-badge" id="nav-badge-1">5</div>
+      </div>
+      <div class="nav-progress"><div class="nav-progress-fill" id="nav-bar-1" style="width:0%"></div></div>
+
+      <div class="nav-item" onclick="showView('phase-2')" id="nav-phase-2">
+        <div class="nav-item-icon">🗂️</div>
+        <div class="nav-item-label">Data Room</div>
+        <div class="nav-badge" id="nav-badge-2">5</div>
+      </div>
+      <div class="nav-progress"><div class="nav-progress-fill" id="nav-bar-2" style="width:0%"></div></div>
+
+    </nav>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="main">
+
+    <!-- ── DASHBOARD VIEW ── -->
+    <div class="view active" id="view-dashboard">
+      <div class="dashboard-hero">
+        <div class="hero-eyebrow">Bienvenido a tu Legal OS</div>
+        <h1 class="hero-title">
+          Hola, <span class="hi">Fundador</span><br>
+          <span class="company">Nuntio Technologies</span> Ltd.
+        </h1>
+        <p class="hero-sub">
+          Tu hoja de ruta legal y operacional para estar Venture Capital Ready.
+          Cada tarea tiene aprendizaje, plantilla de documento y workflow de firma.
+        </p>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi" style="--kpi-color: var(--green)">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-num" id="kpi-done">0</div>
+          <div class="kpi-label">Completadas</div>
+        </div>
+        <div class="kpi" style="--kpi-color: var(--purple)">
+          <div class="kpi-icon">📋</div>
+          <div class="kpi-num" id="kpi-total">15</div>
+          <div class="kpi-label">Total Tareas</div>
+        </div>
+        <div class="kpi" style="--kpi-color: var(--amber)">
+          <div class="kpi-icon">📄</div>
+          <div class="kpi-num" id="kpi-docs">0</div>
+          <div class="kpi-label">Docs Generados</div>
+        </div>
+        <div class="kpi" style="--kpi-color: var(--blue)">
+          <div class="kpi-icon">✍️</div>
+          <div class="kpi-num" id="kpi-signs">0</div>
+          <div class="kpi-label">Firmas Enviadas</div>
+        </div>
+      </div>
+
+      <div class="phases-grid">
+        <div class="phases-header">
+          <div class="section-title">Fases de Trabajo</div>
+        </div>
+        <div id="phase-cards-container"></div>
+      </div>
+    </div>
+
+    <!-- ── PHASE VIEWS (generated dynamically) ── -->
+    <div class="view" id="view-phase-0"></div>
+    <div class="view" id="view-phase-1"></div>
+    <div class="view" id="view-phase-2"></div>
+
+  </main>
+</div>
+
+<!-- ═══ COMPLETION MODAL ═══ -->
+<div class="modal-bg" id="completionModal">
+  <div class="modal">
+    <div class="modal-badge">🏆 Tarea Completada</div>
+    <span class="modal-emoji" id="modalEmoji">🎉</span>
+    <h2 id="modalTitle">¡Bien hecho!</h2>
+    <div class="modal-pts" id="modalPts">+0 <small>pts</small></div>
+    <p id="modalDesc"></p>
+    <div class="modal-why" id="modalWhy"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()" style="flex:1">← Cerrar</button>
+      <button class="btn btn-primary" onclick="closeModal()" style="flex:1">✓ Entendido</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✓</span>
+  <span id="toastMsg">Copiado al portapapeles</span>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════
+
+const COMPANY = {
+  name: "Nuntio Technologies Limited",
+  country: "Irlanda",
+  founders: ["Fundador 1 (Visión/Legal/Diseño)", "Fundador 2 (DevOps/Hacking/Dev)"],
+  team: ["Lead Backend / Producto", "Frontend Developer"],
+  product: "SaaS Agéntico — Orquestador de Agentes IA"
+};
+
+const phases = [
+  {
+    id: 0,
+    title: "FASE 1 — Fundadores",
+    icon: "⚡",
+    iconBg: "rgba(239,68,68,0.15)",
+    iconBorder: "rgba(239,68,68,0.3)",
+    color: "#ef4444",
+    meta: "URGENTE · Antes de escribir más código",
+    desc: "Los documentos que protegen a los fundadores y a la empresa entre sí. Un VC lo primero que revisa.",
+    tasks: [
+      {
+        id: "sha",
+        title: "Shareholders Agreement",
+        subtitle: "Pacto de Socios",
+        points: 15,
+        tags: ["legal","urgent"],
+        emoji: "🤝",
+        learn: {
+          what: "El Shareholders Agreement (SHA) es el contrato maestro entre los socios de Nuntio Technologies. Define cómo se toman decisiones, qué pasa si un socio quiere salir, derechos de voto, distribución de beneficios y mecanismos de protección para todos.",
+          why: "Sin este documento, en caso de desacuerdo entre socios no hay reglas claras. Cualquier VC te lo pedirá en los primeros 48h de due diligence. Su ausencia es señal de alarma inmediata.",
+          clauses: [
+            "Tag-along: si un socio vende sus acciones, los demás pueden vender también",
+            "Drag-along: si la mayoría quiere vender la empresa, pueden arrastrar a la minoría",
+            "Right of First Refusal: antes de vender a un tercero, ofrecer a los socios existentes",
+            "Good Leaver / Bad Leaver: qué pasa con las acciones según cómo se vaya el socio",
+            "Reserved Matters: decisiones que requieren unanimidad (vender la empresa, emitir más acciones)"
+          ]
+        },
+        docFields: [
+          { id: "sha_date", label: "Fecha del Acuerdo", type: "date", required: true },
+          { id: "sha_f1_name", label: "Nombre Fundador 1", type: "text", placeholder: "Tu nombre completo", required: true },
+          { id: "sha_f1_pct", label: "% Acciones Fundador 1", type: "text", placeholder: "ej. 30%", required: true },
+          { id: "sha_f2_name", label: "Nombre Fundador 2", type: "text", placeholder: "Nombre de tu socio", required: true },
+          { id: "sha_f2_pct", label: "% Acciones Fundador 2", type: "text", placeholder: "ej. 30%", required: true },
+          { id: "sha_investor_pool", label: "% Reservado Inversores", type: "text", placeholder: "ej. 25-30%", required: true },
+          { id: "sha_team_pool", label: "% Pool Equipo/Advisors", type: "text", placeholder: "ej. 10%", required: true },
+          { id: "sha_jurisdiction", label: "Jurisdicción", type: "text", placeholder: "Ireland (Companies Act 2014)", required: true },
+          { id: "sha_vesting", label: "Período de Vesting", type: "select", options: ["4 años con 1 año cliff (estándar)", "3 años con 6 meses cliff", "4 años sin cliff"], required: true }
+        ],
+        signers: [
+          { name: "Fundador 1", role: "Director / Shareholder", color: "#8b5cf6" },
+          { name: "Fundador 2", role: "Director / Shareholder", color: "#00e5a0" }
+        ]
+      },
+      {
+        id: "ipa",
+        title: "IP Assignment Agreement",
+        subtitle: "Cesión de Propiedad Intelectual",
+        points: 20,
+        tags: ["legal","ip","urgent"],
+        emoji: "🧠",
+        learn: {
+          what: "El IP Assignment Agreement es el documento por el que cada persona (fundador o empleado) transfiere formalmente toda la propiedad intelectual que ha creado — código, diseños, marcas, ideas, documentación — a Nuntio Technologies Limited como entidad legal.",
+          why: "CRÍTICO: En este momento, si tu programador backend ha escrito código sin haber firmado este documento, ese código le pertenece a él, no a la empresa. Esto mata rondas de inversión. Los VCs contratan abogados que buscan exactamente este problema en due diligence.",
+          clauses: [
+            "Asignación de toda IP creada antes y durante el empleo/colaboración",
+            "Incluye código, algoritmos, diseños, marcas, secretos comerciales",
+            "Work-for-hire: confirma que el trabajo es 'para la empresa'",
+            "Moral rights waiver: renuncia a derechos morales sobre la obra",
+            "Disclosure obligation: obligación de revelar cualquier IP relevante"
+          ]
+        },
+        docFields: [
+          { id: "ipa_date", label: "Fecha del Acuerdo", type: "date", required: true },
+          { id: "ipa_assignor", label: "Nombre del Cedente (persona)", type: "text", placeholder: "Nombre completo del firmante", required: true },
+          { id: "ipa_role", label: "Rol en la empresa", type: "select", options: ["Co-Founder & Director","Co-Founder & CTO","Lead Backend Developer","Frontend Developer","Advisor"], required: true },
+          { id: "ipa_start_date", label: "Fecha inicio de actividad", type: "date", required: true },
+          { id: "ipa_ip_desc", label: "Descripción de la IP cedida", type: "textarea", placeholder: "Código fuente del motor agéntico, arquitectura del sistema, diseños UI/UX, documentación técnica...", required: true },
+          { id: "ipa_consideration", label: "Contraprestación (€)", type: "text", placeholder: "ej. €1 (simbólico) o participación acordada", required: true }
+        ],
+        signers: [
+          { name: "Fundador 1", role: "Cedente", color: "#8b5cf6" },
+          { name: "Fundador 2", role: "Cedente", color: "#00e5a0" },
+          { name: "Backend Dev", role: "Cedente", color: "#f59e0b" },
+          { name: "Frontend Dev", role: "Cedente", color: "#3b82f6" }
+        ]
+      },
+      {
+        id: "vest",
+        title: "Founder Vesting Schedule",
+        subtitle: "Plan de maduración de acciones",
+        points: 12,
+        tags: ["legal","hr"],
+        emoji: "⏳",
+        learn: {
+          what: "El Vesting Schedule determina cómo los fundadores 'se ganan' sus acciones a lo largo del tiempo. El estándar en startups es 4 años con 1 año de cliff: si un fundador se va antes del año 1, no recibe nada; al cumplir el año recibe el 25%, y luego va ganando el resto mensualmente.",
+          why: "Protege a la empresa y a los inversores de que un co-fundador se vaya a los 3 meses y se quede con el 30% de la empresa sin haber contribuido. Es el estándar de la industria y cualquier VC lo esperará ver ya implementado.",
+          clauses: [
+            "Cliff period: 12 meses sin vest (protección inicial)",
+            "Monthly vesting post-cliff: 1/48 de las acciones por mes",
+            "Acceleration clause: en caso de adquisición (single/double trigger)",
+            "Good/Bad leaver: variaciones en vesting según tipo de salida",
+            "Board approval: el board puede aprobar excepciones"
+          ]
+        },
+        docFields: [
+          { id: "vest_f1", label: "Nombre Fundador 1", type: "text", placeholder: "Nombre completo", required: true },
+          { id: "vest_f1_shares", label: "Acciones totales Fundador 1", type: "text", placeholder: "ej. 300,000", required: true },
+          { id: "vest_f2", label: "Nombre Fundador 2", type: "text", placeholder: "Nombre completo", required: true },
+          { id: "vest_f2_shares", label: "Acciones totales Fundador 2", type: "text", placeholder: "ej. 300,000", required: true },
+          { id: "vest_start", label: "Fecha inicio vesting", type: "date", required: true },
+          { id: "vest_cliff", label: "Período cliff", type: "select", options: ["12 meses (estándar)", "6 meses", "18 meses"], required: true },
+          { id: "vest_total", label: "Período total vesting", type: "select", options: ["48 meses / 4 años (estándar)", "36 meses / 3 años", "60 meses / 5 años"], required: true }
+        ],
+        signers: [
+          { name: "Fundador 1", role: "Shareholder", color: "#8b5cf6" },
+          { name: "Fundador 2", role: "Shareholder", color: "#00e5a0" }
+        ]
+      },
+      {
+        id: "emp",
+        title: "Employment / Contractor Agreements",
+        subtitle: "Contratos de trabajo y colaboración",
+        points: 8,
+        tags: ["legal","hr"],
+        emoji: "📑",
+        learn: {
+          what: "Contratos individuales para cada miembro del equipo. Definen la relación laboral o de servicio, la remuneración, la confidencialidad y — fundamentalmente — que todo lo creado durante el trabajo pertenece a Nuntio Technologies Ltd.",
+          why: "Sin contratos, el equipo puede reclamar propiedad sobre el código que escriben o compartir información confidencial sin consecuencias legales. Además, Irlanda tiene regulación laboral específica que requiere contratos escritos.",
+          clauses: [
+            "Scope of work: descripción clara del rol y responsabilidades",
+            "Compensation: salario, equity, términos de pago",
+            "IP ownership: toda IP creada pertenece a la empresa",
+            "Confidentiality: NDA integrado en el contrato",
+            "Non-compete (limitado en Irlanda): restricciones post-empleo razonables",
+            "Notice period: tiempo de preaviso para terminación"
+          ]
+        },
+        docFields: [
+          { id: "emp_name", label: "Nombre del Empleado/Contractor", type: "text", placeholder: "Nombre completo", required: true },
+          { id: "emp_role", label: "Rol", type: "select", options: ["Lead Backend Developer","Frontend Developer","Full Stack Developer","DevOps Engineer","Product Manager","Designer","Advisor"], required: true },
+          { id: "emp_type", label: "Tipo de relación", type: "select", options: ["Employee (Contrato laboral)","Contractor (Prestación de servicios)","Advisor (Con equity)"], required: true },
+          { id: "emp_start", label: "Fecha de inicio", type: "date", required: true },
+          { id: "emp_salary", label: "Remuneración", type: "text", placeholder: "ej. €45,000/año o €3,000/mes", required: true },
+          { id: "emp_notice", label: "Período de preaviso", type: "select", options: ["1 mes (estándar)","2 semanas","3 meses"], required: true }
+        ],
+        signers: [
+          { name: "Nuntio Technologies Ltd", role: "Empleador / Empresa", color: "#8b5cf6" },
+          { name: "Empleado/Contractor", role: "Firmante", color: "#00e5a0" }
+        ]
+      },
+      {
+        id: "nda",
+        title: "NDA Estándar",
+        subtitle: "Non-Disclosure Agreement",
+        points: 5,
+        tags: ["legal"],
+        emoji: "🔒",
+        learn: {
+          what: "Un NDA (Non-Disclosure Agreement) o Acuerdo de Confidencialidad es un contrato que obliga a la otra parte a mantener en secreto la información que compartes con ella. Esencial antes de hablar con advisors, inversores, partners o potenciales empleados.",
+          why: "Tu tecnología de orquestación agéntica es tu ventaja competitiva. Sin un NDA, cualquier persona con la que hables sobre el producto puede legalmente usar esa información. Necesitas un template listo para enviar en minutos.",
+          clauses: [
+            "Definition of Confidential Information: qué es secreto",
+            "Obligations of receiving party: qué NO puede hacer con la info",
+            "Permitted disclosures: excepciones legales necesarias",
+            "Term: duración del acuerdo (típico: 2-3 años)",
+            "Remedies: consecuencias de incumplimiento",
+            "Mutual vs One-way: si es bidireccional o solo protege a Nuntio"
+          ]
+        },
+        docFields: [
+          { id: "nda_date", label: "Fecha", type: "date", required: true },
+          { id: "nda_party", label: "Nombre de la otra parte", type: "text", placeholder: "Nombre o empresa", required: true },
+          { id: "nda_party_role", label: "Tipo de relación", type: "select", options: ["Inversor potencial","Advisor","Partner comercial","Candidato a empleo","Proveedor de tecnología"], required: true },
+          { id: "nda_type", label: "Tipo de NDA", type: "select", options: ["Unilateral (solo Nuntio divulga)","Mutual (ambas partes divulgan)"], required: true },
+          { id: "nda_term", label: "Duración del acuerdo", type: "select", options: ["2 años","3 años","5 años","Indefinido"], required: true },
+          { id: "nda_purpose", label: "Propósito de la divulgación", type: "textarea", placeholder: "ej. Discutir posible inversión en Nuntio Technologies Limited y evaluación de la tecnología de orquestación agéntica...", required: true }
+        ],
+        signers: [
+          { name: "Nuntio Technologies Ltd", role: "Disclosing Party", color: "#8b5cf6" },
+          { name: "Contraparte", role: "Receiving Party", color: "#00e5a0" }
+        ]
+      }
+    ]
+  },
+  {
+    id: 1,
+    title: "FASE 2 — Inversión",
+    icon: "💎",
+    iconBg: "rgba(139,92,246,0.15)",
+    iconBorder: "rgba(139,92,246,0.3)",
+    color: "#8b5cf6",
+    meta: "Para estar listos para la primera ronda",
+    desc: "Estructura tu cap table, formaliza el pool de opciones y aprende a negociar un term sheet.",
+    tasks: [
+      {
+        id: "captable",
+        title: "Cap Table Formal",
+        subtitle: "Tabla de Capitalización",
+        points: 10,
+        tags: ["financial","legal"],
+        emoji: "📊",
+        learn: {
+          what: "El Cap Table (Capitalization Table) es el registro formal de quién posee qué en Nuntio Technologies: porcentajes de cada fundador, acciones emitidas vs autorizadas, opciones reservadas, y cómo quedará la estructura post-inversión (fully diluted).",
+          why: "Es el primer documento que un VC pide. Una cap table desorganizada o confusa es señal de que los fundadores no tienen control de su empresa. La tuya tiene una estructura clara: 60% emitido (30/30), ~27.5% inversores, ~12.5% pool.",
+          clauses: [
+            "Acciones autorizadas vs emitidas: cuántas existen vs cuántas se han entregado",
+            "Fully diluted cap table: incluyendo todas las opciones si se ejercieran",
+            "Option pool: el % reservado para equipo y advisors",
+            "Pre-money vs post-money: cómo cambia la tabla al entrar un inversor",
+            "Waterfall analysis: en caso de venta, quién recibe qué y en qué orden"
+          ]
+        },
+        docFields: [
+          { id: "ct_total", label: "Total acciones autorizadas", type: "text", placeholder: "ej. 1,000,000", required: true },
+          { id: "ct_f1_name", label: "Nombre Fundador 1", type: "text", placeholder: "Nombre completo", required: true },
+          { id: "ct_f1_shares", label: "Acciones Fundador 1", type: "text", placeholder: "ej. 300,000 (30%)", required: true },
+          { id: "ct_f2_name", label: "Nombre Fundador 2", type: "text", placeholder: "Nombre completo", required: true },
+          { id: "ct_f2_shares", label: "Acciones Fundador 2", type: "text", placeholder: "ej. 300,000 (30%)", required: true },
+          { id: "ct_investor_pool", label: "Pool Inversores (acciones)", type: "text", placeholder: "ej. 250,000 (25%)", required: true },
+          { id: "ct_esop_pool", label: "Pool ESOP Equipo/Advisors", type: "text", placeholder: "ej. 150,000 (15%)", required: true },
+          { id: "ct_par_value", label: "Valor nominal por acción (€)", type: "text", placeholder: "ej. €0.001", required: true }
+        ],
+        signers: [
+          { name: "Fundador 1", role: "Director", color: "#8b5cf6" },
+          { name: "Fundador 2", role: "Director", color: "#00e5a0" }
+        ]
+      },
+      {
+        id: "esop",
+        title: "ESOP / Option Pool",
+        subtitle: "Plan de opciones para equipo y advisors",
+        points: 8,
+        tags: ["hr","legal","financial"],
+        emoji: "🎯",
+        learn: {
+          what: "Un ESOP (Employee Stock Option Plan) es el mecanismo por el que Nuntio puede ofrecer opciones sobre acciones al equipo y a los advisors. Las opciones dan el derecho (no la obligación) de comprar acciones a un precio fijado hoy, en el futuro.",
+          why: "Es la herramienta más potente para atraer y retener talento cuando no puedes competir en salario con grandes empresas. También sirve para compensar a advisors estratégicos. Los VCs esperan ver un pool del 10-15% ya reservado.",
+          clauses: [
+            "Option pool size: % de acciones reservadas (tu caso: 10-15%)",
+            "Strike price: precio de ejercicio (normalmente el valor nominal €0.001)",
+            "Vesting schedule: cómo se ganan las opciones (típico: 4 años/1 cliff)",
+            "Exercise window: cuánto tiempo tienen para ejercer tras salir (estándar: 90 días)",
+            "409A valuation (o equivalente irlandés): tasación independiente del valor"
+          ]
+        },
+        docFields: [
+          { id: "esop_pool", label: "Tamaño del pool (% o acciones)", type: "text", placeholder: "ej. 150,000 acciones (15%)", required: true },
+          { id: "esop_strike", label: "Precio de ejercicio (strike price)", type: "text", placeholder: "ej. €0.001 (valor nominal)", required: true },
+          { id: "esop_vesting", label: "Vesting estándar del plan", type: "select", options: ["4 años con 1 año cliff","3 años con 6 meses cliff","4 años sin cliff"], required: true },
+          { id: "esop_window", label: "Ventana de ejercicio post-salida", type: "select", options: ["90 días (estándar)","180 días","1 año","10 años (extended)"], required: true },
+          { id: "esop_board", label: "Quién aprueba las grants", type: "select", options: ["Board of Directors","Compensation Committee","CEO + Board approval"], required: true }
+        ],
+        signers: [
+          { name: "Board of Directors", role: "Aprobación del Plan", color: "#8b5cf6" }
+        ]
+      },
+      {
+        id: "euipo",
+        title: "Resolución EUIPO — Marca Nuntio",
+        subtitle: "Asignación formal de la marca a la empresa",
+        points: 7,
+        tags: ["legal","ip"],
+        emoji: "™️",
+        learn: {
+          what: "Una resolución de directores es un acta formal del Board of Directors de Nuntio Technologies Limited reconociendo el proceso de registro de la marca 'Nuntio' en EUIPO y confirmando que esa marca es un activo de la empresa.",
+          why: "Aunque la marca está a tu nombre (o al de la empresa) en EUIPO, necesitas un acta interna que lo documente formalmente. Cuando llegue el registro (en ~1 mes), debes añadirlo al data room. La marca registrada aumenta la valoración.",
+          clauses: [
+            "Reconocimiento del número de solicitud EUIPO",
+            "Confirmación de titularidad: Nuntio Technologies Limited",
+            "Clases registradas (tecnología, SaaS, IA)",
+            "Instrucción al secretario para guardar el certificado",
+            "Autorización para defender la marca contra oposiciones"
+          ]
+        },
+        docFields: [
+          { id: "eu_appnum", label: "Número de solicitud EUIPO", type: "text", placeholder: "ej. 018XXXXXXX", required: true },
+          { id: "eu_date", label: "Fecha de solicitud", type: "date", required: true },
+          { id: "eu_classes", label: "Clases de Niza registradas", type: "text", placeholder: "ej. Clase 42 (Software como servicio), Clase 35...", required: true },
+          { id: "eu_status", label: "Estado actual", type: "select", options: ["En fase de oposición pública","Publicada en EUIPO","Registrada (certificado recibido)"], required: true },
+          { id: "eu_expected", label: "Fecha esperada de registro", type: "date", required: true }
+        ],
+        signers: [
+          { name: "Fundador 1", role: "Director", color: "#8b5cf6" },
+          { name: "Fundador 2", role: "Director", color: "#00e5a0" }
+        ]
+      },
+      {
+        id: "termsheet",
+        title: "Term Sheet — Guía de Negociación",
+        subtitle: "Entiende los términos antes de recibirlos",
+        points: 5,
+        tags: ["financial","legal"],
+        emoji: "📜",
+        learn: {
+          what: "Un term sheet es el documento no vinculante que un VC envía cuando quiere invertir. Resume las condiciones principales de la inversión: valoración, monto, tipo de instrumento, derechos del inversor y condiciones de cierre.",
+          why: "Cuando recibas tu primer term sheet, no debes negociar en frío. Los VCs hacen esto todos los días. Tú lo ves por primera vez. Conocer los términos de antemano es tu ventaja negociadora más importante.",
+          clauses: [
+            "Pre-money valuation: valoración de Nuntio ANTES del dinero",
+            "Investment amount: cuánto invierte el VC",
+            "Liquidation preference (1x, 2x): quién cobra primero si la empresa se vende",
+            "Anti-dilution: protección del VC si emites acciones más baratas después",
+            "Board seats: cuántos asientos quiere el VC en el consejo",
+            "Pro-rata rights: derecho a seguir invirtiendo en rondas futuras",
+            "SAFE vs convertible note vs priced round: tipos de instrumentos"
+          ]
+        },
+        docFields: [
+          { id: "ts_premoney", label: "Valoración pre-money objetivo (€)", type: "text", placeholder: "ej. €2,000,000 - €5,000,000", required: false },
+          { id: "ts_raise", label: "Cuánto quieres levantar (€)", type: "text", placeholder: "ej. €500,000 - €1,000,000", required: false },
+          { id: "ts_instrument", label: "Instrumento preferido", type: "select", options: ["SAFE (Simple Agreement for Future Equity)","Convertible Note","Priced Round (Serie Seed)"], required: false },
+          { id: "ts_board", label: "Asientos de board para inversores", type: "select", options: ["0 (Observer rights)","1 asiento","2 asientos"], required: false }
+        ],
+        signers: []
+      },
+      {
+        id: "advisor",
+        title: "Advisor Agreements",
+        subtitle: "Contratos para advisors con equity",
+        points: 5,
+        tags: ["legal","hr"],
+        emoji: "🧭",
+        learn: {
+          what: "Un Advisor Agreement formaliza la relación con asesores estratégicos que recibirán equity (acciones u opciones) de Nuntio a cambio de su apoyo. Define qué se espera del advisor, cuánto equity recibe y cómo se ve.",
+          why: "Los advisors sin contrato pueden convertirse en un problema: equity prometido verbalmente, expectativas diferentes, sin forma de recuperar el equity si el advisor no cumple. El modelo FAST (Founder/Advisor Standard Template) es el estándar de la industria.",
+          clauses: [
+            "Advisory services: qué compromiso concreto tiene el advisor (horas/mes)",
+            "Equity grant: % de opciones del pool ESOP (típico: 0.1% - 0.5%)",
+            "Vesting: 2 años con 6 meses cliff (más corto que founders)",
+            "Confidentiality: el advisor no puede revelar información de Nuntio",
+            "Non-solicitation: no puede contratar a tu equipo",
+            "Termination: cómo terminar la relación si no funciona"
+          ]
+        },
+        docFields: [
+          { id: "adv_name", label: "Nombre del Advisor", type: "text", placeholder: "Nombre completo", required: true },
+          { id: "adv_expertise", label: "Área de expertise", type: "select", options: ["Go-to-Market / Ventas","Producto / Tecnología","Inversión / VC","Legal / Regulatorio","Industria específica","Operaciones / Scaling"], required: true },
+          { id: "adv_equity", label: "Equity a otorgar (%)", type: "text", placeholder: "ej. 0.25% (25 basis points)", required: true },
+          { id: "adv_hours", label: "Compromiso mensual", type: "select", options: ["2-3 horas/mes (estándar)","4-6 horas/mes (activo)","1 hora/mes (light)"], required: true },
+          { id: "adv_vest_period", label: "Período de vesting", type: "select", options: ["2 años con 6 meses cliff","2 años sin cliff","1 año sin cliff"], required: true }
+        ],
+        signers: [
+          { name: "Nuntio Technologies Ltd", role: "Company", color: "#8b5cf6" },
+          { name: "Advisor", role: "Strategic Advisor", color: "#f59e0b" }
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "FASE 3 — Data Room",
+    icon: "🗂️",
+    iconBg: "rgba(245,158,11,0.15)",
+    iconBorder: "rgba(245,158,11,0.3)",
+    color: "#f59e0b",
+    meta: "Lo que un VC revisará en due diligence",
+    desc: "Tu Data Room es la carpeta virtual que entregas a un VC cuando hace due diligence. Debe ser impecable.",
+    tasks: [
+      {
+        id: "incorp",
+        title: "Certificado de Constitución",
+        subtitle: "Documentos corporativos oficiales",
+        points: 5,
+        tags: ["legal","ops"],
+        emoji: "🏛️",
+        learn: {
+          what: "Los documentos corporativos oficiales de Nuntio Technologies Limited incluyen el Certificate of Incorporation emitido por la Companies Registration Office (CRO) de Irlanda, y el Memorandum & Articles of Association que define la estructura y gobernanza de la empresa.",
+          why: "Es el documento base de cualquier due diligence. Sin él, no existe la empresa ante los ojos legales. Debe estar en el data room organizado y accesible. Los VCs verifican que la empresa está constituida correctamente y que no tiene problemas en CRO.",
+          clauses: [
+            "CRO Registration Number: el número oficial de la empresa",
+            "Registered address en Irlanda",
+            "Directors list: quiénes son los directores registrados",
+            "Company secretary: quién es el secretario (obligatorio en Irlanda)",
+            "Issued share capital: capital emitido registrado en CRO",
+            "Annual returns: confirmar que están al día"
+          ]
+        },
+        docFields: [
+          { id: "inc_cro", label: "CRO Registration Number", type: "text", placeholder: "ej. 12345678", required: true },
+          { id: "inc_date", label: "Fecha de constitución", type: "date", required: true },
+          { id: "inc_address", label: "Registered Address en Irlanda", type: "text", placeholder: "Dirección registrada completa", required: true },
+          { id: "inc_secretary", label: "Company Secretary", type: "text", placeholder: "Nombre o empresa secretaria", required: true },
+          { id: "inc_capital", label: "Capital social emitido (€)", type: "text", placeholder: "ej. €100 (1,000 acciones x €0.10)", required: true }
+        ],
+        signers: []
+      },
+      {
+        id: "deck",
+        title: "Pitch Deck",
+        subtitle: "Presentación para inversores",
+        points: 8,
+        tags: ["financial","ops"],
+        emoji: "🚀",
+        learn: {
+          what: "El Pitch Deck es una presentación de 10-15 slides que resume Nuntio Technologies para un inversor. Sigue una estructura específica popularizada por Sequoia y YC que los VCs esperan ver.",
+          why: "La primera impresión. Los VCs reciben 1000+ decks al año. Los mejores decks se leen en 3 minutos. El tuyo debe comunicar: gran problema, solución elegante, mercado enorme, equipo excepcional, tracción real y un ask claro.",
+          clauses: [
+            "Slide 1 - Cover: nombre, tagline, logo",
+            "Slide 2 - Problema: el dolor que resuelves (usa datos)",
+            "Slide 3 - Solución: qué hace Nuntio (demo/screenshot)",
+            "Slide 4 - Producto: cómo funciona el runtime agéntico",
+            "Slide 5 - Mercado: TAM/SAM/SOM del mercado de IA enterprise",
+            "Slide 6 - Business Model: cómo cobra Nuntio (SaaS/por seat/por agente)",
+            "Slide 7 - Tracción: usuarios, MRR, demos, LoIs",
+            "Slide 8 - Competencia: por qué Nuntio vs alternativas",
+            "Slide 9 - Equipo: los 4, sus superpoderes",
+            "Slide 10 - Financials: proyecciones 18-24 meses",
+            "Slide 11 - The Ask: cuánto, para qué, qué milestones"
+          ]
+        },
+        docFields: [
+          { id: "deck_tagline", label: "Tagline de Nuntio (1 frase)", type: "text", placeholder: "ej. El cerebro IA que hace funcionar tu empresa", required: true },
+          { id: "deck_problem", label: "El problema que resuelve Nuntio", type: "textarea", placeholder: "Las empresas desperdician X horas/semana en tareas repetitivas que no requieren decisión humana...", required: true },
+          { id: "deck_tam", label: "Tamaño de mercado (TAM)", type: "text", placeholder: "ej. $50B mercado global de AI enterprise SaaS", required: true },
+          { id: "deck_model", label: "Modelo de negocio", type: "select", options: ["SaaS mensual por empresa","Per-seat (por empleado IA)","Usage-based (por llamada de agente)","Freemium + Enterprise","Hybrid"], required: true },
+          { id: "deck_ask", label: "Cuánto buscas levantar (€)", type: "text", placeholder: "ej. €500,000 - €1M Seed", required: true },
+          { id: "deck_use", label: "Uso de los fondos", type: "textarea", placeholder: "40% producto (2 devs), 30% go-to-market, 20% operaciones, 10% legal y compliance...", required: true }
+        ],
+        signers: []
+      },
+      {
+        id: "financial",
+        title: "Financial Model",
+        subtitle: "Proyecciones 18-24 meses",
+        points: 8,
+        tags: ["financial"],
+        emoji: "📈",
+        learn: {
+          what: "Un financial model básico para una startup pre-revenue debe mostrar: proyección de ingresos (MRR), estructura de costes, plan de hiring, burn rate mensual, y runway con el dinero que estás levantando.",
+          why: "Un VC quiere saber: ¿cuánto tiempo les dura el dinero? ¿Entienden los fundadores la economía del negocio? No se esperan proyecciones perfectas, se espera que sean razonables y que puedas defender cada supuesto.",
+          clauses: [
+            "Revenue model: cómo crece el MRR (nuevos clientes x precio)",
+            "Customer acquisition: cuánto cuesta conseguir un cliente (CAC)",
+            "Lifetime value: cuánto vale un cliente a largo plazo (LTV)",
+            "LTV/CAC ratio: debe ser >3x para ser viable",
+            "Burn rate: cuánto gastas por mes",
+            "Runway: cuántos meses duran los fondos actuales",
+            "Break-even: cuándo dejas de perder dinero"
+          ]
+        },
+        docFields: [
+          { id: "fin_mrr_m12", label: "MRR proyectado mes 12 (€)", type: "text", placeholder: "ej. €15,000/mes", required: true },
+          { id: "fin_mrr_m24", label: "MRR proyectado mes 24 (€)", type: "text", placeholder: "ej. €60,000/mes", required: true },
+          { id: "fin_price", label: "Precio por cliente/mes (€)", type: "text", placeholder: "ej. €299/mes (SMB) o €999/mes (Enterprise)", required: true },
+          { id: "fin_cac", label: "CAC estimado (€)", type: "text", placeholder: "ej. €1,200 por cliente", required: true },
+          { id: "fin_burn", label: "Burn rate mensual (€)", type: "text", placeholder: "ej. €18,000/mes con equipo de 4", required: true },
+          { id: "fin_runway", label: "Runway con fondos actuales (meses)", type: "text", placeholder: "ej. 18 meses post-raise de €500k", required: true }
+        ],
+        signers: []
+      },
+      {
+        id: "trademark",
+        title: "Registro EUIPO — Certificado",
+        subtitle: "Marca Nuntio registrada",
+        points: 5,
+        tags: ["legal","ip"],
+        emoji: "🏅",
+        learn: {
+          what: "El certificado de registro de marca EUIPO confirma que 'Nuntio' es una marca registrada en la Unión Europea, propiedad de Nuntio Technologies Limited. Una vez completado el período de oposición (tu caso: ~1 mes), recibirás el certificado oficial.",
+          why: "La IP registrada es un activo tangible en el balance de la empresa. Aumenta la valoración en una ronda. También protege a la empresa de que un competidor use el mismo nombre en Europa. Es un asset estratégico que los VCs valoran.",
+          clauses: [
+            "Número de registro EUIPO",
+            "Clases de Niza protegidas (tecnología, software, servicios)",
+            "Territorios cubiertos (todos los estados miembros de la UE)",
+            "Fecha de registro y fecha de vencimiento (10 años, renovable)",
+            "Procedimiento de oposición: confirmación de que no hubo oposición exitosa"
+          ]
+        },
+        docFields: [
+          { id: "tm_number", label: "Número de registro EUIPO", type: "text", placeholder: "ej. 018XXXXXXX", required: true },
+          { id: "tm_granted", label: "Fecha de concesión", type: "date", required: false },
+          { id: "tm_expiry", label: "Fecha de vencimiento", type: "date", required: false },
+          { id: "tm_classes", label: "Clases registradas", type: "textarea", placeholder: "Clase 42: Servicios de software como servicio (SaaS)...", required: true },
+          { id: "tm_owner", label: "Titular registrado", type: "text", placeholder: "Nuntio Technologies Limited", required: true }
+        ],
+        signers: []
+      },
+      {
+        id: "onepager",
+        title: "One-Pager Ejecutivo",
+        subtitle: "Resumen de 1 página para inversores",
+        points: 4,
+        tags: ["ops"],
+        emoji: "⚡",
+        learn: {
+          what: "El one-pager es un resumen de una sola página de Nuntio Technologies que puedes enviar antes del deck completo. Es lo primero que lee un VC o un angel investor cuando les haces outreach en frío.",
+          why: "Los VCs reciben cientos de decks. El one-pager filtra: si les engancha, piden el deck completo. Si no, no pierdes tiempo con una reunión no productiva. Debe ser escaneable en 30 segundos.",
+          clauses: [
+            "Empresa y tagline: quiénes sois en 1 frase",
+            "El problema: 2-3 líneas sobre el dolor",
+            "La solución: qué hace Nuntio específicamente",
+            "Por qué ahora: timing del mercado (boom IA agéntica)",
+            "Tracción: cualquier métrica que tengas",
+            "Equipo: 4 personas, sus roles clave",
+            "El ask: cuánto y para qué",
+            "Contacto: email directo del CEO"
+          ]
+        },
+        docFields: [
+          { id: "op_tagline", label: "Tagline (máx 10 palabras)", type: "text", placeholder: "El sistema nervioso IA para tu empresa", required: true },
+          { id: "op_problem", label: "El problema (2-3 líneas)", type: "textarea", placeholder: "Las empresas gastan X horas semanales en tareas...", required: true },
+          { id: "op_solution", label: "La solución Nuntio (2-3 líneas)", type: "textarea", placeholder: "Nuntio es un runtime agéntico que orquesta...", required: true },
+          { id: "op_traction", label: "Tracción actual", type: "text", placeholder: "ej. 3 LoIs firmados, 2 pilotos activos, 500 waitlist", required: true },
+          { id: "op_contact", label: "Email de contacto del CEO", type: "text", placeholder: "tu@nuntio.io", required: true }
+        ],
+        signers: []
+      }
+    ]
+  }
+];
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+
+let state = {
+  completed: new Set(),
+  docsGenerated: new Set(),
+  signsSent: new Set(),
+  formData: {},
+  expandedTask: null
+};
+
+// ════════════════════════════════════════════════
+// SUPABASE CONFIG — Reemplaza con tus credenciales
+// ════════════════════════════════════════════════
+
+const SUPABASE_URL = 'https://lmzvxanigroeycfvkuwh.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtenZ4YW5pZ3JvZXljZnZrdXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NjQyODEsImV4cCI6MjA4ODI0MDI4MX0.zOHsKxau3NI8VpiNoZVS6zQO48WhLrG8PnkLehnxig0';
+
+// Genera o recupera un session_id único por navegador
+function getSessionId() {
+  let sid = localStorage.getItem('nuntio_session_id');
+  if (!sid) {
+    sid = 'nuntio_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('nuntio_session_id', sid);
+  }
+  return sid;
+}
+
+const SESSION_ID = getSessionId();
+
+// Helper para llamadas a Supabase REST API
+async function sbQuery(table, method = 'GET', body = null, params = '') {
+  const url = `${SUPABASE_URL}/rest/v1/${table}${params}`;
+  const opts = {
+    method,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': method === 'POST' ? 'resolution=merge-duplicates,return=minimal' : 'return=representation'
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const res = await fetch(url, opts);
+    if (!res.ok) {
+      const err = await res.text();
+      console.warn(`Supabase [${table}] ${method}:`, err);
+      return null;
+    }
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  } catch(e) {
+    console.warn('Supabase fetch error:', e);
+    return null;
+  }
+}
+
+// ─── INICIALIZAR SESIÓN EN SUPABASE ───
+async function ensureSession() {
+  await sbQuery('nuntio_sessions', 'POST', { session_id: SESSION_ID });
+}
+
+// ─── CARGAR ESTADO DESDE SUPABASE ───
+async function loadStateFromDB() {
+  showLoadingOverlay(true);
+  await ensureSession();
+
+  // Cargar tareas completadas
+  const completed = await sbQuery('nuntio_completed', 'GET', null,
+    `?session_id=eq.${SESSION_ID}&select=task_id`);
+  if (completed) state.completed = new Set(completed.map(r => r.task_id));
+
+  // Cargar datos de formularios
+  const formRows = await sbQuery('nuntio_form_data', 'GET', null,
+    `?session_id=eq.${SESSION_ID}&select=task_id,field_id,value`);
+  if (formRows) {
+    formRows.forEach(row => {
+      if (!state.formData[row.task_id]) state.formData[row.task_id] = {};
+      state.formData[row.task_id][row.field_id] = row.value;
+    });
+  }
+
+  // Cargar documentos generados
+  const docs = await sbQuery('nuntio_documents', 'GET', null,
+    `?session_id=eq.${SESSION_ID}&select=task_id`);
+  if (docs) state.docsGenerated = new Set(docs.map(r => r.task_id));
+
+  // Cargar firmas enviadas
+  const sigs = await sbQuery('nuntio_signatures', 'GET', null,
+    `?session_id=eq.${SESSION_ID}&select=task_id,signer_name,status`);
+  if (sigs) {
+    sigs.filter(s => s.status !== 'pending').forEach(s => {
+      state.signsSent.add(s.task_id);
+    });
+  }
+
+  showLoadingOverlay(false);
+  renderDashboard();
+  updateGlobalStats();
+}
+
+// ─── GUARDAR TAREA COMPLETADA ───
+async function saveCompleted(taskId, isCompleted) {
+  if (isCompleted) {
+    await sbQuery('nuntio_completed', 'POST', {
+      session_id: SESSION_ID,
+      task_id: taskId
+    });
+  } else {
+    await sbQuery('nuntio_completed', 'DELETE', null,
+      `?session_id=eq.${SESSION_ID}&task_id=eq.${taskId}`);
+  }
+}
+
+// ─── GUARDAR CAMPO DE FORMULARIO ───
+async function saveFieldToDB(taskId, fieldId, value) {
+  await sbQuery('nuntio_form_data', 'POST', {
+    session_id: SESSION_ID,
+    task_id: taskId,
+    field_id: fieldId,
+    value: value
+  });
+}
+
+// ─── GUARDAR DOCUMENTO GENERADO ───
+async function saveDocumentToDB(taskId, content) {
+  await sbQuery('nuntio_documents', 'POST', {
+    session_id: SESSION_ID,
+    task_id: taskId,
+    document_content: content
+  });
+}
+
+// ─── GUARDAR SOLICITUD DE FIRMA ───
+async function saveSignatureToDB(taskId, signerName, signerEmail) {
+  const result = await sbQuery('nuntio_signatures', 'POST', {
+    session_id: SESSION_ID,
+    task_id: taskId,
+    signer_name: signerName,
+    signer_email: signerEmail,
+    status: 'sent',
+    sent_at: new Date().toISOString()
+  });
+  return result;
+}
+
+// ─── FALLBACK A SESSIONSTORAGE (si no hay config Supabase) ───
+const USE_SUPABASE = SUPABASE_URL !== 'https://TU_PROJECT_URL.supabase.co';
+
+function saveState() {
+  // Siempre guarda en sessionStorage como backup local
+  try {
+    sessionStorage.setItem('nuntio_os_v2', JSON.stringify({
+      completed: [...state.completed],
+      docsGenerated: [...state.docsGenerated],
+      signsSent: [...state.signsSent],
+      formData: state.formData
+    }));
+  } catch(e){}
+}
+
+// Cargar desde sessionStorage como fallback
+try {
+  const saved = JSON.parse(sessionStorage.getItem('nuntio_os_v2') || '{}');
+  state.completed = new Set(saved.completed || []);
+  state.docsGenerated = new Set(saved.docsGenerated || []);
+  state.signsSent = new Set(saved.signsSent || []);
+  state.formData = saved.formData || {};
+} catch(e){}
+
+// ─── OVERLAY DE CARGA ───
+function showLoadingOverlay(show) {
+  let overlay = document.getElementById('loading-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'loading-overlay';
+    overlay.innerHTML = `
+      <div style="
+        position:fixed; inset:0; z-index:9999;
+        background:rgba(7,7,14,0.85);
+        display:flex; align-items:center; justify-content:center;
+        flex-direction:column; gap:16px;
+        backdrop-filter:blur(8px);
+        font-family:var(--font);
+      ">
+        <div style="
+          width:40px; height:40px;
+          border:3px solid var(--border2);
+          border-top-color:var(--green);
+          border-radius:50%;
+          animation:spin 0.8s linear infinite;
+        "></div>
+        <div style="font-size:13px; color:var(--muted2);">Cargando tu Legal OS...</div>
+      </div>
+    `;
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(style);
+    document.body.appendChild(overlay);
+  }
+  overlay.style.display = show ? 'block' : 'none';
+}
+
+// ════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════
+
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  document.getElementById(`view-${viewId}`).classList.add('active');
+
+  const navEl = document.getElementById(`nav-${viewId}`);
+  if (navEl) navEl.classList.add('active');
+
+  if (viewId.startsWith('phase-')) {
+    const phaseIdx = parseInt(viewId.split('-')[1]);
+    renderPhaseView(phaseIdx);
+  }
+
+  window.scrollTo(0, 0);
+}
+
+// ════════════════════════════════════════════════
+// RENDER DASHBOARD
+// ════════════════════════════════════════════════
+
+function renderDashboard() {
+  const container = document.getElementById('phase-cards-container');
+  container.innerHTML = '';
+
+  phases.forEach((phase, i) => {
+    const done = phase.tasks.filter(t => state.completed.has(t.id)).length;
+    const total = phase.tasks.length;
+    const pct = Math.round((done / total) * 100);
+
+    const card = document.createElement('div');
+    card.className = 'phase-card';
+    card.onclick = () => showView(`phase-${i}`);
+    card.innerHTML = `
+      <div class="phase-card-icon" style="background:${phase.iconBg}; border:1px solid ${phase.iconBorder}">${phase.icon}</div>
+      <div class="phase-card-body">
+        <div class="phase-card-title">${phase.title}</div>
+        <div class="phase-card-meta">${phase.meta}</div>
+      </div>
+      <div class="phase-card-progress">
+        <div class="phase-pct" style="color:${phase.color}">${pct}%</div>
+        <div class="mini-bar">
+          <div class="mini-bar-fill" style="width:${pct}%; background:${phase.color}"></div>
+        </div>
+        <div style="font-size:11px; color:var(--muted2); font-family:var(--mono)">${done}/${total} tareas</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  updateGlobalStats();
+}
+
+// ════════════════════════════════════════════════
+// RENDER PHASE VIEW
+// ════════════════════════════════════════════════
+
+function renderPhaseView(phaseIdx) {
+  const phase = phases[phaseIdx];
+  const container = document.getElementById(`view-phase-${phaseIdx}`);
+
+  container.innerHTML = `
+    <div class="task-view-header">
+      <div class="task-view-icon" style="background:${phase.iconBg}; border:1px solid ${phase.iconBorder}">${phase.icon}</div>
+      <div class="task-view-info">
+        <div class="task-view-phase">Fase ${phaseIdx + 1} de 3</div>
+        <div class="task-view-title">${phase.title}</div>
+        <div class="task-view-desc">${phase.desc}</div>
+      </div>
+    </div>
+    <div class="task-list" id="task-list-${phaseIdx}">
+      ${phase.tasks.map(task => renderTaskItem(task, phaseIdx)).join('')}
+    </div>
+  `;
+
+  // Restore expanded state
+  if (state.expandedTask) {
+    const el = document.getElementById(`task-detail-${state.expandedTask}`);
+    if (el) el.classList.add('open');
+  }
+}
+
+function renderTaskItem(task, phaseIdx) {
+  const isDone = state.completed.has(task.id);
+  const tagsHtml = task.tags.map(t => `<span class="tag tag-${t}">${t}</span>`).join('');
+
+  return `
+    <div class="task-item ${isDone ? 'completed' : ''}" id="task-item-${task.id}">
+      <div class="task-item-header" onclick="toggleTaskExpand('${task.id}', ${phaseIdx})">
+        <div class="task-checkbox" onclick="event.stopPropagation(); toggleComplete('${task.id}', ${phaseIdx})">
+          <span class="task-checkbox-check">✓</span>
+        </div>
+        <div class="task-item-info">
+          <div class="task-item-title">${task.emoji} ${task.title}</div>
+          <div class="task-item-sub">
+            <span>${task.subtitle}</span>
+            <div class="task-item-tags">${tagsHtml}</div>
+          </div>
+        </div>
+        <div class="task-item-right">
+          <div class="task-pts">+${task.points}pts</div>
+          <button class="task-expand-btn" onclick="event.stopPropagation(); toggleTaskExpand('${task.id}', ${phaseIdx})">
+            Abrir →
+          </button>
+        </div>
+      </div>
+      <div class="task-detail" id="task-detail-${task.id}">
+        ${renderTaskDetail(task)}
+      </div>
+    </div>
+  `;
+}
+
+function renderTaskDetail(task) {
+  const phase = phases.flat();
+
+  const learnContent = `
+    <div class="detail-panel active" id="panel-learn-${task.id}">
+      <div class="learn-section">
+        <div class="learn-section-title">¿Qué es este documento?</div>
+        <p class="learn-text">${task.learn.what}</p>
+      </div>
+      <div class="learn-section">
+        <div class="learn-section-title">¿Por qué es crítico para Nuntio?</div>
+        <div class="alert-box amber">💡 ${task.learn.why}</div>
+      </div>
+      <div class="learn-section">
+        <div class="learn-section-title">Cláusulas clave que incluye</div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+          ${task.learn.clauses.map((c,i) => `
+            <div style="display:flex; gap:12px; align-items:flex-start; padding:10px 14px; background:var(--s1); border-radius:8px; border:1px solid var(--border);">
+              <span style="font-size:11px; font-family:var(--mono); color:var(--purple); flex-shrink:0; padding-top:2px;">${String(i+1).padStart(2,'0')}</span>
+              <span style="font-size:12px; color:var(--muted2); line-height:1.5;">${c}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  const docContent = `
+    <div class="detail-panel" id="panel-doc-${task.id}">
+      <div class="doc-builder">
+        <div class="alert-box green" style="margin-bottom:8px;">
+          📄 Completa los campos para generar la plantilla del documento. Luego podrás descargarlo o enviarlo a firmar.
+        </div>
+        ${renderDocFields(task)}
+        <div class="doc-actions">
+          <button class="btn btn-primary" onclick="generateDoc('${task.id}')">
+            ⚡ Generar Documento
+          </button>
+          <button class="btn btn-ghost" onclick="previewDoc('${task.id}')">
+            👁 Vista Previa
+          </button>
+          <button class="btn btn-purple" onclick="downloadDoc('${task.id}')">
+            ↓ Descargar .txt
+          </button>
+        </div>
+        <div class="doc-preview" id="doc-preview-${task.id}"></div>
+      </div>
+    </div>
+  `;
+
+  const signContent = `
+    <div class="detail-panel" id="panel-sign-${task.id}">
+      ${task.signers.length === 0 ? `
+        <div class="alert-box" style="background:rgba(59,130,246,0.08); border-color:rgba(59,130,246,0.25); color:var(--blue);">
+          ℹ️ Este documento es para referencia interna — no requiere firmas externas. Una vez completado, súbelo a tu data room.
+        </div>
+      ` : `
+        <div class="alert-box green" style="margin-bottom:20px;">
+          ✍️ Envía el link de firma a cada persona. El sistema simula un workflow tipo DocuSign para tu startup.
+        </div>
+        <div class="signers-list">
+          ${task.signers.map((s, si) => `
+            <div class="signer-row">
+              <div class="signer-avatar" style="background:${s.color}22; color:${s.color}; border:1px solid ${s.color}44">
+                ${s.name.charAt(0)}
+              </div>
+              <div class="signer-info">
+                <div class="signer-name">${s.name}</div>
+                <div class="signer-email">${s.role}</div>
+              </div>
+              <span class="signer-status ${state.signsSent.has(task.id+'_'+si) ? 'status-sent' : 'status-pending'}">
+                ${state.signsSent.has(task.id+'_'+si) ? 'Enviado' : 'Pendiente'}
+              </span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted2); font-family:var(--mono); margin-bottom:8px;">Añadir email del firmante</div>
+          <div style="display:flex; gap:10px;">
+            <input type="email" id="sign-email-${task.id}" class="doc-input" style="flex:1" placeholder="email@ejemplo.com"/>
+            <button class="btn btn-amber" onclick="sendSignLink('${task.id}')">Enviar link →</button>
+          </div>
+        </div>
+
+        <div class="sign-link-row">
+          <div style="font-size:10px; color:var(--muted); font-family:var(--mono); margin-right:8px; flex-shrink:0;">LINK:</div>
+          <div class="sign-link-url" id="sign-link-${task.id}">
+            https://sign.nuntio.io/doc/${task.id}/${Math.random().toString(36).substr(2,9)}
+          </div>
+          <button class="copy-btn" onclick="copySignLink('${task.id}')">Copiar</button>
+        </div>
+
+        <div class="doc-actions">
+          <button class="btn btn-primary" onclick="sendAllSigners('${task.id}')">
+            ✉️ Enviar a todos los firmantes
+          </button>
+          <button class="btn btn-ghost" onclick="markAllSigned('${task.id}')">
+            ✓ Marcar como firmado
+          </button>
+        </div>
+      `}
+    </div>
+  `;
+
+  return `
+    <div class="task-detail-tabs">
+      <div class="detail-tab active" id="tab-learn-${task.id}" onclick="switchTab('${task.id}', 'learn')">📚 Aprende</div>
+      <div class="detail-tab" id="tab-doc-${task.id}" onclick="switchTab('${task.id}', 'doc')">📄 Documento</div>
+      <div class="detail-tab" id="tab-sign-${task.id}" onclick="switchTab('${task.id}', 'sign')">✍️ Firmar${task.signers.length > 0 ? ` (${task.signers.length})` : ''}</div>
+    </div>
+    ${learnContent}
+    ${docContent}
+    ${signContent}
+  `;
+}
+
+function renderDocFields(task) {
+  const savedData = state.formData[task.id] || {};
+  let html = '';
+  const fields = task.docFields;
+
+  for (let i = 0; i < fields.length; i += 2) {
+    const f1 = fields[i];
+    const f2 = fields[i+1];
+    html += `<div class="doc-row">`;
+    html += renderField(task.id, f1, savedData[f1.id] || '');
+    if (f2) {
+      html += renderField(task.id, f2, savedData[f2.id] || '');
+    } else {
+      html += '<div></div>';
+    }
+    html += `</div>`;
+  }
+  return html;
+}
+
+function renderField(taskId, field, value) {
+  const required = field.required ? `<span class="required">*</span>` : '';
+
+  let input = '';
+  if (field.type === 'select') {
+    input = `<select class="doc-select" id="field-${taskId}-${field.id}" onchange="saveField('${taskId}','${field.id}',this.value)">
+      <option value="">Seleccionar...</option>
+      ${field.options.map(o => `<option value="${o}" ${value === o ? 'selected' : ''}>${o}</option>`).join('')}
+    </select>`;
+  } else if (field.type === 'textarea') {
+    input = `<textarea class="doc-textarea" id="field-${taskId}-${field.id}" placeholder="${field.placeholder || ''}" oninput="saveField('${taskId}','${field.id}',this.value)">${value}</textarea>`;
+  } else {
+    input = `<input type="${field.type}" class="doc-input" id="field-${taskId}-${field.id}" placeholder="${field.placeholder || ''}" value="${value}" oninput="saveField('${taskId}','${field.id}',this.value)"/>`;
+  }
+
+  return `
+    <div class="doc-field-group">
+      <div class="doc-field-label">${field.label} ${required}</div>
+      ${input}
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════
+// INTERACTIONS
+// ════════════════════════════════════════════════
+
+function toggleTaskExpand(taskId, phaseIdx) {
+  const detail = document.getElementById(`task-detail-${taskId}`);
+  const isOpen = detail.classList.contains('open');
+  const item = document.getElementById(`task-item-${taskId}`);
+
+  // Close all
+  document.querySelectorAll('.task-detail.open').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.task-item.expanded').forEach(i => i.classList.remove('expanded'));
+
+  if (!isOpen) {
+    detail.classList.add('open');
+    item.classList.add('expanded');
+    state.expandedTask = taskId;
+    // Scroll into view
+    setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+  } else {
+    state.expandedTask = null;
+  }
+}
+
+function switchTab(taskId, tab) {
+  ['learn','doc','sign'].forEach(t => {
+    document.getElementById(`tab-${t}-${taskId}`)?.classList.toggle('active', t === tab);
+    document.getElementById(`panel-${t}-${taskId}`)?.classList.toggle('active', t === tab);
+  });
+}
+
+function saveField(taskId, fieldId, value) {
+  if (!state.formData[taskId]) state.formData[taskId] = {};
+  state.formData[taskId][fieldId] = value;
+  saveState();
+  clearTimeout((saveField._timers = saveField._timers || {})[taskId+fieldId]);
+  saveField._timers[taskId+fieldId] = setTimeout(() => {
+    if (USE_SUPABASE) saveFieldToDB(taskId, fieldId, value);
+  }, 800);
+}
+
+function toggleComplete(taskId, phaseIdx) {
+  const phase = phases[phaseIdx];
+  const task = phase.tasks.find(t => t.id === taskId);
+  const wasDone = state.completed.has(taskId);
+
+  if (!wasDone) {
+    state.completed.add(taskId);
+    showCompletionModal(task);
+    spawnConfetti();
+  } else {
+    state.completed.delete(taskId);
+    toast('Tarea desmarcada');
+  }
+
+  const item = document.getElementById(`task-item-${taskId}`);
+  if (item) item.classList.toggle('completed', !wasDone);
+
+  updateGlobalStats();
+  updateSidebarNav();
+  saveState();
+  if (USE_SUPABASE) saveCompleted(taskId, !wasDone);
+}
+
+function generateDoc(taskId) {
+  const task = findTask(taskId);
+  const data = state.formData[taskId] || {};
+  const preview = document.getElementById(`doc-preview-${taskId}`);
+
+  const missing = task.docFields.filter(f => f.required && !data[f.id]);
+  if (missing.length > 0) {
+    toast(`⚠️ Completa los campos: ${missing.map(f=>f.label).join(', ')}`, 'amber');
+    return;
+  }
+
+  const docText = buildDocumentText(task, data);
+  preview.textContent = docText;
+  preview.classList.add('show');
+
+  state.docsGenerated.add(taskId);
+  saveState();
+  updateGlobalStats();
+  toast('✓ Documento generado correctamente');
+  if (USE_SUPABASE) saveDocumentToDB(taskId, docText);
+}
+
+function previewDoc(taskId) {
+  const preview = document.getElementById(`doc-preview-${taskId}`);
+  if (preview.classList.contains('show')) {
+    preview.classList.remove('show');
+  } else {
+    if (!preview.textContent) {
+      generateDoc(taskId);
+    } else {
+      preview.classList.add('show');
+    }
+  }
+}
+
+function downloadDoc(taskId) {
+  const task = findTask(taskId);
+  const data = state.formData[taskId] || {};
+  const missing = task.docFields.filter(f => f.required && !data[f.id]);
+
+  if (missing.length > 0) {
+    toast(`⚠️ Completa primero los campos requeridos`, 'amber');
+    return;
+  }
+
+  const docText = buildDocumentText(task, data);
+  const blob = new Blob([docText], { type: 'text/plain; charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Nuntio_${task.id.toUpperCase()}_${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  state.docsGenerated.add(taskId);
+  saveState();
+  updateGlobalStats();
+  toast('↓ Documento descargado');
+}
+
+async function sendSignLink(taskId) {
+  const emailInput = document.getElementById(`sign-email-${taskId}`);
+  const email = emailInput?.value;
+  if (!email || !email.includes('@')) {
+    toast('⚠️ Introduce un email válido', 'amber');
+    return;
+  }
+  state.signsSent.add(taskId);
+  saveState();
+  updateGlobalStats();
+  toast(`✉️ Link de firma enviado a ${email}`);
+  if (USE_SUPABASE) {
+    const task = findTask(taskId);
+    await saveSignatureToDB(taskId, email.split('@')[0], email);
+  }
+  if (emailInput) emailInput.value = '';
+}
+
+function sendAllSigners(taskId) {
+  const task = findTask(taskId);
+  task.signers.forEach((s, si) => state.signsSent.add(taskId+'_'+si));
+  saveState();
+  updateGlobalStats();
+  toast(`✉️ Links enviados a ${task.signers.length} firmantes`);
+  // Refresh signer statuses
+  task.signers.forEach((s, si) => {
+    const statusEl = document.querySelectorAll(`#task-detail-${taskId} .signer-status`)[si];
+    if (statusEl) {
+      statusEl.className = 'signer-status status-sent';
+      statusEl.textContent = 'Enviado';
+    }
+  });
+}
+
+function markAllSigned(taskId) {
+  const task = findTask(taskId);
+  task.signers.forEach((s, si) => state.signsSent.add(taskId+'_'+si));
+  saveState();
+  updateGlobalStats();
+  toast('✅ Documento marcado como firmado por todos');
+  task.signers.forEach((s, si) => {
+    const statusEl = document.querySelectorAll(`#task-detail-${taskId} .signer-status`)[si];
+    if (statusEl) {
+      statusEl.className = 'signer-status status-signed';
+      statusEl.textContent = 'Firmado';
+    }
+  });
+}
+
+function copySignLink(taskId) {
+  const linkEl = document.getElementById(`sign-link-${taskId}`);
+  const text = linkEl?.textContent;
+  if (text) {
+    navigator.clipboard.writeText(text).catch(() => {});
+    const btn = linkEl.nextElementSibling;
+    if (btn) { btn.textContent = '✓ Copiado'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000); }
+    toast('✓ Link de firma copiado');
+  }
+}
+
+// ════════════════════════════════════════════════
+// DOCUMENT GENERATOR
+// ════════════════════════════════════════════════
+
+function buildDocumentText(task, data) {
+  const d = (key, fallback='[PENDIENTE]') => data[key] || fallback;
+  const today = new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+
+  const templates = {
+    sha: () => `
+SHAREHOLDERS AGREEMENT
+NUNTIO TECHNOLOGIES LIMITED
+
+Fecha: ${d('sha_date') || today}
+Número de Registro CRO: [NÚMERO CRO]
+Domicilio Social: Irlanda
+
+═══════════════════════════════════════════════
+ENTRE LAS PARTES:
+═══════════════════════════════════════════════
+
+PARTE A: ${d('sha_f1_name')}
+Porcentaje de participación: ${d('sha_f1_pct')}
+
+PARTE B: ${d('sha_f2_name')}
+Porcentaje de participación: ${d('sha_f2_pct')}
+
+Pool reservado para Inversores: ${d('sha_investor_pool')}
+Pool reservado para Equipo y Advisors: ${d('sha_team_pool')}
+
+Jurisdicción aplicable: ${d('sha_jurisdiction')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 1 — OBJETO
+═══════════════════════════════════════════════
+El presente Shareholders Agreement regula las relaciones entre los socios de Nuntio Technologies Limited (en adelante, "la Sociedad"), sus derechos y obligaciones, y los mecanismos de gobierno corporativo.
+
+═══════════════════════════════════════════════
+CLÁUSULA 2 — ESTRUCTURA DE CAPITAL
+═══════════════════════════════════════════════
+2.1 Capital emitido: Las acciones emitidas a la fecha del presente acuerdo son:
+    - ${d('sha_f1_name')}: ${d('sha_f1_pct')} de las acciones emitidas
+    - ${d('sha_f2_name')}: ${d('sha_f2_pct')} de las acciones emitidas
+
+2.2 Pool reservado para Inversores: ${d('sha_investor_pool')} del capital totalmente diluido, sin emitir.
+2.3 Pool ESOP para Equipo y Advisors: ${d('sha_team_pool')} del capital totalmente diluido, sin emitir.
+
+═══════════════════════════════════════════════
+CLÁUSULA 3 — VESTING DE FUNDADORES
+═══════════════════════════════════════════════
+3.1 Todas las acciones de los fundadores estarán sujetas al siguiente schedule de vesting:
+    - Modalidad: ${d('sha_vesting')}
+    - Good Leaver: el fundador que salga por causa justificada conservará sus acciones ya devengadas
+    - Bad Leaver: el fundador que salga sin causa justificada deberá ofrecer sus acciones a precio nominal
+
+═══════════════════════════════════════════════
+CLÁUSULA 4 — GOBIERNO CORPORATIVO
+═══════════════════════════════════════════════
+4.1 Board of Directors: La Sociedad tendrá un Consejo de Administración compuesto inicialmente por los fundadores.
+4.2 Reserved Matters: Las siguientes decisiones requieren unanimidad del Board:
+    a) Venta o fusión de la Sociedad
+    b) Emisión de nuevas acciones o instrumentos de equity
+    c) Modificación de los estatutos sociales
+    d) Contratación o despido de directivos clave (C-Suite)
+    e) Endeudamiento superior a €100,000
+
+═══════════════════════════════════════════════
+CLÁUSULA 5 — DERECHOS DE TRANSMISIÓN
+═══════════════════════════════════════════════
+5.1 Derecho de Tanteo (Right of First Refusal): Antes de transferir acciones a un tercero, el vendedor deberá ofrecer las acciones a los demás socios en igualdad de condiciones.
+
+5.2 Derecho de Acompañamiento (Tag-Along): Si uno de los socios recibe una oferta de compra de sus acciones, los demás socios tendrán derecho a participar en la venta en las mismas condiciones.
+
+5.3 Derecho de Arrastre (Drag-Along): Si los socios que representen más del 75% del capital acordasen vender sus acciones a un tercero, podrán obligar a los demás socios a vender sus acciones en las mismas condiciones.
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+${d('sha_f1_name')}                    Fecha: ___________
+Firma: _______________________
+
+${d('sha_f2_name')}                    Fecha: ___________
+Firma: _______________________
+
+NOTA: Este documento es una plantilla orientativa. Debe ser revisado por un abogado mercantilista cualificado en derecho irlandés antes de su firma.
+`.trim(),
+
+    ipa: () => `
+IP ASSIGNMENT AGREEMENT
+NUNTIO TECHNOLOGIES LIMITED
+
+Fecha: ${d('ipa_date') || today}
+
+═══════════════════════════════════════════════
+ENTRE:
+═══════════════════════════════════════════════
+
+CEDENTE: ${d('ipa_assignor')}
+Rol: ${d('ipa_role')}
+Fecha de inicio de actividad: ${d('ipa_start_date')}
+
+CESIONARIO: Nuntio Technologies Limited
+(Companies Registration Office Ireland)
+
+═══════════════════════════════════════════════
+CLÁUSULA 1 — CESIÓN DE PROPIEDAD INTELECTUAL
+═══════════════════════════════════════════════
+1.1 El Cedente, por la presente, cede, transfiere y asigna irrevocablemente a Nuntio Technologies Limited todos los derechos de propiedad intelectual sobre:
+
+    ${d('ipa_ip_desc')}
+
+1.2 La cesión incluye, sin limitación:
+    - Todo el código fuente, binarios y documentación técnica
+    - Algoritmos, métodos, técnicas y know-how
+    - Diseños, interfaces de usuario, flujos de experiencia
+    - Secretos comerciales y información confidencial
+    - Derechos de patente (presentes y futuros)
+    - Nombres de dominio, marcas y signos distintivos relacionados
+
+═══════════════════════════════════════════════
+CLÁUSULA 2 — RETROACTIVIDAD
+═══════════════════════════════════════════════
+2.1 La presente cesión tiene efecto retroactivo desde la Fecha de Inicio indicada, abarcando toda la IP creada desde el inicio de la colaboración del Cedente con la Sociedad.
+
+═══════════════════════════════════════════════
+CLÁUSULA 3 — CONTRAPRESTACIÓN
+═══════════════════════════════════════════════
+3.1 Como contraprestación por la presente cesión, la Sociedad abonará al Cedente: ${d('ipa_consideration')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 4 — GARANTÍAS DEL CEDENTE
+═══════════════════════════════════════════════
+4.1 El Cedente declara y garantiza que:
+    a) Es el único titular de la IP cedida
+    b) La IP no infringe derechos de terceros
+    c) No existen cargas ni gravámenes sobre la IP
+    d) No ha cedido ni comprometido la IP a terceros
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+${d('ipa_assignor')} (Cedente)         Fecha: ___________
+Firma: _______________________
+
+En representación de Nuntio Technologies Limited:
+Firma: _______________________    Fecha: ___________
+
+NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+`.trim(),
+
+    nda: () => `
+NON-DISCLOSURE AGREEMENT (NDA)
+NUNTIO TECHNOLOGIES LIMITED
+
+Fecha: ${d('nda_date') || today}
+
+═══════════════════════════════════════════════
+ENTRE:
+═══════════════════════════════════════════════
+
+PARTE DIVULGANTE: Nuntio Technologies Limited (Ireland)
+PARTE RECEPTORA: ${d('nda_party')}
+Tipo de relación: ${d('nda_party_role')}
+Tipo de NDA: ${d('nda_type')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 1 — PROPÓSITO
+═══════════════════════════════════════════════
+Las partes desean compartir información confidencial con el propósito de:
+${d('nda_purpose')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 2 — INFORMACIÓN CONFIDENCIAL
+═══════════════════════════════════════════════
+2.1 Se considera Información Confidencial toda información técnica, comercial, financiera, estratégica o de producto de Nuntio Technologies Limited, incluyendo pero no limitado a: código fuente, algoritmos de orquestación agéntica, modelos de negocio, listas de clientes, términos comerciales, estrategia de producto y cualquier información marcada como confidencial.
+
+═══════════════════════════════════════════════
+CLÁUSULA 3 — OBLIGACIONES
+═══════════════════════════════════════════════
+3.1 La Parte Receptora se compromete a:
+    a) Mantener estricta confidencialidad sobre la Información Confidencial
+    b) No divulgar a terceros sin consentimiento previo por escrito
+    c) Usar la información únicamente para el propósito indicado
+    d) Proteger la información con el mismo cuidado que protege la propia
+    e) Notificar inmediatamente cualquier divulgación no autorizada
+
+═══════════════════════════════════════════════
+DURACIÓN Y TERMINACIÓN
+═══════════════════════════════════════════════
+Duración del acuerdo: ${d('nda_term')} desde la fecha de firma.
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+Nuntio Technologies Limited          Fecha: ___________
+Firma: _______________________
+
+${d('nda_party')}                    Fecha: ___________
+Firma: _______________________
+
+NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+`.trim()
+  };
+
+  if (templates[taskId]) return templates[taskId]();
+
+  // Generic template for other docs
+  const fieldList = task.docFields.map(f => {
+    const val = data[f.id] || '[PENDIENTE]';
+    return `${f.label}: ${val}`;
+  }).join('\n');
+
+  return `
+${task.title.toUpperCase()}
+NUNTIO TECHNOLOGIES LIMITED
+Generado el: ${today}
+
+═══════════════════════════════════════════════
+INFORMACIÓN DEL DOCUMENTO
+═══════════════════════════════════════════════
+
+${fieldList}
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+${task.signers.map(s => `${s.name} (${s.role})\nFirma: _______________________    Fecha: ___________\n`).join('\n')}
+
+NOTA: Este documento es una plantilla orientativa generada por Nuntio Legal OS.
+Debe ser revisado por un abogado cualificado antes de su uso.
+  `.trim();
+}
+
+// ════════════════════════════════════════════════
+// STATS & UI UPDATES
+// ════════════════════════════════════════════════
+
+function updateGlobalStats() {
+  const allTasks = phases.flatMap(p => p.tasks);
+  const totalPts = allTasks.reduce((s,t) => s+t.points, 0);
+  const earnedPts = allTasks.filter(t => state.completed.has(t.id)).reduce((s,t) => s+t.points, 0);
+  const pct = Math.round((earnedPts / totalPts) * 100);
+  const doneCount = state.completed.size;
+
+  // KPIs
+  document.getElementById('kpi-done').textContent = doneCount;
+  document.getElementById('kpi-docs').textContent = state.docsGenerated.size;
+  document.getElementById('kpi-signs').textContent = state.signsSent.size;
+
+  // Sidebar score
+  document.getElementById('sidebarPts').textContent = earnedPts;
+  document.getElementById('scoreRingNum').textContent = pct + '%';
+
+  const circumference = 163;
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('scoreRingFill').style.strokeDashoffset = offset;
+
+  const statusEl = document.getElementById('sidebarStatus');
+  if (pct === 0) { statusEl.textContent = '🔴 No iniciado'; statusEl.style.color = 'var(--red)'; }
+  else if (pct < 40) { statusEl.textContent = '🟡 En progreso'; statusEl.style.color = 'var(--amber)'; }
+  else if (pct < 80) { statusEl.textContent = '🔵 Avanzando'; statusEl.style.color = 'var(--blue)'; }
+  else if (pct < 100) { statusEl.textContent = '🟢 Casi listo'; statusEl.style.color = 'var(--green)'; }
+  else { statusEl.textContent = '🏆 VC READY!'; statusEl.style.color = 'var(--green)'; }
+
+  updateSidebarNav();
+  renderDashboard();
+}
+
+function updateSidebarNav() {
+  phases.forEach((phase, i) => {
+    const done = phase.tasks.filter(t => state.completed.has(t.id)).length;
+    const total = phase.tasks.length;
+    const pct = Math.round((done / total) * 100);
+
+    const badge = document.getElementById(`nav-badge-${i}`);
+    const bar = document.getElementById(`nav-bar-${i}`);
+
+    if (badge) {
+      badge.textContent = `${done}/${total}`;
+      badge.className = `nav-badge ${done === total ? 'done' : i === 0 ? 'urgent' : ''}`;
+    }
+
+    if (bar) bar.style.width = pct + '%';
+  });
+}
+
+// ════════════════════════════════════════════════
+// MODAL & EFFECTS
+// ════════════════════════════════════════════════
+
+function showCompletionModal(task) {
+  document.getElementById('modalEmoji').textContent = task.emoji;
+  document.getElementById('modalTitle').textContent = task.title;
+  document.getElementById('modalPts').innerHTML = `+${task.points} <small>pts</small>`;
+  document.getElementById('modalDesc').textContent = task.learn.what.slice(0, 120) + '...';
+  document.getElementById('modalWhy').innerHTML = `💡 ${task.learn.why}`;
+  document.getElementById('completionModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('completionModal').classList.remove('open');
+}
+
+function spawnConfetti() {
+  const emojis = ['🎉','⚡','💎','🚀','✨','🏆','💡','🔥'];
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.cssText = `
+        left: ${10 + Math.random() * 80}vw;
+        top: ${Math.random() * 30}vh;
+        animation-duration: ${1.5 + Math.random() * 2}s;
+        font-size: ${12 + Math.random() * 16}px;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 60);
+  }
+}
+
+function toast(msg, type = 'green') {
+  const t = document.getElementById('toast');
+  t.style.borderColor = type === 'amber' ? 'var(--amber)' : 'var(--green)';
+  t.style.color = type === 'amber' ? 'var(--amber)' : 'var(--green)';
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function findTask(taskId) {
+  return phases.flatMap(p => p.tasks).find(t => t.id === taskId);
+}
+
+// Close modal on background click
+document.getElementById('completionModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+
+// ─── ARRANCAR ───
+// Si Supabase está configurado, carga desde DB. Si no, usa sessionStorage.
+if (USE_SUPABASE) {
+  loadStateFromDB();
+} else {
+  console.info('ℹ️ Supabase no configurado. Usando almacenamiento local.');
+  console.info('Edita SUPABASE_URL y SUPABASE_KEY para activar persistencia en la nube.');
+  renderDashboard();
+  updateGlobalStats();
+}
+</script>
+</body>
+</html>
