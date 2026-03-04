@@ -3,7 +3,7 @@
 -- Ejecuta esto en Supabase SQL Editor
 -- ═══════════════════════════════════════════════════════════
 
--- 1. Tabla de sesiones/usuarios (sin auth por ahora, basado en session_id)
+-- 1. Tabla de sesiones/usuarios (session_id = auth.uid() del usuario autenticado)
 CREATE TABLE IF NOT EXISTS nuntio_sessions (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   session_id TEXT UNIQUE NOT NULL,
@@ -65,7 +65,7 @@ CREATE INDEX IF NOT EXISTS idx_signatures_token ON nuntio_signatures(sign_token)
 CREATE INDEX IF NOT EXISTS idx_signatures_session ON nuntio_signatures(session_id);
 
 -- ═══════════════════════════════════════════════════════════
--- ROW LEVEL SECURITY (importante para producción)
+-- ROW LEVEL SECURITY
 -- ═══════════════════════════════════════════════════════════
 
 ALTER TABLE nuntio_sessions ENABLE ROW LEVEL SECURITY;
@@ -74,14 +74,28 @@ ALTER TABLE nuntio_form_data ENABLE ROW LEVEL SECURITY;
 ALTER TABLE nuntio_documents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE nuntio_signatures ENABLE ROW LEVEL SECURITY;
 
--- Políticas: cualquiera puede leer/escribir sus propios datos por session_id
--- (En producción, cambiar a auth.uid() cuando añadas autenticación)
+-- Políticas: cada usuario solo accede a sus propios datos (session_id = auth.uid())
+-- Requiere autenticación Supabase Auth (email + password)
 
-CREATE POLICY "Allow all on sessions" ON nuntio_sessions FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on completed" ON nuntio_completed FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on form_data" ON nuntio_form_data FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on documents" ON nuntio_documents FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all on signatures" ON nuntio_signatures FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Own sessions" ON nuntio_sessions
+  FOR ALL USING (session_id = auth.uid()::text)
+  WITH CHECK (session_id = auth.uid()::text);
+
+CREATE POLICY "Own completed" ON nuntio_completed
+  FOR ALL USING (session_id = auth.uid()::text)
+  WITH CHECK (session_id = auth.uid()::text);
+
+CREATE POLICY "Own form_data" ON nuntio_form_data
+  FOR ALL USING (session_id = auth.uid()::text)
+  WITH CHECK (session_id = auth.uid()::text);
+
+CREATE POLICY "Own documents" ON nuntio_documents
+  FOR ALL USING (session_id = auth.uid()::text)
+  WITH CHECK (session_id = auth.uid()::text);
+
+CREATE POLICY "Own signatures" ON nuntio_signatures
+  FOR ALL USING (session_id = auth.uid()::text)
+  WITH CHECK (session_id = auth.uid()::text);
 
 -- ═══════════════════════════════════════════════════════════
 -- FUNCIÓN para actualizar updated_at automáticamente
@@ -104,5 +118,8 @@ CREATE TRIGGER update_formdata_updated_at
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ═══════════════════════════════════════════════════════════
--- ✅ LISTO. Ahora pega tu SUPABASE_URL y ANON_KEY en el HTML
+-- ✅ LISTO.
+-- IMPORTANTE post-instalación en Supabase Dashboard:
+--   1. Authentication > Settings > desactivar "Enable Signups"
+--   2. Authentication > Users > "Invite user" para crear cuentas de acceso
 -- ═══════════════════════════════════════════════════════════
