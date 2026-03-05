@@ -3515,7 +3515,7 @@ nuntio.io  |  hello@nuntio.io  |  Dublin, Ireland
 `.trim()
   };
 
-  if (templates[taskId]) return templates[taskId]();
+  if (templates[task.id]) return templates[task.id]();
 
   // Generic template for other docs
   const fieldList = task.docFields.map(f => {
