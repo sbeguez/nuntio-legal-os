@@ -118,8 +118,77 @@ CREATE TRIGGER update_formdata_updated_at
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ═══════════════════════════════════════════════════════════
+-- 6. Tabla de archivos del Data Room (documentos subidos)
+-- ═══════════════════════════════════════════════════════════
+
+CREATE TABLE IF NOT EXISTS nuntio_files (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  session_id TEXT NOT NULL REFERENCES nuntio_sessions(session_id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  task_id TEXT,                         -- tarea relacionada (nullable)
+  category TEXT NOT NULL DEFAULT 'uploaded'
+    CHECK (category IN ('signed', 'generated', 'uploaded')),
+  storage_path TEXT NOT NULL,           -- ruta en Supabase Storage
+  size BIGINT DEFAULT 0,
+  mime_type TEXT DEFAULT 'application/octet-stream',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(session_id, storage_path)
+);
+
+CREATE INDEX IF NOT EXISTS idx_files_session ON nuntio_files(session_id);
+CREATE INDEX IF NOT EXISTS idx_files_task ON nuntio_files(session_id, task_id);
+
+ALTER TABLE nuntio_files ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Own files" ON nuntio_files
+  FOR ALL USING (session_id = auth.uid()::text)
+  WITH CHECK (session_id = auth.uid()::text);
+
+-- ═══════════════════════════════════════════════════════════
+-- 7. Supabase Storage — bucket "nuntio-documents"
+--    EJECUTAR EN SUPABASE DASHBOARD → Storage
+-- ═══════════════════════════════════════════════════════════
+-- INSTRUCCIONES MANUALES (no se pueden hacer por SQL):
+--   1. Ir a Storage → "New bucket"
+--   2. Nombre: nuntio-documents
+--   3. Public: NO (privado)
+--   4. File size limit: 10MB
+--   5. Allowed MIME types: dejar vacío (acepta todos)
+--
+-- Luego, en Storage → Policies → nuntio-documents, crear:
+
+-- Política INSERT (subir archivos propios):
+CREATE POLICY "Users upload own files"
+  ON storage.objects FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    bucket_id = 'nuntio-documents'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+-- Política SELECT (ver/descargar archivos propios):
+CREATE POLICY "Users view own files"
+  ON storage.objects FOR SELECT
+  TO authenticated
+  USING (
+    bucket_id = 'nuntio-documents'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+-- Política DELETE (eliminar archivos propios):
+CREATE POLICY "Users delete own files"
+  ON storage.objects FOR DELETE
+  TO authenticated
+  USING (
+    bucket_id = 'nuntio-documents'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+-- ═══════════════════════════════════════════════════════════
 -- ✅ LISTO.
 -- IMPORTANTE post-instalación en Supabase Dashboard:
 --   1. Authentication > Settings > desactivar "Enable Signups"
 --   2. Authentication > Users > "Invite user" para crear cuentas de acceso
+--   3. Storage > New Bucket > nombre: nuntio-documents, Public: NO
+--   4. Storage > Policies > aplicar las 3 políticas de arriba
 -- ═══════════════════════════════════════════════════════════

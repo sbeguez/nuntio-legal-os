@@ -1105,6 +1105,124 @@ body::before {
 }
 .login-error.visible { display: block; }
 
+/* ─── DATA ROOM DRIVE ─── */
+.dr-view-header {
+  padding: 40px 48px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+}
+.dr-header-eyebrow { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted2); font-family: var(--mono); margin-bottom: 6px; }
+.dr-header-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+.dr-header-sub { font-size: 13px; color: var(--muted2); margin-top: 4px; }
+.dr-toolbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 48px; border-bottom: 1px solid var(--border); flex-wrap: wrap;
+}
+.dr-search {
+  flex: 1; min-width: 180px;
+  background: var(--s2); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 9px 14px; font-size: 13px; color: var(--text);
+  font-family: var(--font); outline: none; transition: border-color 0.2s;
+}
+.dr-search:focus { border-color: var(--purple); }
+.dr-tabs {
+  display: flex; gap: 4px; padding: 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+.dr-tab {
+  padding: 10px 16px; font-size: 11px; font-weight: 600; color: var(--muted2);
+  cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;
+  white-space: nowrap; font-family: var(--mono); letter-spacing: 0.04em; text-transform: uppercase;
+}
+.dr-tab:hover { color: var(--text); }
+.dr-tab.active { color: var(--purple); border-bottom-color: var(--purple); }
+.dr-content { padding: 32px 48px 64px; }
+.dr-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 80px 24px; text-align: center; gap: 12px;
+}
+.dr-empty-icon { font-size: 48px; opacity: 0.4; }
+.dr-empty-title { font-size: 16px; font-weight: 700; color: var(--muted2); }
+.dr-empty-sub { font-size: 13px; color: var(--muted); max-width: 320px; line-height: 1.6; }
+.upload-zone {
+  border: 2px dashed var(--border2); border-radius: 14px;
+  padding: 36px 24px; text-align: center; cursor: pointer;
+  transition: all 0.2s; margin-bottom: 28px; background: var(--s2);
+}
+.upload-zone:hover, .upload-zone.dragover { border-color: var(--purple); background: var(--purple-dim); }
+.upload-zone-icon { font-size: 32px; margin-bottom: 8px; }
+.upload-zone-text { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.upload-zone-sub { font-size: 12px; color: var(--muted2); }
+.dr-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px; margin-top: 4px;
+}
+.file-card {
+  background: var(--s1); border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px; display: flex; flex-direction: column; gap: 12px;
+  transition: all 0.2s; position: relative; overflow: hidden;
+}
+.file-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--fc-color, var(--border));
+}
+.file-card:hover { border-color: var(--border2); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-1px); }
+.file-icon-row { display: flex; align-items: center; justify-content: space-between; }
+.file-type-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; background: var(--s2);
+}
+.file-cat-badge {
+  font-size: 10px; font-family: var(--mono); font-weight: 600;
+  padding: 3px 8px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.badge-signed { background: rgba(5,150,105,0.12); color: var(--green); }
+.badge-generated { background: rgba(124,58,237,0.12); color: var(--purple); }
+.badge-uploaded { background: rgba(37,99,235,0.12); color: var(--blue); }
+.file-name {
+  font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+  word-break: break-all; line-height: 1.3;
+}
+.file-meta { font-size: 11px; color: var(--muted2); font-family: var(--mono); }
+.file-actions { display: flex; gap: 8px; margin-top: auto; }
+.file-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 5px; padding: 7px 10px; border-radius: 7px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border2); background: var(--s2);
+  color: var(--muted2); font-family: var(--font); transition: all 0.2s; white-space: nowrap;
+}
+.file-btn:hover { color: var(--text); border-color: var(--muted2); }
+.file-btn.download:hover { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+.file-btn.delete:hover { color: var(--red); border-color: var(--red); background: rgba(220,38,38,0.07); }
+.dr-section-label {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted2); font-family: var(--mono); margin: 0 0 14px; font-weight: 600;
+}
+/* Sign tab upload */
+.sign-upload-section {
+  margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);
+}
+.sign-upload-title {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted2); font-family: var(--mono); margin-bottom: 10px;
+}
+.sign-upload-zone {
+  border: 1.5px dashed var(--border2); border-radius: 10px; padding: 18px 16px;
+  text-align: center; cursor: pointer; transition: all 0.2s; background: var(--s2);
+}
+.sign-upload-zone:hover, .sign-upload-zone.dragover { border-color: var(--green); background: var(--green-dim); }
+.sign-upload-zone-text { font-size: 13px; font-weight: 600; color: var(--muted2); }
+.sign-upload-zone-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.sign-uploads-list { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; }
+.sign-upload-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  background: var(--s1); border: 1px solid var(--border); border-radius: 8px;
+}
+.sign-upload-icon { font-size: 16px; flex-shrink: 0; }
+.sign-upload-name { flex: 1; font-size: 12px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sign-upload-meta { font-size: 10px; color: var(--muted2); font-family: var(--mono); flex-shrink: 0; }
+
 /* ─── LOGOUT BUTTON ─── */
 .logout-btn {
   display: flex;
@@ -1227,6 +1345,13 @@ body::before {
       </div>
       <div class="nav-progress"><div class="nav-progress-fill" id="nav-bar-2" style="width:0%"></div></div>
 
+      <div class="nav-section-label" style="margin-top:16px">Archivos</div>
+      <div class="nav-item" onclick="showView('dataroom')" id="nav-dataroom">
+        <div class="nav-item-icon">📁</div>
+        <div class="nav-item-label">Mis Documentos</div>
+        <div class="nav-badge" id="nav-badge-dr">0</div>
+      </div>
+
     </nav>
 
     <button class="logout-btn" onclick="logout()">
@@ -1286,6 +1411,14 @@ body::before {
     <div class="view" id="view-phase-0"></div>
     <div class="view" id="view-phase-1"></div>
     <div class="view" id="view-phase-2"></div>
+
+    <!-- ── DATA ROOM / DRIVE ── -->
+    <div class="view" id="view-dataroom">
+      <div class="dr-empty" style="padding-top:120px">
+        <div class="dr-empty-icon">📁</div>
+        <div class="dr-empty-title">Cargando documentos...</div>
+      </div>
+    </div>
 
   </main>
 </div>
@@ -1837,8 +1970,10 @@ let state = {
   signsSent: new Set(),
   formData: {},
   signTokens: {},
-  expandedTask: null
+  expandedTask: null,
+  drFiles: []
 };
+let currentDrFilter = 'all';
 
 // ════════════════════════════════════════════════
 // SUPABASE CONFIG
@@ -2048,6 +2183,10 @@ function showView(viewId) {
     renderPhaseView(phaseIdx);
   }
 
+  if (viewId === 'dataroom') {
+    loadDataRoom();
+  }
+
   window.scrollTo(0, 0);
 }
 
@@ -2195,12 +2334,30 @@ function renderTaskDetail(task) {
     </div>
   `;
 
+  const uploadSection = `
+    <div class="sign-upload-section">
+      <div class="sign-upload-title">📎 Subir documento firmado</div>
+      <div class="sign-upload-zone" id="sign-upload-zone-${task.id}"
+        onclick="document.getElementById('sign-file-${task.id}').click()"
+        ondragover="event.preventDefault(); this.classList.add('dragover')"
+        ondragleave="this.classList.remove('dragover')"
+        ondrop="event.preventDefault(); this.classList.remove('dragover'); handleSignUpload(event.dataTransfer.files[0], '${task.id}')">
+        <input type="file" id="sign-file-${task.id}" hidden accept=".pdf,.docx,.doc,.txt,.png,.jpg"
+          onchange="handleSignUpload(this.files[0], '${task.id}')">
+        <div class="sign-upload-zone-text">📎 Click o arrastra el documento firmado</div>
+        <div class="sign-upload-zone-sub">PDF, DOCX, DOC, TXT — máx. 10MB</div>
+      </div>
+      <div class="sign-uploads-list" id="sign-uploads-${task.id}"></div>
+    </div>
+  `;
+
   const signContent = `
     <div class="detail-panel" id="panel-sign-${task.id}">
       ${task.signers.length === 0 ? `
-        <div class="alert-box" style="background:rgba(59,130,246,0.08); border-color:rgba(59,130,246,0.25); color:var(--blue);">
+        <div class="alert-box" style="background:rgba(37,99,235,0.08); border-color:rgba(37,99,235,0.22); color:var(--blue);">
           ℹ️ Este documento es para referencia interna — no requiere firmas externas. Una vez completado, súbelo a tu data room.
         </div>
+        ${uploadSection}
       ` : `
         <div class="alert-box green" style="margin-bottom:20px;">
           ✍️ Envía el link de firma a cada persona. El sistema simula un workflow tipo DocuSign para tu startup.
@@ -2246,6 +2403,7 @@ function renderTaskDetail(task) {
             ✓ Marcar como firmado
           </button>
         </div>
+        ${uploadSection}
       `}
     </div>
   `;
@@ -2424,18 +2582,54 @@ function downloadDoc(taskId) {
   }
 
   const docText = buildDocumentText(task, data);
-  const blob = new Blob([docText], { type: 'text/plain; charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `Nuntio_${task.id.toUpperCase()}_${new Date().toISOString().slice(0,10)}.txt`;
-  a.click();
-  URL.revokeObjectURL(url);
+  const escaped = docText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const docTitle = escHtml(task.title) + ' — Nuntio Technologies';
+  const dateStr = new Date().toISOString().slice(0,10);
+  const fileName = `Nuntio_${task.id.toUpperCase()}_${dateStr}`;
+
+  const win = window.open('', '_blank');
+  if (!win) { toast('⚠️ Permite las ventanas emergentes para descargar', 'amber'); return; }
+  win.document.write(`<!DOCTYPE html><html lang="es"><head>
+  <meta charset="UTF-8"><title>${docTitle}</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Georgia', 'Times New Roman', serif; font-size: 11.5pt; line-height: 2; color: #0f0f1a; background: #fff; }
+    .toolbar { background: #f5f4ef; border-bottom: 2px solid #d9d7d0; padding: 12px 32px; display: flex; align-items: center; gap: 12px; font-family: -apple-system, sans-serif; font-size: 13px; position: sticky; top: 0; z-index: 10; }
+    .toolbar-logo { font-weight: 800; color: #7c3aed; font-size: 14px; }
+    .toolbar-title { flex: 1; color: #6b6461; }
+    .btn-pdf { padding: 8px 20px; background: #059669; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-pdf:hover { background: #047857; }
+    .btn-txt { padding: 8px 14px; background: white; color: #444; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; }
+    .btn-txt:hover { border-color: #7c3aed; color: #7c3aed; }
+    .page { max-width: 740px; margin: 0 auto; padding: 3cm 2.5cm; }
+    pre { white-space: pre-wrap; font-family: inherit; font-size: inherit; line-height: inherit; }
+    @page { margin: 2.5cm; size: A4; }
+    @media print { .toolbar { display: none; } .page { padding: 0; max-width: 100%; } }
+  </style>
+</head><body>
+  <div class="toolbar">
+    <span class="toolbar-logo">⚡ Nuntio Legal OS</span>
+    <span class="toolbar-title">${docTitle}</span>
+    <button class="btn-txt" onclick="downloadTxt()">↓ .TXT</button>
+    <button class="btn-pdf" onclick="window.print()">🖨&nbsp; Guardar como PDF</button>
+  </div>
+  <div class="page"><pre>${escaped}</pre></div>
+  <script>
+    function downloadTxt() {
+      const c = ${JSON.stringify(docText)};
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([c], {type:'text/plain;charset=utf-8'}));
+      a.download = '${fileName}.txt'; a.click();
+    }
+  <\/script>
+</body></html>`);
+  win.document.close();
 
   state.docsGenerated.add(taskId);
   saveState();
   updateGlobalStats();
-  toast('↓ Documento descargado');
+  toast('📄 Documento listo — usa "Guardar como PDF" en la nueva pestaña');
+  if (USE_SUPABASE) saveDocumentToDB(taskId, docText);
 }
 
 async function sendSignLink(taskId) {
@@ -3650,6 +3844,338 @@ function findTask(taskId) {
 document.getElementById('completionModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+// ════════════════════════════════════════════════
+// DATA ROOM — DRIVE DE DOCUMENTOS
+// ════════════════════════════════════════════════
+
+function formatFileSize(bytes) {
+  if (!bytes) return '—';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function fileTypeIcon(mime) {
+  if (!mime) return '📄';
+  if (mime.includes('pdf')) return '📕';
+  if (mime.includes('word') || mime.includes('docx') || mime.includes('doc')) return '📘';
+  if (mime.includes('text')) return '📄';
+  if (mime.includes('image')) return '🖼️';
+  if (mime.includes('spreadsheet') || mime.includes('excel')) return '📗';
+  return '📎';
+}
+
+function catColor(category) {
+  if (category === 'signed') return 'var(--green)';
+  if (category === 'generated') return 'var(--purple)';
+  return 'var(--blue)';
+}
+
+function catLabel(category) {
+  if (category === 'signed') return 'Firmado';
+  if (category === 'generated') return 'Generado';
+  return 'Subido';
+}
+
+function catBadgeClass(category) {
+  if (category === 'signed') return 'badge-signed';
+  if (category === 'generated') return 'badge-generated';
+  return 'badge-uploaded';
+}
+
+function relativeTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (diff < 60) return 'ahora mismo';
+  if (diff < 3600) return Math.floor(diff/60) + 'm';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h';
+  if (diff < 86400*7) return Math.floor(diff/86400) + 'd';
+  return d.toLocaleDateString('es-ES', {day:'numeric', month:'short'});
+}
+
+async function loadDataRoom() {
+  const container = document.getElementById('view-dataroom');
+  container.innerHTML = `
+    <div class="dr-view-header">
+      <div class="dr-header-left">
+        <div class="dr-header-eyebrow">Nuntio Technologies Ltd.</div>
+        <div class="dr-header-title">📁 Mis Documentos</div>
+        <div class="dr-header-sub">Todos los documentos de tu empresa en un solo lugar</div>
+      </div>
+    </div>
+    <div class="dr-empty" style="padding-top:80px">
+      <div class="dr-empty-icon">⏳</div>
+      <div class="dr-empty-title">Cargando documentos...</div>
+    </div>
+  `;
+
+  const rows = await sbQuery('nuntio_files', 'GET', null,
+    `?session_id=eq.${SESSION_ID}&order=created_at.desc`);
+  state.drFiles = rows || [];
+  refreshDrBadge();
+  renderDataRoom('all');
+}
+
+function renderDataRoom(filter) {
+  currentDrFilter = filter;
+  const container = document.getElementById('view-dataroom');
+  if (!container) return;
+
+  const allFiles = state.drFiles;
+  const filtered = filter === 'all' ? allFiles : allFiles.filter(f => f.category === filter);
+  const counts = {
+    all: allFiles.length,
+    signed: allFiles.filter(f => f.category === 'signed').length,
+    uploaded: allFiles.filter(f => f.category === 'uploaded').length,
+    generated: allFiles.filter(f => f.category === 'generated').length,
+  };
+
+  const filesHtml = filtered.length === 0 ? `
+    <div class="dr-empty">
+      <div class="dr-empty-icon">📭</div>
+      <div class="dr-empty-title">${filter === 'all' ? 'Aún no hay documentos' : 'Sin documentos en esta categoría'}</div>
+      <div class="dr-empty-sub">Sube tu primer archivo usando el área de arriba o desde la pestaña "Firmar" de cada tarea.</div>
+    </div>
+  ` : `
+    <div class="dr-section-label">${filtered.length} documento${filtered.length !== 1 ? 's' : ''}</div>
+    <div class="dr-grid">
+      ${filtered.map(f => renderFileCard(f)).join('')}
+    </div>
+  `;
+
+  container.innerHTML = `
+    <div class="dr-view-header">
+      <div class="dr-header-left">
+        <div class="dr-header-eyebrow">Nuntio Technologies Ltd.</div>
+        <div class="dr-header-title">📁 Mis Documentos</div>
+        <div class="dr-header-sub">Documentos corporativos · ${allFiles.length} archivo${allFiles.length !== 1 ? 's' : ''}</div>
+      </div>
+      <button class="btn btn-purple" onclick="document.getElementById('dr-file-input').click()">
+        ☁ Subir Archivo
+      </button>
+      <input type="file" id="dr-file-input" hidden multiple accept=".pdf,.docx,.doc,.txt,.png,.jpg,.xlsx"
+        onchange="handleDrUpload(this.files)">
+    </div>
+
+    <div class="dr-toolbar">
+      <input class="dr-search" type="text" placeholder="🔍 Buscar documentos..."
+        oninput="filterDrSearch(this.value)" id="dr-search-input">
+    </div>
+
+    <div class="dr-tabs">
+      <div class="dr-tab ${filter==='all'?'active':''}" onclick="renderDataRoom('all')">
+        Todos <span style="opacity:.6">(${counts.all})</span>
+      </div>
+      <div class="dr-tab ${filter==='signed'?'active':''}" onclick="renderDataRoom('signed')">
+        ✍️ Firmados <span style="opacity:.6">(${counts.signed})</span>
+      </div>
+      <div class="dr-tab ${filter==='uploaded'?'active':''}" onclick="renderDataRoom('uploaded')">
+        ☁ Subidos <span style="opacity:.6">(${counts.uploaded})</span>
+      </div>
+      <div class="dr-tab ${filter==='generated'?'active':''}" onclick="renderDataRoom('generated')">
+        ⚡ Generados <span style="opacity:.6">(${counts.generated})</span>
+      </div>
+    </div>
+
+    <div class="dr-content">
+      <div class="upload-zone" id="dr-upload-zone"
+        onclick="document.getElementById('dr-file-input').click()"
+        ondragover="event.preventDefault(); this.classList.add('dragover')"
+        ondragleave="this.classList.remove('dragover')"
+        ondrop="event.preventDefault(); this.classList.remove('dragover'); handleDrUpload(event.dataTransfer.files)">
+        <div class="upload-zone-icon">☁️</div>
+        <div class="upload-zone-text">Arrastra archivos aquí o haz clic para subir</div>
+        <div class="upload-zone-sub">PDF, DOCX, DOC, TXT, imagen — máx. 10MB por archivo</div>
+      </div>
+      ${filesHtml}
+    </div>
+  `;
+}
+
+function renderFileCard(f) {
+  const taskLabel = f.task_id ? ` · ${f.task_id.toUpperCase()}` : '';
+  const timeAgo = relativeTime(f.created_at);
+  return `
+    <div class="file-card" style="--fc-color:${catColor(f.category)}">
+      <div class="file-icon-row">
+        <div class="file-type-icon">${fileTypeIcon(f.mime_type)}</div>
+        <span class="file-cat-badge ${catBadgeClass(f.category)}">${catLabel(f.category)}</span>
+      </div>
+      <div>
+        <div class="file-name" title="${escHtml(f.name)}">${escHtml(f.name)}</div>
+        <div class="file-meta">${formatFileSize(f.size)}${taskLabel} · ${timeAgo}</div>
+      </div>
+      <div class="file-actions">
+        <button class="file-btn download" onclick="downloadStorageFile('${escHtml(f.storage_path)}', '${escHtml(f.name)}')">↓ Descargar</button>
+        <button class="file-btn delete" onclick="deleteStorageFile('${f.id}', '${escHtml(f.storage_path)}', '${escHtml(f.name)}')">🗑</button>
+      </div>
+    </div>
+  `;
+}
+
+function filterDrSearch(query) {
+  const q = query.toLowerCase();
+  const allFiles = state.drFiles;
+  const filtered = currentDrFilter === 'all' ? allFiles : allFiles.filter(f => f.category === currentDrFilter);
+  const matched = q ? filtered.filter(f => f.name.toLowerCase().includes(q)) : filtered;
+
+  const grid = document.querySelector('#view-dataroom .dr-grid');
+  const emptyEl = document.querySelector('#view-dataroom .dr-empty');
+
+  if (grid) {
+    grid.innerHTML = matched.length > 0 ? matched.map(f => renderFileCard(f)).join('') : '';
+  }
+  if (matched.length === 0 && !emptyEl) {
+    const content = document.querySelector('#view-dataroom .dr-content');
+    if (content) content.insertAdjacentHTML('beforeend', `
+      <div class="dr-empty" id="dr-search-empty">
+        <div class="dr-empty-icon">🔍</div>
+        <div class="dr-empty-title">Sin resultados para "${escHtml(query)}"</div>
+      </div>
+    `);
+  }
+  document.getElementById('dr-search-empty')?.remove();
+}
+
+async function uploadToDataRoom(file, taskId, category) {
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) {
+    toast('⚠️ Archivo demasiado grande (máx 10MB)', 'amber');
+    return;
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._\-() ]/g, '_');
+  const storagePath = `${SESSION_ID}/${Date.now()}_${safeName}`;
+
+  toast('⏳ Subiendo archivo...');
+
+  // Upload to Supabase Storage
+  const { data: storData, error: storErr } = await _supabase.storage
+    .from('nuntio-documents')
+    .upload(storagePath, file, { cacheControl: '3600', upsert: false });
+
+  if (storErr) {
+    toast(`⚠️ Error al subir: ${storErr.message}`, 'amber');
+    return;
+  }
+
+  // Save metadata to DB
+  const { data: { session } } = await _supabase.auth.getSession();
+  const token = session?.access_token ?? SUPABASE_KEY;
+  const metaRes = await fetch(`${SUPABASE_URL}/rest/v1/nuntio_files`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify({
+      session_id: SESSION_ID,
+      name: file.name,
+      task_id: taskId || null,
+      category: category || 'uploaded',
+      storage_path: storagePath,
+      size: file.size,
+      mime_type: file.type || 'application/octet-stream'
+    })
+  });
+
+  let newFile = null;
+  if (metaRes.ok) {
+    const rows = await metaRes.json();
+    newFile = Array.isArray(rows) ? rows[0] : rows;
+    if (newFile) {
+      state.drFiles.unshift(newFile);
+      refreshDrBadge();
+    }
+  }
+
+  toast(`✓ "${file.name}" guardado en Mis Documentos`);
+
+  // Refresh sign tab uploads if visible
+  if (taskId) refreshSignUploads(taskId);
+
+  // Refresh DR view if active
+  const drView = document.getElementById('view-dataroom');
+  if (drView?.classList.contains('active')) renderDataRoom(currentDrFilter);
+}
+
+async function downloadStorageFile(storagePath, fileName) {
+  toast('⏳ Preparando descarga...');
+  const { data, error } = await _supabase.storage
+    .from('nuntio-documents')
+    .createSignedUrl(storagePath, 120);
+
+  if (error) { toast('⚠️ Error al descargar el archivo', 'amber'); return; }
+
+  const a = document.createElement('a');
+  a.href = data.signedUrl;
+  a.download = fileName;
+  a.target = '_blank';
+  a.click();
+  toast(`↓ Descargando "${fileName}"`);
+}
+
+async function deleteStorageFile(fileId, storagePath, fileName) {
+  if (!confirm(`¿Eliminar "${fileName}"? Esta acción no se puede deshacer.`)) return;
+
+  // Delete from Storage
+  await _supabase.storage.from('nuntio-documents').remove([storagePath]);
+
+  // Delete from DB
+  await sbQuery('nuntio_files', 'DELETE', null,
+    `?id=eq.${fileId}&session_id=eq.${SESSION_ID}`);
+
+  // Update local state
+  state.drFiles = state.drFiles.filter(f => f.id !== fileId);
+  refreshDrBadge();
+
+  // Refresh views
+  const drView = document.getElementById('view-dataroom');
+  if (drView?.classList.contains('active')) renderDataRoom(currentDrFilter);
+  toast('🗑 Archivo eliminado');
+}
+
+async function handleDrUpload(files) {
+  if (!files || files.length === 0) return;
+  for (const file of files) {
+    await uploadToDataRoom(file, null, 'uploaded');
+  }
+}
+
+async function handleSignUpload(file, taskId) {
+  if (!file) return;
+  await uploadToDataRoom(file, taskId, 'signed');
+  // Reset input
+  const input = document.getElementById(`sign-file-${taskId}`);
+  if (input) input.value = '';
+}
+
+function refreshSignUploads(taskId) {
+  const container = document.getElementById(`sign-uploads-${taskId}`);
+  if (!container) return;
+
+  const taskFiles = state.drFiles.filter(f => f.task_id === taskId && f.category === 'signed');
+  if (taskFiles.length === 0) { container.innerHTML = ''; return; }
+
+  container.innerHTML = taskFiles.map(f => `
+    <div class="sign-upload-item">
+      <span class="sign-upload-icon">${fileTypeIcon(f.mime_type)}</span>
+      <span class="sign-upload-name">${escHtml(f.name)}</span>
+      <span class="sign-upload-meta">${formatFileSize(f.size)}</span>
+      <button class="file-btn download" style="flex:0; padding:5px 10px"
+        onclick="downloadStorageFile('${escHtml(f.storage_path)}', '${escHtml(f.name)}')">↓</button>
+    </div>
+  `).join('');
+}
+
+function refreshDrBadge() {
+  const badge = document.getElementById('nav-badge-dr');
+  if (badge) badge.textContent = state.drFiles.length;
+}
 
 // ════════════════════════════════════════════════
 // INIT
