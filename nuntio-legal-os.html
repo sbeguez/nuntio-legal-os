@@ -8,23 +8,23 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root {
-  --bg: #07070e;
-  --s1: #0e0e1a;
-  --s2: #161625;
-  --s3: #1e1e30;
-  --border: #252538;
-  --border2: #32324a;
-  --green: #00e5a0;
-  --green-dim: rgba(0,229,160,0.12);
-  --purple: #8b5cf6;
-  --purple-dim: rgba(139,92,246,0.12);
-  --amber: #f59e0b;
-  --amber-dim: rgba(245,158,11,0.12);
-  --red: #ef4444;
-  --blue: #3b82f6;
-  --text: #e2e2f0;
-  --muted: #5a5a75;
-  --muted2: #8888a0;
+  --bg: #f5f4ef;
+  --s1: #ffffff;
+  --s2: #ecebe6;
+  --s3: #e3e1db;
+  --border: #d9d7d0;
+  --border2: #c8c5bc;
+  --green: #059669;
+  --green-dim: rgba(5,150,105,0.10);
+  --purple: #7c3aed;
+  --purple-dim: rgba(124,58,237,0.10);
+  --amber: #b45309;
+  --amber-dim: rgba(180,83,9,0.10);
+  --red: #dc2626;
+  --blue: #2563eb;
+  --text: #1c1b18;
+  --muted: #6b6461;
+  --muted2: #9b9590;
   --font: 'Bricolage Grotesque', sans-serif;
   --mono: 'JetBrains Mono', monospace;
 }
@@ -45,7 +45,7 @@ body::before {
   content:'';
   position:fixed; inset:0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:0; opacity:.4;
+  pointer-events:none; z-index:0; opacity:.18;
 }
 
 /* ─── LAYOUT ─── */
@@ -194,7 +194,7 @@ body::before {
 .nav-item:hover { background: var(--s2); }
 .nav-item.active {
   background: var(--green-dim);
-  border-color: rgba(0,229,160,0.2);
+  border-color: rgba(5,150,105,0.22);
 }
 
 .nav-item-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
@@ -212,7 +212,7 @@ body::before {
 }
 
 .nav-badge.done { background: var(--green-dim); color: var(--green); }
-.nav-badge.urgent { background: rgba(239,68,68,0.15); color: var(--red); }
+.nav-badge.urgent { background: rgba(220,38,38,0.10); color: var(--red); }
 
 .nav-progress {
   height: 2px;
@@ -251,7 +251,7 @@ body::before {
   position: absolute;
   top: -60px; right: -60px;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -449,7 +449,7 @@ body::before {
 }
 
 .task-item:hover { border-color: var(--border2); }
-.task-item.completed { border-color: rgba(0,229,160,0.25); background: rgba(0,229,160,0.03); }
+.task-item.completed { border-color: rgba(5,150,105,0.28); background: rgba(5,150,105,0.04); }
 .task-item.expanded { border-color: var(--purple); }
 
 .task-item-header {
@@ -473,7 +473,7 @@ body::before {
 .task-item.completed .task-checkbox {
   background: var(--green);
   border-color: var(--green);
-  box-shadow: 0 0 20px rgba(0,229,160,0.35);
+  box-shadow: 0 0 16px rgba(5,150,105,0.30);
 }
 
 .task-checkbox-check {
@@ -526,12 +526,12 @@ body::before {
   text-transform: uppercase;
 }
 
-.tag-urgent { background: rgba(239,68,68,0.15); color: #f87171; }
-.tag-legal { background: rgba(139,92,246,0.15); color: #a78bfa; }
-.tag-ip { background: rgba(245,158,11,0.15); color: #fbbf24; }
-.tag-financial { background: rgba(59,130,246,0.15); color: #60a5fa; }
-.tag-hr { background: rgba(236,72,153,0.15); color: #f472b6; }
-.tag-ops { background: rgba(0,229,160,0.15); color: var(--green); }
+.tag-urgent { background: rgba(220,38,38,0.10); color: #991b1b; }
+.tag-legal { background: rgba(124,58,237,0.10); color: #5b21b6; }
+.tag-ip { background: rgba(180,83,9,0.10); color: #78350f; }
+.tag-financial { background: rgba(37,99,235,0.10); color: #1d4ed8; }
+.tag-hr { background: rgba(190,24,93,0.10); color: #9d174d; }
+.tag-ops { background: rgba(5,150,105,0.10); color: var(--green); }
 
 .task-item-right {
   display: flex;
@@ -548,7 +548,7 @@ body::before {
   background: var(--green-dim);
   padding: 3px 9px;
   border-radius: 6px;
-  border: 1px solid rgba(0,229,160,0.2);
+  border: 1px solid rgba(5,150,105,0.22);
 }
 
 .task-expand-btn {
@@ -626,25 +626,25 @@ body::before {
 }
 
 .alert-box {
-  background: rgba(239,68,68,0.08);
-  border: 1px solid rgba(239,68,68,0.25);
+  background: rgba(220,38,38,0.07);
+  border: 1px solid rgba(220,38,38,0.20);
   border-radius: 10px;
   padding: 14px 16px;
   font-size: 13px;
-  color: #fca5a5;
+  color: #991b1b;
   line-height: 1.6;
   margin-top: 12px;
 }
 
 .alert-box.green {
   background: var(--green-dim);
-  border-color: rgba(0,229,160,0.25);
+  border-color: rgba(5,150,105,0.25);
   color: var(--green);
 }
 
 .alert-box.amber {
   background: var(--amber-dim);
-  border-color: rgba(245,158,11,0.25);
+  border-color: rgba(180,83,9,0.25);
   color: var(--amber);
 }
 
@@ -721,13 +721,13 @@ body::before {
   background: var(--green);
   color: var(--bg);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,160,0.3); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5,150,105,0.28); }
 
 .btn-purple {
   background: var(--purple);
   color: white;
 }
-.btn-purple:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+.btn-purple:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.28); }
 
 .btn-ghost {
   background: var(--s3);
@@ -740,7 +740,7 @@ body::before {
   background: var(--amber);
   color: var(--bg);
 }
-.btn-amber:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245,158,11,0.3); }
+.btn-amber:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(180,83,9,0.28); }
 
 /* SIGN TAB */
 .signers-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
@@ -840,7 +840,7 @@ body::before {
 /* ─── MODAL ─── */
 .modal-bg {
   position: fixed; inset: 0;
-  background: rgba(7,7,14,0.85);
+  background: rgba(28,27,24,0.45);
   backdrop-filter: blur(12px);
   z-index: 1000;
   display: none;
@@ -868,7 +868,7 @@ body::before {
   position: absolute;
   top: -80px; right: -80px;
   width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(0,229,160,0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(5,150,105,0.07) 0%, transparent 70%);
 }
 
 .modal-badge {
@@ -884,7 +884,7 @@ body::before {
   background: var(--green-dim);
   padding: 5px 12px;
   border-radius: 99px;
-  border: 1px solid rgba(0,229,160,0.2);
+  border: 1px solid rgba(5,150,105,0.22);
 }
 
 .modal-emoji { font-size: 48px; margin-bottom: 16px; display: block; }
@@ -911,7 +911,7 @@ body::before {
 
 .modal-why {
   background: var(--green-dim);
-  border: 1px solid rgba(0,229,160,0.2);
+  border: 1px solid rgba(5,150,105,0.22);
   border-radius: 10px;
   padding: 14px;
   font-size: 12px;
@@ -981,7 +981,7 @@ body::before {
   opacity: 0;
   transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
   pointer-events: none;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
 }
 
 .toast.show { transform: translateY(0); opacity: 1; }
@@ -1022,7 +1022,7 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
 }
 .login-logo {
   display: flex;
@@ -1158,8 +1158,8 @@ body::before {
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="100%" stop-color="#00e5a0"/>
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#059669"/>
     </linearGradient>
   </defs>
 </svg>
@@ -1330,8 +1330,8 @@ const phases = [
     id: 0,
     title: "FASE 1 — Fundadores",
     icon: "⚡",
-    iconBg: "rgba(239,68,68,0.15)",
-    iconBorder: "rgba(239,68,68,0.3)",
+    iconBg: "rgba(220,38,38,0.10)",
+    iconBorder: "rgba(220,38,38,0.22)",
     color: "#ef4444",
     meta: "URGENTE · Antes de escribir más código",
     desc: "Los documentos que protegen a los fundadores y a la empresa entre sí. Un VC lo primero que revisa.",
@@ -1366,8 +1366,8 @@ const phases = [
           { id: "sha_vesting", label: "Período de Vesting", type: "select", options: ["4 años con 1 año cliff (estándar)", "3 años con 6 meses cliff", "4 años sin cliff"], required: true }
         ],
         signers: [
-          { name: "Fundador 1", role: "Director / Shareholder", color: "#8b5cf6" },
-          { name: "Fundador 2", role: "Director / Shareholder", color: "#00e5a0" }
+          { name: "Fundador 1", role: "Director / Shareholder", color: "#7c3aed" },
+          { name: "Fundador 2", role: "Director / Shareholder", color: "#059669" }
         ]
       },
       {
@@ -1397,8 +1397,8 @@ const phases = [
           { id: "ipa_consideration", label: "Contraprestación (€)", type: "text", placeholder: "ej. €1 (simbólico) o participación acordada", required: true }
         ],
         signers: [
-          { name: "Fundador 1", role: "Cedente", color: "#8b5cf6" },
-          { name: "Fundador 2", role: "Cedente", color: "#00e5a0" },
+          { name: "Fundador 1", role: "Cedente", color: "#7c3aed" },
+          { name: "Fundador 2", role: "Cedente", color: "#059669" },
           { name: "Backend Dev", role: "Cedente", color: "#f59e0b" },
           { name: "Frontend Dev", role: "Cedente", color: "#3b82f6" }
         ]
@@ -1431,8 +1431,8 @@ const phases = [
           { id: "vest_total", label: "Período total vesting", type: "select", options: ["48 meses / 4 años (estándar)", "36 meses / 3 años", "60 meses / 5 años"], required: true }
         ],
         signers: [
-          { name: "Fundador 1", role: "Shareholder", color: "#8b5cf6" },
-          { name: "Fundador 2", role: "Shareholder", color: "#00e5a0" }
+          { name: "Fundador 1", role: "Shareholder", color: "#7c3aed" },
+          { name: "Fundador 2", role: "Shareholder", color: "#059669" }
         ]
       },
       {
@@ -1463,8 +1463,8 @@ const phases = [
           { id: "emp_notice", label: "Período de preaviso", type: "select", options: ["1 mes (estándar)","2 semanas","3 meses"], required: true }
         ],
         signers: [
-          { name: "Nuntio Technologies Ltd", role: "Empleador / Empresa", color: "#8b5cf6" },
-          { name: "Empleado/Contractor", role: "Firmante", color: "#00e5a0" }
+          { name: "Nuntio Technologies Ltd", role: "Empleador / Empresa", color: "#7c3aed" },
+          { name: "Empleado/Contractor", role: "Firmante", color: "#059669" }
         ]
       },
       {
@@ -1495,8 +1495,8 @@ const phases = [
           { id: "nda_purpose", label: "Propósito de la divulgación", type: "textarea", placeholder: "ej. Discutir posible inversión en Nuntio Technologies Limited y evaluación de la tecnología de orquestación agéntica...", required: true }
         ],
         signers: [
-          { name: "Nuntio Technologies Ltd", role: "Disclosing Party", color: "#8b5cf6" },
-          { name: "Contraparte", role: "Receiving Party", color: "#00e5a0" }
+          { name: "Nuntio Technologies Ltd", role: "Disclosing Party", color: "#7c3aed" },
+          { name: "Contraparte", role: "Receiving Party", color: "#059669" }
         ]
       }
     ]
@@ -1505,9 +1505,9 @@ const phases = [
     id: 1,
     title: "FASE 2 — Inversión",
     icon: "💎",
-    iconBg: "rgba(139,92,246,0.15)",
-    iconBorder: "rgba(139,92,246,0.3)",
-    color: "#8b5cf6",
+    iconBg: "rgba(124,58,237,0.12)",
+    iconBorder: "rgba(124,58,237,0.25)",
+    color: "#7c3aed",
     meta: "Para estar listos para la primera ronda",
     desc: "Estructura tu cap table, formaliza el pool de opciones y aprende a negociar un term sheet.",
     tasks: [
@@ -1540,8 +1540,8 @@ const phases = [
           { id: "ct_par_value", label: "Valor nominal por acción (€)", type: "text", placeholder: "ej. €0.001", required: true }
         ],
         signers: [
-          { name: "Fundador 1", role: "Director", color: "#8b5cf6" },
-          { name: "Fundador 2", role: "Director", color: "#00e5a0" }
+          { name: "Fundador 1", role: "Director", color: "#7c3aed" },
+          { name: "Fundador 2", role: "Director", color: "#059669" }
         ]
       },
       {
@@ -1570,7 +1570,7 @@ const phases = [
           { id: "esop_board", label: "Quién aprueba las grants", type: "select", options: ["Board of Directors","Compensation Committee","CEO + Board approval"], required: true }
         ],
         signers: [
-          { name: "Board of Directors", role: "Aprobación del Plan", color: "#8b5cf6" }
+          { name: "Board of Directors", role: "Aprobación del Plan", color: "#7c3aed" }
         ]
       },
       {
@@ -1599,8 +1599,8 @@ const phases = [
           { id: "eu_expected", label: "Fecha esperada de registro", type: "date", required: true }
         ],
         signers: [
-          { name: "Fundador 1", role: "Director", color: "#8b5cf6" },
-          { name: "Fundador 2", role: "Director", color: "#00e5a0" }
+          { name: "Fundador 1", role: "Director", color: "#7c3aed" },
+          { name: "Fundador 2", role: "Director", color: "#059669" }
         ]
       },
       {
@@ -1658,7 +1658,7 @@ const phases = [
           { id: "adv_vest_period", label: "Período de vesting", type: "select", options: ["2 años con 6 meses cliff","2 años sin cliff","1 año sin cliff"], required: true }
         ],
         signers: [
-          { name: "Nuntio Technologies Ltd", role: "Company", color: "#8b5cf6" },
+          { name: "Nuntio Technologies Ltd", role: "Company", color: "#7c3aed" },
           { name: "Advisor", role: "Strategic Advisor", color: "#f59e0b" }
         ]
       }
@@ -1668,8 +1668,8 @@ const phases = [
     id: 2,
     title: "FASE 3 — Data Room",
     icon: "🗂️",
-    iconBg: "rgba(245,158,11,0.15)",
-    iconBorder: "rgba(245,158,11,0.3)",
+    iconBg: "rgba(180,83,9,0.10)",
+    iconBorder: "rgba(180,83,9,0.22)",
     color: "#f59e0b",
     meta: "Lo que un VC revisará en due diligence",
     desc: "Tu Data Room es la carpeta virtual que entregas a un VC cuando hace due diligence. Debe ser impecable.",
@@ -2006,7 +2006,7 @@ function showLoadingOverlay(show) {
     overlay.innerHTML = `
       <div style="
         position:fixed; inset:0; z-index:9999;
-        background:rgba(7,7,14,0.85);
+        background:rgba(28,27,24,0.45);
         display:flex; align-items:center; justify-content:center;
         flex-direction:column; gap:16px;
         backdrop-filter:blur(8px);
