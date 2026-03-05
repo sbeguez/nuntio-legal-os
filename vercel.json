@@ -5,9 +5,17 @@
     {
       "src": "nuntio-legal-os.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "nuntio-legal-os-v2.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/v2",
+      "dest": "/nuntio-legal-os-v2.html"
+    },
     {
       "src": "/",
       "dest": "/nuntio-legal-os.html"
