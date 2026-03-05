@@ -1836,6 +1836,7 @@ let state = {
   docsGenerated: new Set(),
   signsSent: new Set(),
   formData: {},
+  signTokens: {},
   expandedTask: null
 };
 
@@ -1980,7 +1981,8 @@ function saveState() {
       completed: [...state.completed],
       docsGenerated: [...state.docsGenerated],
       signsSent: [...state.signsSent],
-      formData: state.formData
+      formData: state.formData,
+      signTokens: state.signTokens
     }));
   } catch(e){}
 }
@@ -1992,6 +1994,7 @@ try {
   state.docsGenerated = new Set(saved.docsGenerated || []);
   state.signsSent = new Set(saved.signsSent || []);
   state.formData = saved.formData || {};
+  state.signTokens = saved.signTokens || {};
 } catch(e){}
 
 // ─── OVERLAY DE CARGA ───
@@ -2080,8 +2083,6 @@ function renderDashboard() {
     `;
     container.appendChild(card);
   });
-
-  updateGlobalStats();
 }
 
 // ════════════════════════════════════════════════
@@ -2214,7 +2215,7 @@ function renderTaskDetail(task) {
                 <div class="signer-name">${s.name}</div>
                 <div class="signer-email">${s.role}</div>
               </div>
-              <span class="signer-status ${state.signsSent.has(task.id+'_'+si) ? 'status-sent' : 'status-pending'}">
+              <span id="signer-status-${task.id}-${si}" class="signer-status ${state.signsSent.has(task.id+'_'+si) ? 'status-sent' : 'status-pending'}">
                 ${state.signsSent.has(task.id+'_'+si) ? 'Enviado' : 'Pendiente'}
               </span>
             </div>
@@ -2232,7 +2233,7 @@ function renderTaskDetail(task) {
         <div class="sign-link-row">
           <div style="font-size:10px; color:var(--muted); font-family:var(--mono); margin-right:8px; flex-shrink:0;">LINK:</div>
           <div class="sign-link-url" id="sign-link-${task.id}">
-            https://sign.nuntio.io/doc/${task.id}/${Math.random().toString(36).substr(2,9)}
+            ${(() => { if (!state.signTokens[task.id]) state.signTokens[task.id] = Math.random().toString(36).substr(2,9); return 'https://sign.nuntio.io/doc/' + task.id + '/' + state.signTokens[task.id]; })()}
           </div>
           <button class="copy-btn" onclick="copySignLink('${task.id}')">Copiar</button>
         </div>
@@ -2281,19 +2282,25 @@ function renderDocFields(task) {
   return html;
 }
 
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function renderField(taskId, field, value) {
   const required = field.required ? `<span class="required">*</span>` : '';
+  const safeVal = escHtml(value);
+  const safePlaceholder = escHtml(field.placeholder || '');
 
   let input = '';
   if (field.type === 'select') {
     input = `<select class="doc-select" id="field-${taskId}-${field.id}" onchange="saveField('${taskId}','${field.id}',this.value)">
       <option value="">Seleccionar...</option>
-      ${field.options.map(o => `<option value="${o}" ${value === o ? 'selected' : ''}>${o}</option>`).join('')}
+      ${field.options.map(o => `<option value="${escHtml(o)}" ${value === o ? 'selected' : ''}>${escHtml(o)}</option>`).join('')}
     </select>`;
   } else if (field.type === 'textarea') {
-    input = `<textarea class="doc-textarea" id="field-${taskId}-${field.id}" placeholder="${field.placeholder || ''}" oninput="saveField('${taskId}','${field.id}',this.value)">${value}</textarea>`;
+    input = `<textarea class="doc-textarea" id="field-${taskId}-${field.id}" placeholder="${safePlaceholder}" oninput="saveField('${taskId}','${field.id}',this.value)">${safeVal}</textarea>`;
   } else {
-    input = `<input type="${field.type}" class="doc-input" id="field-${taskId}-${field.id}" placeholder="${field.placeholder || ''}" value="${value}" oninput="saveField('${taskId}','${field.id}',this.value)"/>`;
+    input = `<input type="${field.type}" class="doc-input" id="field-${taskId}-${field.id}" placeholder="${safePlaceholder}" value="${safeVal}" oninput="saveField('${taskId}','${field.id}',this.value)"/>`;
   }
 
   return `
@@ -2363,15 +2370,17 @@ function toggleComplete(taskId, phaseIdx) {
   if (item) item.classList.toggle('completed', !wasDone);
 
   updateGlobalStats();
-  updateSidebarNav();
+  renderDashboard();
   saveState();
   if (USE_SUPABASE) saveCompleted(taskId, !wasDone);
 }
 
 function generateDoc(taskId) {
   const task = findTask(taskId);
+  if (!task) return;
   const data = state.formData[taskId] || {};
   const preview = document.getElementById(`doc-preview-${taskId}`);
+  if (!preview) return;
 
   const missing = task.docFields.filter(f => f.required && !data[f.id]);
   if (missing.length > 0) {
@@ -2405,6 +2414,7 @@ function previewDoc(taskId) {
 
 function downloadDoc(taskId) {
   const task = findTask(taskId);
+  if (!task) return;
   const data = state.formData[taskId] || {};
   const missing = task.docFields.filter(f => f.required && !data[f.id]);
 
@@ -2441,39 +2451,39 @@ async function sendSignLink(taskId) {
   toast(`✉️ Link de firma enviado a ${email}`);
   if (USE_SUPABASE) {
     const task = findTask(taskId);
-    await saveSignatureToDB(taskId, email.split('@')[0], email);
+    if (task) await saveSignatureToDB(taskId, email.split('@')[0], email);
   }
   if (emailInput) emailInput.value = '';
 }
 
 function sendAllSigners(taskId) {
   const task = findTask(taskId);
+  if (!task) return;
   task.signers.forEach((s, si) => state.signsSent.add(taskId+'_'+si));
   saveState();
   updateGlobalStats();
   toast(`✉️ Links enviados a ${task.signers.length} firmantes`);
-  // Refresh signer statuses
+  // Refresh signer statuses in DOM
   task.signers.forEach((s, si) => {
-    const statusEl = document.querySelectorAll(`#task-detail-${taskId} .signer-status`)[si];
-    if (statusEl) {
-      statusEl.className = 'signer-status status-sent';
-      statusEl.textContent = 'Enviado';
-    }
+    const statusEl = document.getElementById(`signer-status-${taskId}-${si}`);
+    if (statusEl) { statusEl.className = 'signer-status status-sent'; statusEl.textContent = 'Enviado'; }
   });
+  // Save to DB
+  if (USE_SUPABASE) {
+    task.signers.forEach(s => saveSignatureToDB(taskId, s.name, s.role || ''));
+  }
 }
 
 function markAllSigned(taskId) {
   const task = findTask(taskId);
+  if (!task) return;
   task.signers.forEach((s, si) => state.signsSent.add(taskId+'_'+si));
   saveState();
   updateGlobalStats();
   toast('✅ Documento marcado como firmado por todos');
   task.signers.forEach((s, si) => {
-    const statusEl = document.querySelectorAll(`#task-detail-${taskId} .signer-status`)[si];
-    if (statusEl) {
-      statusEl.className = 'signer-status status-signed';
-      statusEl.textContent = 'Firmado';
-    }
+    const statusEl = document.getElementById(`signer-status-${taskId}-${si}`);
+    if (statusEl) { statusEl.className = 'signer-status status-signed'; statusEl.textContent = 'Firmado ✓'; }
   });
 }
 
@@ -2692,6 +2702,816 @@ ${d('nda_party')}                    Fecha: ___________
 Firma: _______________________
 
 NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+`.trim(),
+
+    vest: () => `
+FOUNDER VESTING SCHEDULE
+NUNTIO TECHNOLOGIES LIMITED
+Fecha: ${today}
+
+═══════════════════════════════════════════════
+ACUERDO DE MADURACIÓN DE ACCIONES (VESTING)
+═══════════════════════════════════════════════
+
+Este documento formaliza el plan de vesting acordado entre los fundadores de Nuntio Technologies Limited.
+
+─────────────────────────────────────────────
+FUNDADOR 1
+─────────────────────────────────────────────
+Nombre:           ${d('vest_f1')}
+Acciones totales: ${d('vest_f1_shares')}
+
+─────────────────────────────────────────────
+FUNDADOR 2
+─────────────────────────────────────────────
+Nombre:           ${d('vest_f2')}
+Acciones totales: ${d('vest_f2_shares')}
+
+═══════════════════════════════════════════════
+CONDICIONES DEL PLAN
+═══════════════════════════════════════════════
+
+Fecha de inicio del vesting: ${d('vest_start')}
+Período cliff:               ${d('vest_cliff')}
+Período total:               ${d('vest_total')}
+
+DESCRIPCIÓN:
+Las acciones se adquieren ("vest") de forma mensual tras el período cliff.
+Si un fundador abandona la empresa antes del cliff, no conserva acciones.
+Al completar el período total, el 100% de las acciones están vestidas.
+
+═══════════════════════════════════════════════
+CLÁUSULAS CLAVE
+═══════════════════════════════════════════════
+
+1. CLIFF: Durante los primeros ${d('vest_cliff')}, ninguna acción está vestida.
+   Al cumplir el cliff, se vesta el 25% de las acciones automáticamente.
+
+2. VESTING MENSUAL: Tras el cliff, las acciones se vestan en cuotas
+   mensuales iguales hasta completar el período total.
+
+3. ACELERACIÓN: En caso de adquisición o cambio de control de la empresa,
+   el Board puede aprobar aceleración total o parcial del vesting.
+
+4. GOOD LEAVER: Fundador que sale por causas justificadas (enfermedad,
+   desacuerdo estratégico, muerte) conserva las acciones ya vestidas.
+
+5. BAD LEAVER: Fundador que abandona sin causa o incumple obligaciones,
+   sujeto a buy-back al valor nominal por las acciones no vestidas.
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+${d('vest_f1')} (Fundador 1)      Fecha: ___________
+Firma: _______________________
+
+${d('vest_f2')} (Fundador 2)      Fecha: ___________
+Firma: _______________________
+
+En representación del Board of Directors:
+Firma: _______________________    Fecha: ___________
+
+NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+`.trim(),
+
+    emp: () => `
+CONTRATO DE EMPLEO / PRESTACIÓN DE SERVICIOS
+NUNTIO TECHNOLOGIES LIMITED
+Fecha: ${today}
+
+═══════════════════════════════════════════════
+PARTES
+═══════════════════════════════════════════════
+
+EMPLEADOR/EMPRESA:
+Nuntio Technologies Limited (Ireland)
+
+EMPLEADO/CONTRACTOR:
+Nombre: ${d('emp_name')}
+Rol:    ${d('emp_role')}
+Tipo:   ${d('emp_type')}
+
+═══════════════════════════════════════════════
+CONDICIONES PRINCIPALES
+═══════════════════════════════════════════════
+
+Fecha de inicio:     ${d('emp_start')}
+Remuneración:        ${d('emp_salary')}
+Período de preaviso: ${d('emp_notice')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 1 — SCOPE OF WORK
+═══════════════════════════════════════════════
+1.1 ${d('emp_name')} prestará servicios en el rol de ${d('emp_role')} para Nuntio Technologies Limited.
+1.2 El alcance incluye todas las responsabilidades asociadas al rol y las que razonablemente le sean asignadas.
+
+═══════════════════════════════════════════════
+CLÁUSULA 2 — PROPIEDAD INTELECTUAL
+═══════════════════════════════════════════════
+2.1 Toda IP creada durante la relación pertenece exclusivamente a Nuntio Technologies Limited.
+2.2 Esto incluye código fuente, diseños, algoritmos, documentación y cualquier obra derivada.
+2.3 ${d('emp_name')} cede irrevocablemente todos los derechos a la empresa.
+
+═══════════════════════════════════════════════
+CLÁUSULA 3 — CONFIDENCIALIDAD
+═══════════════════════════════════════════════
+3.1 ${d('emp_name')} se compromete a mantener absoluta confidencialidad sobre:
+    - Tecnología y código fuente de Nuntio
+    - Información de clientes y partners
+    - Estrategia de negocio y roadmap de producto
+    - Información financiera y datos internos
+
+═══════════════════════════════════════════════
+CLÁUSULA 4 — TERMINACIÓN
+═══════════════════════════════════════════════
+4.1 Cualquiera de las partes puede terminar esta relación con ${d('emp_notice')} de preaviso.
+4.2 La empresa puede terminar inmediatamente por causa justificada.
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+En representación de Nuntio Technologies Limited:
+Firma: _______________________    Fecha: ___________
+
+${d('emp_name')} (${d('emp_role')}):
+Firma: _______________________    Fecha: ___________
+
+NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+`.trim(),
+
+    captable: () => `
+CAP TABLE FORMAL — TABLA DE CAPITALIZACIÓN
+NUNTIO TECHNOLOGIES LIMITED
+Actualizado: ${today}
+
+═══════════════════════════════════════════════
+ESTRUCTURA DE CAPITAL
+═══════════════════════════════════════════════
+
+Total acciones autorizadas: ${d('ct_total')}
+Valor nominal por acción:   ${d('ct_par_value')}
+
+─────────────────────────────────────────────
+ACCIONISTAS ACTUALES
+─────────────────────────────────────────────
+
+Nombre                   Acciones
+─────────────────────────────────────────────
+${d('ct_f1_name')}       ${d('ct_f1_shares')}
+${d('ct_f2_name')}       ${d('ct_f2_shares')}
+
+─────────────────────────────────────────────
+POOLS RESERVADOS
+─────────────────────────────────────────────
+
+Pool Inversores (reservado): ${d('ct_investor_pool')}
+Pool ESOP Equipo/Advisors:   ${d('ct_esop_pool')}
+
+═══════════════════════════════════════════════
+NOTAS DE GOBIERNO
+═══════════════════════════════════════════════
+
+1. ACCIONES EMITIDAS: Las acciones de fundadores están emitidas y registradas
+   en el Companies Registration Office (CRO) de Irlanda.
+
+2. POOL DE INVERSORES: Acciones reservadas para emisión en ronda Seed.
+   No emitidas hasta cierre de ronda.
+
+3. ESOP: Acciones reservadas para el Employee Stock Option Plan. Se emiten
+   según grants aprobados por el Board of Directors.
+
+4. FULLY DILUTED: En caso de ejercicio de todas las opciones, la estructura
+   quedaría según el desglose indicado arriba.
+
+5. PRE-MONEY VALUATION: La valoración se calcula como precio por acción
+   multiplicado por el total de acciones fully diluted.
+
+═══════════════════════════════════════════════
+APROBACIÓN DEL BOARD
+═══════════════════════════════════════════════
+
+${d('ct_f1_name')} (Director)    Fecha: ___________
+Firma: _______________________
+
+${d('ct_f2_name')} (Director)    Fecha: ___________
+Firma: _______________________
+
+NOTA: Orientativo. Para efectos legales, consultar registro oficial en CRO.ie
+`.trim(),
+
+    esop: () => `
+EMPLOYEE STOCK OPTION PLAN (ESOP)
+NUNTIO TECHNOLOGIES LIMITED
+Aprobado por Board: ${today}
+
+═══════════════════════════════════════════════
+PLAN DE OPCIONES SOBRE ACCIONES
+═══════════════════════════════════════════════
+
+Nuntio Technologies Limited establece el presente Plan de Opciones para
+atraer, retener y motivar a los miembros del equipo y advisors.
+
+═══════════════════════════════════════════════
+PARÁMETROS DEL PLAN
+═══════════════════════════════════════════════
+
+Tamaño del Pool:              ${d('esop_pool')}
+Precio de ejercicio (strike): ${d('esop_strike')}
+Vesting estándar:             ${d('esop_vesting')}
+Ventana de ejercicio:         ${d('esop_window')}
+Aprobación de grants:         ${d('esop_board')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 1 — ELEGIBILIDAD
+═══════════════════════════════════════════════
+1.1 Son elegibles para recibir opciones bajo este plan:
+    - Empleados a tiempo completo de Nuntio Technologies Limited
+    - Contractors que presten servicios continuados
+    - Advisors estratégicos con Advisor Agreement vigente
+    - Directores no ejecutivos aprobados por el Board
+
+═══════════════════════════════════════════════
+CLÁUSULA 2 — VESTING
+═══════════════════════════════════════════════
+2.1 El vesting estándar del plan es: ${d('esop_vesting')}
+2.2 Las opciones no vestidas se pierden al terminar la relación.
+2.3 El Board puede aprobar aceleración en casos especiales.
+
+═══════════════════════════════════════════════
+CLÁUSULA 3 — EJERCICIO
+═══════════════════════════════════════════════
+3.1 Precio de ejercicio: ${d('esop_strike')} por opción.
+3.2 Tras terminar la relación, el beneficiario tiene ${d('esop_window')} para ejercer.
+3.3 Las opciones no ejercidas dentro del plazo caducan automáticamente.
+
+═══════════════════════════════════════════════
+CLÁUSULA 4 — EVENTOS DE LIQUIDEZ
+═══════════════════════════════════════════════
+4.1 En caso de adquisición o IPO, las opciones no vestidas pueden
+    acelerarse según decida el Board.
+4.2 El precio de ejercicio en evento de liquidez se calculará según
+    el precio de la transacción, sujeto a aprobación del Board.
+
+═══════════════════════════════════════════════
+APROBACIÓN DEL BOARD
+═══════════════════════════════════════════════
+
+Aprobado por: ${d('esop_board')}
+
+Director 1:
+Firma: _______________________    Fecha: ___________
+
+Director 2:
+Firma: _______________________    Fecha: ___________
+
+NOTA: Plantilla orientativa. Requiere revisión legal y aprobación formal del Board.
+`.trim(),
+
+    euipo: () => `
+RESOLUCIÓN DEL BOARD OF DIRECTORS
+NUNTIO TECHNOLOGIES LIMITED
+Fecha: ${today}
+
+═══════════════════════════════════════════════
+ACTA DE RESOLUCIÓN — REGISTRO DE MARCA EUIPO
+═══════════════════════════════════════════════
+
+Los directores de Nuntio Technologies Limited adoptan la siguiente
+resolución por unanimidad:
+
+═══════════════════════════════════════════════
+DATOS DE LA SOLICITUD
+═══════════════════════════════════════════════
+
+Nº de Solicitud EUIPO:      ${d('eu_appnum')}
+Fecha de solicitud:         ${d('eu_date')}
+Clases registradas:         ${d('eu_classes')}
+Estado actual:              ${d('eu_status')}
+Fecha esperada de registro: ${d('eu_expected')}
+
+═══════════════════════════════════════════════
+RESOLUCIÓN
+═══════════════════════════════════════════════
+
+EL BOARD OF DIRECTORS RESUELVE:
+
+1. RECONOCER la solicitud de registro de la marca 'NUNTIO' en EUIPO
+   con número de solicitud ${d('eu_appnum')}, presentada el ${d('eu_date')}.
+
+2. CONFIRMAR que la marca 'NUNTIO' es un activo de Nuntio Technologies
+   Limited y no de ningún director o fundador a título personal.
+
+3. INSTRUIR al Company Secretary para:
+   a) Archivar el número de solicitud en el registro corporativo
+   b) Incorporar el certificado al Data Room cuando sea recibido
+   c) Monitorear el estado en EUIPO TMview
+
+4. AUTORIZAR a los directores a defender la marca contra posibles
+   oposiciones durante el período de publicación.
+
+5. RECONOCER las clases de Niza registradas: ${d('eu_classes')}
+
+═══════════════════════════════════════════════
+FIRMAS DE LOS DIRECTORES
+═══════════════════════════════════════════════
+
+Director 1:
+Firma: _______________________    Fecha: ___________
+
+Director 2:
+Firma: _______________________    Fecha: ___________
+
+Company Secretary:
+Firma: _______________________    Fecha: ___________
+
+NOTA: Esta resolución debe archivarse en el registro corporativo de la empresa.
+`.trim(),
+
+    termsheet: () => `
+TERM SHEET — GUÍA DE NEGOCIACIÓN
+NUNTIO TECHNOLOGIES LIMITED
+Preparado: ${today}
+
+═══════════════════════════════════════════════
+PARÁMETROS DE INVERSIÓN OBJETIVO
+═══════════════════════════════════════════════
+
+Valoración pre-money objetivo: ${d('ts_premoney') || '[A negociar]'}
+Monto a levantar:              ${d('ts_raise') || '[A definir]'}
+Instrumento preferido:         ${d('ts_instrument') || '[A definir]'}
+Asientos de Board para VCs:    ${d('ts_board') || '[A negociar]'}
+
+═══════════════════════════════════════════════
+GLOSARIO DE TÉRMINOS CLAVE
+═══════════════════════════════════════════════
+
+PRE-MONEY VALUATION
+La valoración de Nuntio ANTES de que entre el dinero del inversor.
+Si la pre-money es €2M y el VC invierte €500K, la post-money es €2.5M
+y el VC posee el 20% (500K / 2.5M).
+
+LIQUIDATION PREFERENCE (1x non-participating)
+El inversor recupera primero su inversión en caso de venta.
+Con "1x non-participating": recupera su dinero y no participa en el resto.
+Con "participating": recupera su dinero Y además participa en el upside.
+→ Evitar liquidation preference participating si es posible.
+
+ANTI-DILUCIÓN (Broad-based weighted average)
+Protege al VC si emites acciones más baratas en el futuro (down round).
+El tipo más justo para founders: "broad-based weighted average".
+Evitar "full ratchet" que es muy dilutivo para founders.
+
+PRO-RATA RIGHTS
+El derecho del VC a mantener su % en rondas futuras.
+Estándar y razonable, siempre conceder.
+
+BOARD SEATS: ${d('ts_board') || 'Por definir'}
+Founders deben mantener control del Board en ronda Seed.
+Máximo 1 asiento para el VC en esta etapa.
+
+INSTRUMENTO: ${d('ts_instrument') || 'Por definir'}
+- SAFE (YC): sin interés, sin vencimiento, convierte en próxima ronda
+- Convertible Note: deuda con interés que convierte en equity
+- Priced Round: valoración fijada hoy, más costoso pero más claro
+
+═══════════════════════════════════════════════
+RED FLAGS EN UN TERM SHEET
+═══════════════════════════════════════════════
+
+❌ Full-ratchet anti-dilution (muy dilutivo para founders)
+❌ Participating preferred sin cap (el VC cobra doble)
+❌ >1x liquidation preference
+❌ Mayoría de Board para el VC en Seed
+❌ Right of first refusal muy amplio sobre ventas de acciones
+❌ Drag-along sin protecciones para founders
+
+═══════════════════════════════════════════════
+PRÓXIMOS PASOS
+═══════════════════════════════════════════════
+
+1. Preparar Data Room completo antes de recibir un term sheet
+2. Contratar abogado especialista en VC irlandés/europeo
+3. Hablar con otros founders sobre su experiencia negociando
+4. Tener al menos 2-3 conversaciones paralelas con VCs (leverage)
+
+NOTA: Este documento es una guía educativa. Contrata un abogado
+especialista en VC antes de firmar cualquier term sheet real.
+`.trim(),
+
+    advisor: () => `
+ADVISOR AGREEMENT
+NUNTIO TECHNOLOGIES LIMITED
+Fecha: ${today}
+
+═══════════════════════════════════════════════
+PARTES
+═══════════════════════════════════════════════
+
+EMPRESA:  Nuntio Technologies Limited (Ireland)
+ADVISOR:  ${d('adv_name')}
+ÁREA:     ${d('adv_expertise')}
+
+═══════════════════════════════════════════════
+CLÁUSULA 1 — SERVICIOS DE ASESORÍA
+═══════════════════════════════════════════════
+1.1 ${d('adv_name')} prestará servicios de asesoría estratégica a Nuntio
+    Technologies Limited en el área de ${d('adv_expertise')}.
+
+1.2 Compromiso mensual acordado: ${d('adv_hours')}
+
+1.3 Los servicios incluyen:
+    - Reuniones mensuales de seguimiento con el equipo fundador
+    - Introducción a su red de contactos relevante para Nuntio
+    - Revisión y feedback sobre estrategia en su área de expertise
+    - Apoyo en pitches y presentaciones cuando sea requerido
+
+═══════════════════════════════════════════════
+CLÁUSULA 2 — COMPENSACIÓN EN EQUITY
+═══════════════════════════════════════════════
+2.1 Como compensación, Nuntio Technologies Limited otorgará a ${d('adv_name')}
+    opciones equivalentes al ${d('adv_equity')} del capital (fully diluted),
+    sujeto a vesting.
+
+2.2 Período de vesting: ${d('adv_vest_period')}
+
+2.3 Las opciones se otorgan del pool ESOP aprobado por el Board.
+
+2.4 El precio de ejercicio será el valor nominal vigente en el momento
+    del grant, según determine el Board.
+
+═══════════════════════════════════════════════
+CLÁUSULA 3 — CONFIDENCIALIDAD
+═══════════════════════════════════════════════
+3.1 ${d('adv_name')} mantendrá estricta confidencialidad sobre toda
+    información de Nuntio: tecnología, clientes, estrategia y finanzas.
+
+3.2 Esta obligación se mantiene durante y tras la finalización del acuerdo.
+
+═══════════════════════════════════════════════
+CLÁUSULA 4 — NO SOLICITUD
+═══════════════════════════════════════════════
+4.1 Durante este acuerdo y por 12 meses después, ${d('adv_name')} no podrá
+    solicitar ni contratar a ningún miembro del equipo de Nuntio.
+
+═══════════════════════════════════════════════
+CLÁUSULA 5 — TERMINACIÓN
+═══════════════════════════════════════════════
+5.1 Cualquiera de las partes puede terminar este acuerdo con 30 días
+    de preaviso por escrito.
+
+5.2 Al terminar, ${d('adv_name')} conservará únicamente las opciones
+    ya vestidas según el calendario de vesting.
+
+═══════════════════════════════════════════════
+FIRMAS
+═══════════════════════════════════════════════
+
+En representación de Nuntio Technologies Limited:
+Firma: _______________________    Fecha: ___________
+
+${d('adv_name')} (Advisor):
+Firma: _______________________    Fecha: ___________
+
+NOTA: Basado en el modelo FAST (Founder/Advisor Standard Template).
+Requiere revisión legal antes de firma.
+`.trim(),
+
+    incorp: () => `
+CERTIFICADO DE CONSTITUCIÓN — RESUMEN EJECUTIVO
+NUNTIO TECHNOLOGIES LIMITED
+Actualizado: ${today}
+
+═══════════════════════════════════════════════
+DATOS CORPORATIVOS OFICIALES
+═══════════════════════════════════════════════
+
+Nombre Legal:            Nuntio Technologies Limited
+Jurisdicción:            Irlanda (Companies Registration Office)
+CRO Registration Number: ${d('inc_cro')}
+Fecha de constitución:   ${d('inc_date')}
+Registered Address:      ${d('inc_address')}
+Company Secretary:       ${d('inc_secretary')}
+Capital social emitido:  ${d('inc_capital')}
+
+═══════════════════════════════════════════════
+DOCUMENTOS CORPORATIVOS PRINCIPALES
+═══════════════════════════════════════════════
+
+1. CERTIFICATE OF INCORPORATION
+   Emitido por: Companies Registration Office (CRO), Irlanda
+   Confirma: existencia legal de Nuntio Technologies Limited
+
+2. MEMORANDUM & ARTICLES OF ASSOCIATION (M&A)
+   Define: objeto social, estructura de gobierno, derechos de accionistas
+
+3. REGISTER OF DIRECTORS
+   Directores actuales registrados en CRO
+
+4. REGISTER OF MEMBERS (SHAREHOLDERS)
+   Cap table oficial registrada en CRO
+
+═══════════════════════════════════════════════
+CUMPLIMIENTO CRO — CHECKLIST
+═══════════════════════════════════════════════
+
+☐ Annual Return presentado en plazo (aniversario + 28 días)
+☐ Financial Statements adjuntos al Annual Return
+☐ Cambios de directores notificados (Form B10)
+☐ Transferencias de acciones notificadas (Form B5)
+☐ Registered address actualizada si hubo cambio (Form B2)
+☐ Company Secretary designado y registrado
+
+═══════════════════════════════════════════════
+INFORMACIÓN PARA DATA ROOM
+═══════════════════════════════════════════════
+
+Para due diligence de inversores, incluir en el Data Room:
+• Certificate of Incorporation (original escaneado)
+• M&A (Memorandum & Articles of Association) completo
+• Annual Returns de los últimos 3 años
+• Register of Members actualizado
+• Resoluciones de Board relevantes
+
+═══════════════════════════════════════════════
+NOTA LEGAL
+═══════════════════════════════════════════════
+Este resumen es orientativo. Para efectos legales y de due diligence,
+consultar directamente los documentos oficiales en CRO.ie
+`.trim(),
+
+    deck: () => `
+PITCH DECK — ESTRUCTURA Y CONTENIDO
+NUNTIO TECHNOLOGIES LIMITED
+Versión: ${today}
+
+═══════════════════════════════════════════════
+DATOS DE LA RONDA
+═══════════════════════════════════════════════
+
+Tagline:       ${d('deck_tagline')}
+Mercado (TAM): ${d('deck_tam')}
+Modelo:        ${d('deck_model')}
+Ask:           ${d('deck_ask')}
+
+═══════════════════════════════════════════════
+ESTRUCTURA DEL DECK (11 SLIDES)
+═══════════════════════════════════════════════
+
+SLIDE 1 — COVER
+Nuntio Technologies Limited
+"${d('deck_tagline')}"
+[Logo] [Email CEO] [Website: nuntio.io]
+
+─────────────────────────────────────────────
+SLIDE 2 — EL PROBLEMA
+─────────────────────────────────────────────
+${d('deck_problem')}
+
+─────────────────────────────────────────────
+SLIDE 3 — LA SOLUCIÓN
+─────────────────────────────────────────────
+Nuntio es un runtime agéntico que automatiza procesos empresariales
+complejos con agentes de IA especializados que trabajan en equipo.
+
+─────────────────────────────────────────────
+SLIDE 4 — PRODUCTO
+─────────────────────────────────────────────
+• Orquestación multi-agente en tiempo real
+• Integración con herramientas empresariales existentes
+• Panel de control con visibilidad total de agentes
+• API-first: compatible con cualquier stack tecnológico
+
+─────────────────────────────────────────────
+SLIDE 5 — MERCADO
+─────────────────────────────────────────────
+TAM: ${d('deck_tam')}
+Vientos de cola: Boom de IA agéntica, reducción costes LLMs,
+adopción masiva de IA en empresas (2025+)
+
+─────────────────────────────────────────────
+SLIDE 6 — BUSINESS MODEL
+─────────────────────────────────────────────
+Modelo: ${d('deck_model')}
+
+─────────────────────────────────────────────
+SLIDE 7 — TRACCIÓN
+─────────────────────────────────────────────
+[Incluir métricas actuales: usuarios, demos, LoIs, MRR]
+
+─────────────────────────────────────────────
+SLIDE 8 — COMPETENCIA
+─────────────────────────────────────────────
+Ventajas competitivas de Nuntio:
+• Especializado en enterprise (no developer-only)
+• Orquestación multi-agente nativa
+• Foco en ROI medible y automatización end-to-end
+
+─────────────────────────────────────────────
+SLIDE 9 — EQUIPO
+─────────────────────────────────────────────
+4 fundadores complementarios:
+• Ingeniería de sistemas agénticos
+• Go-to-market y ventas enterprise
+• Producto y UX
+• Operaciones y legal
+
+─────────────────────────────────────────────
+SLIDE 10 — FINANCIALS
+─────────────────────────────────────────────
+Proyecciones 18-24 meses disponibles en Data Room
+(Ver documento Financial Model)
+
+─────────────────────────────────────────────
+SLIDE 11 — THE ASK
+─────────────────────────────────────────────
+Buscamos: ${d('deck_ask')}
+
+Uso de los fondos:
+${d('deck_use')}
+
+═══════════════════════════════════════════════
+CONTACTO
+═══════════════════════════════════════════════
+Nuntio Technologies Limited
+hello@nuntio.io | nuntio.io | Dublin, Ireland
+`.trim(),
+
+    financial: () => `
+FINANCIAL MODEL — RESUMEN EJECUTIVO
+NUNTIO TECHNOLOGIES LIMITED
+Proyecciones: ${today}
+
+═══════════════════════════════════════════════
+MÉTRICAS CLAVE DEL NEGOCIO
+═══════════════════════════════════════════════
+
+Precio por cliente/mes: ${d('fin_price')}
+CAC estimado:           ${d('fin_cac')}
+Burn rate mensual:      ${d('fin_burn')}
+Runway actual:          ${d('fin_runway')}
+
+═══════════════════════════════════════════════
+PROYECCIÓN DE INGRESOS (MRR)
+═══════════════════════════════════════════════
+
+Mes 12 (MRR proyectado): ${d('fin_mrr_m12')}
+Mes 24 (MRR proyectado): ${d('fin_mrr_m24')}
+
+═══════════════════════════════════════════════
+ANÁLISIS DE UNIT ECONOMICS
+═══════════════════════════════════════════════
+
+CAC (Customer Acquisition Cost): ${d('fin_cac')}
+Precio mensual por cliente:      ${d('fin_price')}
+
+LTV estimado: calcular con datos reales al tener primeros clientes
+  = Precio mensual × meses de retención esperada
+
+Ratio LTV/CAC objetivo: >3x (benchmark saludable para SaaS B2B)
+
+═══════════════════════════════════════════════
+ESTRUCTURA DE COSTES (BURN RATE: ${d('fin_burn')})
+═══════════════════════════════════════════════
+
+Composición estimada:
+  • Equipo (salarios):      ~60-65% del burn
+  • Infraestructura/Cloud:  ~10-15% del burn
+  • Go-to-market/Ventas:    ~15-20% del burn
+  • Legal/Operaciones:      ~5-10% del burn
+
+═══════════════════════════════════════════════
+RUNWAY Y MILESTONES
+═══════════════════════════════════════════════
+
+Runway con fondos actuales: ${d('fin_runway')}
+
+Milestones clave en este runway:
+  • Lanzamiento beta (primeros 3 meses)
+  • Primeros 5-10 clientes pagantes (mes 6)
+  • MRR objetivo mes 12: ${d('fin_mrr_m12')}
+  • Siguiente ronda de financiación (mes 15-18)
+
+═══════════════════════════════════════════════
+PROYECCIÓN A 24 MESES
+═══════════════════════════════════════════════
+
+  Mes 12: ${d('fin_mrr_m12')} MRR
+  Mes 24: ${d('fin_mrr_m24')} MRR
+
+NOTA: Las proyecciones son estimaciones basadas en supuestos razonables.
+Los VCs entienden que son estimaciones — lo importante es que los
+supuestos sean defendibles y coherentes con el mercado.
+`.trim(),
+
+    trademark: () => `
+REGISTRO DE MARCA EUIPO — RESUMEN PARA DATA ROOM
+NUNTIO TECHNOLOGIES LIMITED
+Actualizado: ${today}
+
+═══════════════════════════════════════════════
+DATOS DEL REGISTRO DE MARCA
+═══════════════════════════════════════════════
+
+Marca registrada:         NUNTIO
+Titular:                  ${d('tm_owner')}
+Número de registro EUIPO: ${d('tm_number')}
+Fecha de concesión:       ${d('tm_granted') || '[Pendiente]'}
+Fecha de vencimiento:     ${d('tm_expiry') || '[10 años desde concesión]'}
+
+═══════════════════════════════════════════════
+CLASES REGISTRADAS (CLASIFICACIÓN DE NIZA)
+═══════════════════════════════════════════════
+
+${d('tm_classes')}
+
+═══════════════════════════════════════════════
+COBERTURA TERRITORIAL
+═══════════════════════════════════════════════
+
+La marca NUNTIO registrada en EUIPO está protegida automáticamente en
+todos los Estados Miembros de la Unión Europea (27 países):
+
+Austria, Bélgica, Bulgaria, Chipre, Croacia, Dinamarca, Eslovaquia,
+Eslovenia, España, Estonia, Finlandia, Francia, Grecia, Hungría,
+Irlanda, Italia, Letonia, Lituania, Luxemburgo, Malta, Países Bajos,
+Polonia, Portugal, República Checa, Rumanía, Suecia.
+
+═══════════════════════════════════════════════
+VALOR ESTRATÉGICO PARA INVERSORES
+═══════════════════════════════════════════════
+
+✓ Activo de propiedad intelectual registrado y cuantificable
+✓ Protección en 27 países de la UE con un solo registro
+✓ Defensa contra imitadores y marcas similares
+✓ Aumenta valoración en procesos de due diligence
+✓ Renovable cada 10 años indefinidamente
+
+═══════════════════════════════════════════════
+ACCIONES DE CUMPLIMIENTO
+═══════════════════════════════════════════════
+
+☐ Certificado original archivado en Data Room
+☐ Marca incluida en registro de activos IP de la empresa
+☐ Renovación programada antes de ${d('tm_expiry') || '[vencimiento]'}
+☐ Monitoreo de marcas similares en EUIPO TMview activado
+☐ Política de uso de marca comunicada al equipo
+
+NOTA: Para protección fuera de la UE (US, UK, LATAM), contactar con
+un abogado especialista en marcas internacionales.
+`.trim(),
+
+    onepager: () => `
+ONE-PAGER EJECUTIVO
+NUNTIO TECHNOLOGIES LIMITED
+Versión: ${today}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NUNTIO TECHNOLOGIES
+${d('op_tagline')}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔴 EL PROBLEMA
+───────────────────────────────────────────────
+${d('op_problem')}
+
+💡 NUESTRA SOLUCIÓN
+───────────────────────────────────────────────
+${d('op_solution')}
+
+📈 TRACCIÓN
+───────────────────────────────────────────────
+${d('op_traction')}
+
+🌍 MERCADO
+───────────────────────────────────────────────
+El mercado de IA agéntica para empresas está creciendo exponencialmente.
+Las empresas que adoptan IA agéntica reducen costes operativos hasta un
+40% y multiplican la capacidad de su equipo sin aumentar headcount.
+
+⚡ POR QUÉ AHORA
+───────────────────────────────────────────────
+• Los LLMs han alcanzado el umbral de confiabilidad empresarial
+• Los costes de inferencia caen un 10x cada 12-18 meses
+• Las empresas buscan activamente soluciones de IA para automatización
+• Ventana de oportunidad: el mercado aún no está consolidado
+
+👥 EQUIPO
+───────────────────────────────────────────────
+Equipo fundador de 4 personas con expertise complementario en
+ingeniería de IA, producto, go-to-market y operaciones.
+
+💰 THE ASK
+───────────────────────────────────────────────
+Estamos levantando una ronda Seed. Si quieres ver el deck completo
+o agendar una demo, contáctanos directamente:
+
+${d('op_contact')}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+nuntio.io  |  hello@nuntio.io  |  Dublin, Ireland
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `.trim()
   };
 
@@ -2757,7 +3577,6 @@ function updateGlobalStats() {
   else { statusEl.textContent = '🏆 VC READY!'; statusEl.style.color = 'var(--green)'; }
 
   updateSidebarNav();
-  renderDashboard();
 }
 
 function updateSidebarNav() {
@@ -2902,6 +3721,9 @@ async function logout() {
   state.docsGenerated = new Set();
   state.signsSent = new Set();
   state.formData = {};
+  state.signTokens = {};
+  state.expandedTask = null;
+  sessionStorage.removeItem('nuntio_os_v2');
   showLoginScreen();
 }
 
@@ -2914,8 +3736,6 @@ async function logout() {
     loadStateFromDB();
   } else {
     showLoginScreen();
-    renderDashboard();
-    updateGlobalStats();
   }
 })();
 </script>
