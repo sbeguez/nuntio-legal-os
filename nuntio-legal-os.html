@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nuntio Legal OS</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Funnel+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root {
@@ -26,6 +26,7 @@
   --muted: #6b6461;
   --muted2: #9b9590;
   --font: 'Bricolage Grotesque', sans-serif;
+  --font-heading: 'Funnel Display', 'Bricolage Grotesque', sans-serif;
   --mono: 'JetBrains Mono', monospace;
 }
 
@@ -72,20 +73,12 @@ body::before {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
   margin-bottom: 6px;
 }
 
-.brand-svg-icon {
-  width: 22px; height: 22px;
-  color: var(--text);
-  flex-shrink: 0;
-}
-
-.brand-name {
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.05em;
+.brand-full-logo {
+  height: 20px;
+  width: auto;
   color: var(--text);
 }
 
@@ -275,6 +268,7 @@ body::before {
 .hero-title {
   font-size: clamp(28px, 3vw, 42px);
   font-weight: 800;
+  font-family: var(--font-heading);
   line-height: 1.05;
   letter-spacing: -0.03em;
   margin-bottom: 12px;
@@ -432,7 +426,7 @@ body::before {
 
 .task-view-info {}
 .task-view-phase { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); font-family: var(--mono); margin-bottom: 6px; }
-.task-view-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+.task-view-title { font-size: 26px; font-weight: 800; font-family: var(--font-heading); letter-spacing: -0.02em; margin-bottom: 6px; }
 .task-view-desc { font-size: 13px; color: var(--muted2); line-height: 1.5; }
 
 .task-list { padding: 24px 48px 48px; }
@@ -891,6 +885,7 @@ body::before {
 .modal h2 {
   font-size: 24px;
   font-weight: 800;
+  font-family: var(--font-heading);
   letter-spacing: -0.02em;
   margin-bottom: 8px;
 }
@@ -1029,20 +1024,15 @@ body::before {
   gap: 10px;
   margin-bottom: 4px;
 }
-.login-svg-icon {
-  width: 28px; height: 28px;
-  color: var(--text);
-  flex-shrink: 0;
-}
-.login-logo-name {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.05em;
+.login-full-logo {
+  height: 30px;
+  width: auto;
   color: var(--text);
 }
 .login-title {
   font-size: 22px;
   font-weight: 700;
+  font-family: var(--font-heading);
   color: var(--text);
   line-height: 1.2;
 }
@@ -1110,7 +1100,7 @@ body::before {
   display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
 }
 .dr-header-eyebrow { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted2); font-family: var(--mono); margin-bottom: 6px; }
-.dr-header-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+.dr-header-title { font-size: 26px; font-weight: 800; font-family: var(--font-heading); letter-spacing: -0.02em; }
 .dr-header-sub { font-size: 13px; color: var(--muted2); margin-top: 4px; }
 .dr-toolbar {
   display: flex; align-items: center; gap: 12px;
@@ -1251,11 +1241,16 @@ body::before {
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <svg class="login-svg-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 16L16 4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-        <path d="M8 4H16V12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg class="login-full-logo" viewBox="0 0 153 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.25 9.9502H25.5V16.2002H19.25V9.9502ZM13 16.2002H0.5V22.4502H8.96351L5.10676 27.1232C4.69969 27.6165 4.18857 28.0137 3.61 28.2863C3.03143 28.559 2.39973 28.7003 1.76014 28.7002H0.5V34.9502H2.72703C5.27432 34.9502 7.68919 33.8124 9.31081 31.8475L13 27.3779V34.9502H19.25V16.2002H13Z" fill="currentColor"/>
+        <path d="M19.25 16.2002H25.5V9.9502H19.25V16.2002ZM19.25 16.2002V34.9502H13V27.3779L9.31081 31.8475C7.68919 33.8124 5.27432 34.9502 2.72703 34.9502H0.5V28.7002H1.76014C2.39973 28.7003 3.03143 28.559 3.61 28.2863C4.18857 28.0137 4.69969 27.6165 5.10676 27.1232L8.96351 22.4502H0.5V16.2002H13H19.25Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M37.24 34.54V20.02H35.5V16.54H39.1V19.3H40.36C40.98 18.3 41.83 17.54 42.91 17.02C43.99 16.48 45.26 16.21 46.72 16.21C49.04 16.21 50.87 16.88 52.21 18.22C53.55 19.54 54.22 21.31 54.22 23.53V34.54H50.86V24.1C50.86 22.48 50.42 21.25 49.54 20.41C48.68 19.57 47.41 19.15 45.73 19.15C44.07 19.15 42.8 19.57 41.92 20.41C41.04 21.25 40.6 22.48 40.6 24.1V34.54H37.24Z" fill="currentColor"/>
+        <path d="M66.28 34.87C63.96 34.87 62.14 34.23 60.82 32.95C59.5 31.65 58.84 29.91 58.84 27.73V16.54H62.2V27.01C62.2 28.63 62.62 29.86 63.46 30.7C64.3 31.52 65.52 31.93 67.12 31.93C68.82 31.93 70.13 31.5 71.05 30.64C71.99 29.76 72.46 28.54 72.46 26.98V16.54H75.82V31.06H77.56V34.54H73.96V31.78H72.7C72.06 32.78 71.2 33.55 70.12 34.09C69.04 34.61 67.76 34.87 66.28 34.87Z" fill="currentColor"/>
+        <path d="M81.6423 34.54V20.02H79.9023V16.54H83.5023V19.3H84.7623C85.3823 18.3 86.2323 17.54 87.3123 17.02C88.3923 16.48 89.6623 16.21 91.1223 16.21C93.4423 16.21 95.2723 16.88 96.6123 18.22C97.9523 19.54 98.6223 21.31 98.6223 23.53V34.54H95.2623V24.1C95.2623 22.48 94.8223 21.25 93.9423 20.41C93.0823 19.57 91.8123 19.15 90.1323 19.15C88.4723 19.15 87.2023 19.57 86.3223 20.41C85.4423 21.25 85.0023 22.48 85.0023 24.1V34.54H81.6423Z" fill="currentColor"/>
+        <path d="M107.862 34.54C106.902 34.54 106.152 34.3 105.612 33.82C105.092 33.32 104.832 32.58 104.832 31.6V19.12H101.472V16.54H104.862V11.14H108.162V16.54H112.872V19.12H108.192V31.9H113.352V34.54H107.862Z" fill="currentColor"/>
+        <path d="M116.691 34.54V16.54H120.051V34.54H116.691ZM118.371 14.08C117.811 14.08 117.331 13.88 116.931 13.48C116.531 13.08 116.331 12.6 116.331 12.04C116.331 11.48 116.531 11 116.931 10.6C117.331 10.2 117.811 10 118.371 10C118.931 10 119.411 10.2 119.811 10.6C120.211 11 120.411 11.48 120.411 12.04C120.411 12.6 120.211 13.08 119.811 13.48C119.411 13.88 118.931 14.08 118.371 14.08Z" fill="currentColor"/>
+        <path d="M133.309 34.9C131.449 34.9 129.819 34.52 128.419 33.76C127.039 32.98 125.969 31.89 125.209 30.49C124.449 29.09 124.069 27.44 124.069 25.54C124.069 23.64 124.449 21.99 125.209 20.59C125.969 19.19 127.039 18.11 128.419 17.35C129.819 16.57 131.449 16.18 133.309 16.18C135.229 16.18 136.869 16.56 138.229 17.32C139.609 18.08 140.669 19.16 141.409 20.56C142.169 21.96 142.549 23.62 142.549 25.54C142.549 27.44 142.169 29.1 141.409 30.52C140.669 31.92 139.609 33 138.229 33.76C136.849 34.52 135.209 34.9 133.309 34.9ZM133.309 31.96C135.169 31.96 136.609 31.4 137.629 30.28C138.669 29.14 139.189 27.56 139.189 25.54C139.189 23.5 138.669 21.92 137.629 20.8C136.609 19.68 135.169 19.12 133.309 19.12C131.469 19.12 130.029 19.69 128.989 20.83C127.949 21.95 127.429 23.52 127.429 25.54C127.429 27.56 127.949 29.14 128.989 30.28C130.029 31.4 131.469 31.96 133.309 31.96Z" fill="currentColor"/>
       </svg>
-      <div class="login-logo-name">nuntio</div>
     </div>
     <div>
       <div class="login-title">Accede a tu workspace</div>
@@ -1289,11 +1284,16 @@ body::before {
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo">
-        <svg class="brand-svg-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 16L16 4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-          <path d="M8 4H16V12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg class="brand-full-logo" viewBox="0 0 153 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.25 9.9502H25.5V16.2002H19.25V9.9502ZM13 16.2002H0.5V22.4502H8.96351L5.10676 27.1232C4.69969 27.6165 4.18857 28.0137 3.61 28.2863C3.03143 28.559 2.39973 28.7003 1.76014 28.7002H0.5V34.9502H2.72703C5.27432 34.9502 7.68919 33.8124 9.31081 31.8475L13 27.3779V34.9502H19.25V16.2002H13Z" fill="currentColor"/>
+          <path d="M19.25 16.2002H25.5V9.9502H19.25V16.2002ZM19.25 16.2002V34.9502H13V27.3779L9.31081 31.8475C7.68919 33.8124 5.27432 34.9502 2.72703 34.9502H0.5V28.7002H1.76014C2.39973 28.7003 3.03143 28.559 3.61 28.2863C4.18857 28.0137 4.69969 27.6165 5.10676 27.1232L8.96351 22.4502H0.5V16.2002H13H19.25Z" fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M37.24 34.54V20.02H35.5V16.54H39.1V19.3H40.36C40.98 18.3 41.83 17.54 42.91 17.02C43.99 16.48 45.26 16.21 46.72 16.21C49.04 16.21 50.87 16.88 52.21 18.22C53.55 19.54 54.22 21.31 54.22 23.53V34.54H50.86V24.1C50.86 22.48 50.42 21.25 49.54 20.41C48.68 19.57 47.41 19.15 45.73 19.15C44.07 19.15 42.8 19.57 41.92 20.41C41.04 21.25 40.6 22.48 40.6 24.1V34.54H37.24Z" fill="currentColor"/>
+          <path d="M66.28 34.87C63.96 34.87 62.14 34.23 60.82 32.95C59.5 31.65 58.84 29.91 58.84 27.73V16.54H62.2V27.01C62.2 28.63 62.62 29.86 63.46 30.7C64.3 31.52 65.52 31.93 67.12 31.93C68.82 31.93 70.13 31.5 71.05 30.64C71.99 29.76 72.46 28.54 72.46 26.98V16.54H75.82V31.06H77.56V34.54H73.96V31.78H72.7C72.06 32.78 71.2 33.55 70.12 34.09C69.04 34.61 67.76 34.87 66.28 34.87Z" fill="currentColor"/>
+          <path d="M81.6423 34.54V20.02H79.9023V16.54H83.5023V19.3H84.7623C85.3823 18.3 86.2323 17.54 87.3123 17.02C88.3923 16.48 89.6623 16.21 91.1223 16.21C93.4423 16.21 95.2723 16.88 96.6123 18.22C97.9523 19.54 98.6223 21.31 98.6223 23.53V34.54H95.2623V24.1C95.2623 22.48 94.8223 21.25 93.9423 20.41C93.0823 19.57 91.8123 19.15 90.1323 19.15C88.4723 19.15 87.2023 19.57 86.3223 20.41C85.4423 21.25 85.0023 22.48 85.0023 24.1V34.54H81.6423Z" fill="currentColor"/>
+          <path d="M107.862 34.54C106.902 34.54 106.152 34.3 105.612 33.82C105.092 33.32 104.832 32.58 104.832 31.6V19.12H101.472V16.54H104.862V11.14H108.162V16.54H112.872V19.12H108.192V31.9H113.352V34.54H107.862Z" fill="currentColor"/>
+          <path d="M116.691 34.54V16.54H120.051V34.54H116.691ZM118.371 14.08C117.811 14.08 117.331 13.88 116.931 13.48C116.531 13.08 116.331 12.6 116.331 12.04C116.331 11.48 116.531 11 116.931 10.6C117.331 10.2 117.811 10 118.371 10C118.931 10 119.411 10.2 119.811 10.6C120.211 11 120.411 11.48 120.411 12.04C120.411 12.6 120.211 13.08 119.811 13.48C119.411 13.88 118.931 14.08 118.371 14.08Z" fill="currentColor"/>
+          <path d="M133.309 34.9C131.449 34.9 129.819 34.52 128.419 33.76C127.039 32.98 125.969 31.89 125.209 30.49C124.449 29.09 124.069 27.44 124.069 25.54C124.069 23.64 124.449 21.99 125.209 20.59C125.969 19.19 127.039 18.11 128.419 17.35C129.819 16.57 131.449 16.18 133.309 16.18C135.229 16.18 136.869 16.56 138.229 17.32C139.609 18.08 140.669 19.16 141.409 20.56C142.169 21.96 142.549 23.62 142.549 25.54C142.549 27.44 142.169 29.1 141.409 30.52C140.669 31.92 139.609 33 138.229 33.76C136.849 34.52 135.209 34.9 133.309 34.9ZM133.309 31.96C135.169 31.96 136.609 31.4 137.629 30.28C138.669 29.14 139.189 27.56 139.189 25.54C139.189 23.5 138.669 21.92 137.629 20.8C136.609 19.68 135.169 19.12 133.309 19.12C131.469 19.12 130.029 19.69 128.989 20.83C127.949 21.95 127.429 23.52 127.429 25.54C127.429 27.56 127.949 29.14 128.989 30.28C130.029 31.4 131.469 31.96 133.309 31.96Z" fill="currentColor"/>
         </svg>
-        <div class="brand-name">nuntio</div>
       </div>
       <div class="brand-sub">Legal OS · v1.0</div>
     </div>
@@ -2597,7 +2597,7 @@ function downloadDoc(taskId) {
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Georgia', 'Times New Roman', serif; font-size: 11.5pt; line-height: 2; color: #0f0f1a; background: #fff; }
     .toolbar { background: #f5f4ef; border-bottom: 2px solid #d9d7d0; padding: 12px 32px; display: flex; align-items: center; gap: 12px; font-family: -apple-system, sans-serif; font-size: 13px; position: sticky; top: 0; z-index: 10; }
-    .toolbar-logo { font-weight: 700; color: #0f0f1a; font-size: 15px; letter-spacing: -0.04em; display: flex; align-items: center; gap: 6px; }
+    .toolbar-logo { display: flex; align-items: center; } .toolbar-logo svg { height: 18px; width: auto; }
     .toolbar-title { flex: 1; color: #6b6461; }
     .btn-pdf { padding: 8px 20px; background: #059669; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-pdf:hover { background: #047857; }
@@ -2610,7 +2610,7 @@ function downloadDoc(taskId) {
   </style>
 </head><body>
   <div class="toolbar">
-    <span class="toolbar-logo"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 16L16 4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M8 4H16V12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>nuntio</span>
+    <span class="toolbar-logo"><svg viewBox="0 0 153 45" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.25 9.9502H25.5V16.2002H19.25V9.9502ZM13 16.2002H0.5V22.4502H8.96351L5.10676 27.1232C4.69969 27.6165 4.18857 28.0137 3.61 28.2863C3.03143 28.559 2.39973 28.7003 1.76014 28.7002H0.5V34.9502H2.72703C5.27432 34.9502 7.68919 33.8124 9.31081 31.8475L13 27.3779V34.9502H19.25V16.2002H13Z" fill="#0f0f1a"/><path d="M19.25 16.2002H25.5V9.9502H19.25V16.2002ZM19.25 16.2002V34.9502H13V27.3779L9.31081 31.8475C7.68919 33.8124 5.27432 34.9502 2.72703 34.9502H0.5V28.7002H1.76014C2.39973 28.7003 3.03143 28.559 3.61 28.2863C4.18857 28.0137 4.69969 27.6165 5.10676 27.1232L8.96351 22.4502H0.5V16.2002H13H19.25Z" fill="#0f0f1a" stroke="#0f0f1a" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.24 34.54V20.02H35.5V16.54H39.1V19.3H40.36C40.98 18.3 41.83 17.54 42.91 17.02C43.99 16.48 45.26 16.21 46.72 16.21C49.04 16.21 50.87 16.88 52.21 18.22C53.55 19.54 54.22 21.31 54.22 23.53V34.54H50.86V24.1C50.86 22.48 50.42 21.25 49.54 20.41C48.68 19.57 47.41 19.15 45.73 19.15C44.07 19.15 42.8 19.57 41.92 20.41C41.04 21.25 40.6 22.48 40.6 24.1V34.54H37.24Z" fill="#0f0f1a"/><path d="M66.28 34.87C63.96 34.87 62.14 34.23 60.82 32.95C59.5 31.65 58.84 29.91 58.84 27.73V16.54H62.2V27.01C62.2 28.63 62.62 29.86 63.46 30.7C64.3 31.52 65.52 31.93 67.12 31.93C68.82 31.93 70.13 31.5 71.05 30.64C71.99 29.76 72.46 28.54 72.46 26.98V16.54H75.82V31.06H77.56V34.54H73.96V31.78H72.7C72.06 32.78 71.2 33.55 70.12 34.09C69.04 34.61 67.76 34.87 66.28 34.87Z" fill="#0f0f1a"/><path d="M81.6423 34.54V20.02H79.9023V16.54H83.5023V19.3H84.7623C85.3823 18.3 86.2323 17.54 87.3123 17.02C88.3923 16.48 89.6623 16.21 91.1223 16.21C93.4423 16.21 95.2723 16.88 96.6123 18.22C97.9523 19.54 98.6223 21.31 98.6223 23.53V34.54H95.2623V24.1C95.2623 22.48 94.8223 21.25 93.9423 20.41C93.0823 19.57 91.8123 19.15 90.1323 19.15C88.4723 19.15 87.2023 19.57 86.3223 20.41C85.4423 21.25 85.0023 22.48 85.0023 24.1V34.54H81.6423Z" fill="#0f0f1a"/><path d="M107.862 34.54C106.902 34.54 106.152 34.3 105.612 33.82C105.092 33.32 104.832 32.58 104.832 31.6V19.12H101.472V16.54H104.862V11.14H108.162V16.54H112.872V19.12H108.192V31.9H113.352V34.54H107.862Z" fill="#0f0f1a"/><path d="M116.691 34.54V16.54H120.051V34.54H116.691ZM118.371 14.08C117.811 14.08 117.331 13.88 116.931 13.48C116.531 13.08 116.331 12.6 116.331 12.04C116.331 11.48 116.531 11 116.931 10.6C117.331 10.2 117.811 10 118.371 10C118.931 10 119.411 10.2 119.811 10.6C120.211 11 120.411 11.48 120.411 12.04C120.411 12.6 120.211 13.08 119.811 13.48C119.411 13.88 118.931 14.08 118.371 14.08Z" fill="#0f0f1a"/><path d="M133.309 34.9C131.449 34.9 129.819 34.52 128.419 33.76C127.039 32.98 125.969 31.89 125.209 30.49C124.449 29.09 124.069 27.44 124.069 25.54C124.069 23.64 124.449 21.99 125.209 20.59C125.969 19.19 127.039 18.11 128.419 17.35C129.819 16.57 131.449 16.18 133.309 16.18C135.229 16.18 136.869 16.56 138.229 17.32C139.609 18.08 140.669 19.16 141.409 20.56C142.169 21.96 142.549 23.62 142.549 25.54C142.549 27.44 142.169 29.1 141.409 30.52C140.669 31.92 139.609 33 138.229 33.76C136.849 34.52 135.209 34.9 133.309 34.9ZM133.309 31.96C135.169 31.96 136.609 31.4 137.629 30.28C138.669 29.14 139.189 27.56 139.189 25.54C139.189 23.5 138.669 21.92 137.629 20.8C136.609 19.68 135.169 19.12 133.309 19.12C131.469 19.12 130.029 19.69 128.989 20.83C127.949 21.95 127.429 23.52 127.429 25.54C127.429 27.56 127.949 29.14 128.989 30.28C130.029 31.4 131.469 31.96 133.309 31.96Z" fill="#0f0f1a"/></svg></span>
     <span class="toolbar-title">${docTitle}</span>
     <button class="btn-txt" onclick="downloadTxt()">↓ .TXT</button>
     <button class="btn-pdf" onclick="window.print()">🖨&nbsp; Guardar como PDF</button>
