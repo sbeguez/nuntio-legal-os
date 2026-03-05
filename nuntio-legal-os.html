@@ -72,22 +72,21 @@ body::before {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 6px;
 }
 
-.brand-icon {
-  width: 32px; height: 32px;
-  background: linear-gradient(135deg, var(--purple), var(--green));
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
+.brand-svg-icon {
+  width: 22px; height: 22px;
+  color: var(--text);
+  flex-shrink: 0;
 }
 
 .brand-name {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  color: var(--text);
 }
 
 .brand-sub {
@@ -1030,16 +1029,15 @@ body::before {
   gap: 10px;
   margin-bottom: 4px;
 }
-.login-logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--purple), var(--green));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
+.login-svg-icon {
+  width: 28px; height: 28px;
+  color: var(--text);
+  flex-shrink: 0;
 }
 .login-logo-name {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
   color: var(--text);
 }
 .login-title {
@@ -1253,8 +1251,11 @@ body::before {
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">⚡</div>
-      <div class="login-logo-name">Nuntio Legal OS</div>
+      <svg class="login-svg-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 16L16 4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M8 4H16V12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="login-logo-name">nuntio</div>
     </div>
     <div>
       <div class="login-title">Accede a tu workspace</div>
@@ -1288,10 +1289,11 @@ body::before {
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo">
-        <div class="brand-icon">⚡</div>
-        <div>
-          <div class="brand-name">Nuntio</div>
-        </div>
+        <svg class="brand-svg-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 16L16 4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M8 4H16V12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-name">nuntio</div>
       </div>
       <div class="brand-sub">Legal OS · v1.0</div>
     </div>
@@ -2595,7 +2597,7 @@ function downloadDoc(taskId) {
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: 'Georgia', 'Times New Roman', serif; font-size: 11.5pt; line-height: 2; color: #0f0f1a; background: #fff; }
     .toolbar { background: #f5f4ef; border-bottom: 2px solid #d9d7d0; padding: 12px 32px; display: flex; align-items: center; gap: 12px; font-family: -apple-system, sans-serif; font-size: 13px; position: sticky; top: 0; z-index: 10; }
-    .toolbar-logo { font-weight: 800; color: #7c3aed; font-size: 14px; }
+    .toolbar-logo { font-weight: 700; color: #0f0f1a; font-size: 15px; letter-spacing: -0.04em; display: flex; align-items: center; gap: 6px; }
     .toolbar-title { flex: 1; color: #6b6461; }
     .btn-pdf { padding: 8px 20px; background: #059669; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-pdf:hover { background: #047857; }
@@ -2608,7 +2610,7 @@ function downloadDoc(taskId) {
   </style>
 </head><body>
   <div class="toolbar">
-    <span class="toolbar-logo">⚡ Nuntio Legal OS</span>
+    <span class="toolbar-logo"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 16L16 4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M8 4H16V12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>nuntio</span>
     <span class="toolbar-title">${docTitle}</span>
     <button class="btn-txt" onclick="downloadTxt()">↓ .TXT</button>
     <button class="btn-pdf" onclick="window.print()">🖨&nbsp; Guardar como PDF</button>
