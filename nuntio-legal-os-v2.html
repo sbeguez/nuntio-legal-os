@@ -4469,17 +4469,20 @@ async function setupCompany() {
 
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now();
 
-  // Crear empresa
-  const { data: company, error: compErr } = await _supabase
-    .from('nuntio_companies')
-    .insert({ name, slug, created_by: SESSION_ID })
-    .select()
-    .single();
+  // Generar UUID en cliente para evitar problema chicken-and-egg con RLS SELECT
+  const companyId = crypto.randomUUID();
 
-  if (compErr || !company) {
-    if (errEl) { errEl.textContent = 'Error creando empresa: ' + (compErr?.message || 'desconocido'); errEl.classList.add('visible'); }
+  // Crear empresa (sin .select() para evitar que RLS bloquee el return antes de tener rol)
+  const { error: compErr } = await _supabase
+    .from('nuntio_companies')
+    .insert({ id: companyId, name, slug, created_by: SESSION_ID });
+
+  if (compErr) {
+    if (errEl) { errEl.textContent = 'Error creando empresa: ' + compErr.message; errEl.classList.add('visible'); }
     return;
   }
+
+  const company = { id: companyId, name };
 
   // Crear rol owner
   const { error: roleErr } = await _supabase
