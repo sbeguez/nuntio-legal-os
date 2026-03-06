@@ -2788,831 +2788,2562 @@ function buildDocumentText(task, data) {
 SHAREHOLDERS AGREEMENT
 NUNTIO TECHNOLOGIES LIMITED
 
+Número de Referencia: SHA-NTL-${Date.now()}
+CONFIDENCIAL — PRIVILEGIADO ABOGADO-CLIENTE
+════════════════════════════════════════════════════
+                SHAREHOLDERS AGREEMENT
+════════════════════════════════════════════════════
+
+ENTRE:
+
+(1) ${d('sha_f1_name')} ("Parte A" o "Fundador 1")
+
+(2) ${d('sha_f2_name')} ("Parte B" o "Fundador 2")
+
+(conjuntamente, los "Fundadores" o las "Partes")
+
+en relación con:
+
+NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
+constituida conforme a la legislación irlandesa, con
+número de registro CRO [NÚMERO CRO] y domicilio social
+en Irlanda (la "Sociedad").
+
 Fecha: ${d('sha_date') || today}
-Número de Registro CRO: [NÚMERO CRO]
-Domicilio Social: Irlanda
+Jurisdicción: ${d('sha_jurisdiction')}
 
-═══════════════════════════════════════════════
-ENTRE LAS PARTES:
-═══════════════════════════════════════════════
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-PARTE A: ${d('sha_f1_name')}
-Porcentaje de participación: ${d('sha_f1_pct')}
+(A) La Sociedad es una private company limited by shares
+    constituida en Irlanda al amparo del Companies Act 2014.
 
-PARTE B: ${d('sha_f2_name')}
-Porcentaje de participación: ${d('sha_f2_pct')}
+(B) Los Fundadores son los únicos accionistas y directores
+    de la Sociedad a la fecha del presente Acuerdo.
 
-Pool reservado para Inversores: ${d('sha_investor_pool')}
-Pool reservado para Equipo y Advisors: ${d('sha_team_pool')}
+(C) Los Fundadores desean formalizar sus derechos y
+    obligaciones recíprocos como accionistas, y establecer
+    los mecanismos de gobierno corporativo de la Sociedad.
 
-Jurisdicción aplicable: ${d('sha_jurisdiction')}
+(D) El presente Acuerdo regula la relación entre las Partes
+    con el fin de proteger sus intereses y los de la Sociedad,
+    y de facilitar la captación de inversión futura.
 
-═══════════════════════════════════════════════
-CLÁUSULA 1 — OBJETO
-═══════════════════════════════════════════════
-El presente Shareholders Agreement regula las relaciones entre los socios de Nuntio Technologies Limited (en adelante, "la Sociedad"), sus derechos y obligaciones, y los mecanismos de gobierno corporativo.
+EN VIRTUD DE LO EXPUESTO, las Partes acuerdan lo siguiente:
 
-═══════════════════════════════════════════════
-CLÁUSULA 2 — ESTRUCTURA DE CAPITAL
-═══════════════════════════════════════════════
-2.1 Capital emitido: Las acciones emitidas a la fecha del presente acuerdo son:
-    - ${d('sha_f1_name')}: ${d('sha_f1_pct')} de las acciones emitidas
-    - ${d('sha_f2_name')}: ${d('sha_f2_pct')} de las acciones emitidas
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES E INTERPRETACIÓN
+════════════════════════════════════════════════════
 
-2.2 Pool reservado para Inversores: ${d('sha_investor_pool')} del capital totalmente diluido, sin emitir.
-2.3 Pool ESOP para Equipo y Advisors: ${d('sha_team_pool')} del capital totalmente diluido, sin emitir.
+1.1 En el presente Acuerdo, los siguientes términos tendrán
+    el significado que se indica a continuación:
 
-═══════════════════════════════════════════════
-CLÁUSULA 3 — VESTING DE FUNDADORES
-═══════════════════════════════════════════════
-3.1 Todas las acciones de los fundadores estarán sujetas al siguiente schedule de vesting:
-    - Modalidad: ${d('sha_vesting')}
-    - Good Leaver: el fundador que salga por causa justificada conservará sus acciones ya devengadas
-    - Bad Leaver: el fundador que salga sin causa justificada deberá ofrecer sus acciones a precio nominal
+    "Acciones" significa las acciones ordinarias de la
+    Sociedad con valor nominal de €0.001 cada una, o el
+    valor nominal vigente conforme al registro en CRO.
 
-═══════════════════════════════════════════════
-CLÁUSULA 4 — GOBIERNO CORPORATIVO
-═══════════════════════════════════════════════
-4.1 Board of Directors: La Sociedad tendrá un Consejo de Administración compuesto inicialmente por los fundadores.
-4.2 Reserved Matters: Las siguientes decisiones requieren unanimidad del Board:
-    a) Venta o fusión de la Sociedad
-    b) Emisión de nuevas acciones o instrumentos de equity
-    c) Modificación de los estatutos sociales
-    d) Contratación o despido de directivos clave (C-Suite)
-    e) Endeudamiento superior a €100,000
+    "Acuerdo" significa el presente Shareholders Agreement
+    junto con sus anexos y cualquier modificación posterior
+    acordada por escrito.
 
-═══════════════════════════════════════════════
-CLÁUSULA 5 — DERECHOS DE TRANSMISIÓN
-═══════════════════════════════════════════════
-5.1 Derecho de Tanteo (Right of First Refusal): Antes de transferir acciones a un tercero, el vendedor deberá ofrecer las acciones a los demás socios en igualdad de condiciones.
+    "Bad Leaver" significa el Fundador que (i) dimite sin
+    causa justificada antes del vencimiento del Período de
+    Vesting, (ii) incumple materialmente sus obligaciones
+    para con la Sociedad, o (iii) es cesado por causa grave.
 
-5.2 Derecho de Acompañamiento (Tag-Along): Si uno de los socios recibe una oferta de compra de sus acciones, los demás socios tendrán derecho a participar en la venta en las mismas condiciones.
+    "Board" o "Consejo" significa el Board of Directors de
+    la Sociedad, según constituido en cada momento.
 
-5.3 Derecho de Arrastre (Drag-Along): Si los socios que representen más del 75% del capital acordasen vender sus acciones a un tercero, podrán obligar a los demás socios a vender sus acciones en las mismas condiciones.
+    "Capital Totalmente Diluido" o "Fully Diluted" significa
+    la totalidad de las Acciones emitidas más todas las
+    Acciones que resultarían de la conversión o ejercicio
+    de cualquier instrumento convertible, opción, warrant
+    o derecho de suscripción vigente.
 
-═══════════════════════════════════════════════
+    "Día Hábil" significa cualquier día que no sea sábado,
+    domingo ni festivo oficial en la República de Irlanda.
+
+    "ESOP" significa el Employee Stock Option Plan de la
+    Sociedad, aprobado por el Board.
+
+    "Good Leaver" significa el Fundador que cesa su
+    vinculación con la Sociedad por (i) incapacidad
+    permanente debidamente acreditada, (ii) fallecimiento,
+    (iii) rescisión por la Sociedad sin causa justificada,
+    o (iv) causa justificada acreditada.
+
+    "Nueva Emisión" significa cualquier emisión de Acciones
+    u otros valores convertibles en Acciones por la Sociedad.
+
+    "Reserved Matters" tiene el significado atribuido en
+    el Artículo 5 del presente Acuerdo.
+
+    "ROFR" significa el Right of First Refusal regulado
+    en el Artículo 7.
+
+1.2 Salvo que el contexto exija otra interpretación,
+    los términos en singular incluyen el plural y viceversa;
+    las referencias a personas incluyen sociedades y demás
+    entidades jurídicas.
+
+════════════════════════════════════════════════════
+ARTÍCULO 2 — ESTRUCTURA DE CAPITAL
+════════════════════════════════════════════════════
+
+2.1 Estructura accionarial a la fecha del Acuerdo:
+
+    ┌─────────────────────────────────────────────┐
+    │ Accionista          │ Participación          │
+    ├─────────────────────────────────────────────┤
+    │ ${d('sha_f1_name').padEnd(20)} │ ${d('sha_f1_pct').padEnd(22)} │
+    │ ${d('sha_f2_name').padEnd(20)} │ ${d('sha_f2_pct').padEnd(22)} │
+    │ Pool Inversores     │ ${d('sha_investor_pool').padEnd(22)} │
+    │ Pool ESOP           │ ${d('sha_team_pool').padEnd(22)} │
+    └─────────────────────────────────────────────┘
+
+2.2 Los pools de Inversores y ESOP indicados en la tabla
+    anterior corresponden a acciones autorizadas pero no
+    emitidas, reservadas para futuras emisiones.
+
+2.3 Ninguna acción de los pools reservados podrá ser emitida
+    sin la aprobación del Board como Reserved Matter conforme
+    al Artículo 5.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — VESTING DE FUNDADORES
+════════════════════════════════════════════════════
+
+3.1 Modalidad de vesting acordada: ${d('sha_vesting')}
+
+3.2 Mecanismo: Las Acciones de cada Fundador estarán
+    sujetas a un derecho de recompra (buy-back) en favor
+    de la Sociedad que se extinguirá progresivamente
+    conforme al calendario de vesting acordado.
+
+3.3 Good Leaver: El Fundador que cese como Good Leaver
+    conservará íntegramente las Acciones ya devengadas
+    (vested). Las Acciones no devengadas (unvested) serán
+    recompradas por la Sociedad al valor nominal.
+
+3.4 Bad Leaver: El Fundador que cese como Bad Leaver estará
+    obligado a ofrecer la totalidad de sus Acciones (vested
+    y unvested) a la Sociedad y/o a los demás Fundadores al
+    precio inferior entre (i) el valor nominal y (ii) el
+    precio al que las adquirió originalmente.
+
+3.5 Aceleración por Cambio de Control: En caso de cambio
+    de control de la Sociedad (adquisición de más del 50%
+    del capital o de todos los activos materiales), el Board
+    podrá aprobar la aceleración total o parcial del vesting
+    pendiente de cualquier Fundador.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — GOBIERNO CORPORATIVO
+════════════════════════════════════════════════════
+
+4.1 Composición del Board: El Board estará integrado
+    inicialmente por los Fundadores. Cualquier modificación
+    de la composición requerirá aprobación unánime de las
+    Partes mientras no exista inversor institucional.
+
+4.2 Quórum y mayorías: Las reuniones del Board serán
+    válidas con la asistencia de todos sus miembros. Los
+    acuerdos ordinarios se adoptarán por mayoría simple,
+    salvo los Reserved Matters.
+
+4.3 Derechos de información: Cada Fundador tendrá derecho
+    a recibir (i) estados financieros trimestrales, (ii)
+    presupuesto anual y (iii) notificación inmediata de
+    cualquier contingencia material.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — RESERVED MATTERS
+════════════════════════════════════════════════════
+
+5.1 Las siguientes materias requerirán aprobación unánime
+    del Board y de los Fundadores que representen la mayoría
+    del capital emitido:
+
+    (a) Venta, fusión, escisión o liquidación de la Sociedad;
+    (b) Emisión de nuevas Acciones o instrumentos convertibles;
+    (c) Modificación de los estatutos sociales (M&A);
+    (d) Nombramiento o cese de Director General (CEO/CTO);
+    (e) Aprobación o modificación del ESOP;
+    (f) Endeudamiento financiero superior a €50,000;
+    (g) Suscripción de contratos con valor superior a €25,000;
+    (h) Adquisición o enajenación de activos materiales;
+    (i) Inicio de procedimientos judiciales relevantes;
+    (j) Cambio del auditor o del abogado principal;
+    (k) Distribución de dividendos.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — RESTRICCIONES A LA TRANSFERENCIA
+════════════════════════════════════════════════════
+
+6.1 Lock-up: Ningún Fundador podrá transferir, gravar ni
+    disponer de sus Acciones durante los primeros 24 meses
+    desde la fecha del presente Acuerdo, salvo con
+    consentimiento unánime del Board.
+
+6.2 Derecho de Tanteo (ROFR): Transcurrido el período de
+    lock-up, cualquier Fundador que desee transferir
+    Acciones a un tercero deberá ofrecer previamente dichas
+    Acciones a los demás Fundadores en igualdad de
+    condiciones (precio, plazo y forma de pago) durante
+    un período de 20 Días Hábiles.
+
+6.3 Derecho de Acompañamiento (Tag-Along): Si un Fundador
+    recibe una oferta vinculante de un tercero para adquirir
+    sus Acciones, los demás Fundadores tendrán derecho a
+    exigir que el adquirente compre sus Acciones en las
+    mismas condiciones, de forma proporcional.
+
+6.4 Derecho de Arrastre (Drag-Along): Si los Fundadores
+    que representen más del 75% del capital emitido
+    acuerdan aceptar una oferta de adquisición de la
+    Sociedad, podrán obligar a los restantes Fundadores a
+    vender sus Acciones en las mismas condiciones.
+
+════════════════════════════════════════════════════
+ARTÍCULO 7 — DERECHOS DE INVERSORES FUTUROS
+════════════════════════════════════════════════════
+
+7.1 Las Partes acuerdan que cualquier inversor futuro
+    que adquiera Acciones de la Sociedad podrá adherirse
+    al presente Acuerdo mediante la firma de un Deed of
+    Adherence en los términos que apruebe el Board.
+
+7.2 El Board podrá otorgar a inversores institucionales
+    derechos adicionales (información, anti-dilución,
+    participación preferente en liquidación) previa
+    aprobación unánime de los Fundadores.
+
+════════════════════════════════════════════════════
+ARTÍCULO 8 — CONFIDENCIALIDAD Y NO COMPETENCIA
+════════════════════════════════════════════════════
+
+8.1 Cada Parte se compromete a mantener la más estricta
+    confidencialidad sobre los términos del presente
+    Acuerdo y sobre cualquier información confidencial
+    de la Sociedad de la que tenga conocimiento.
+
+8.2 No competencia: Durante la vigencia de su vinculación
+    como director o empleado de la Sociedad, y durante
+    12 meses tras su cese, cada Fundador se abstendrá de
+    participar directa o indirectamente en actividades
+    que compitan directamente con el negocio principal
+    de la Sociedad en los territorios en que ésta opere.
+
+════════════════════════════════════════════════════
+ARTÍCULO 9 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+9.1 Acuerdo completo: El presente Acuerdo, junto con sus
+    Anexos, constituye el acuerdo íntegro entre las Partes
+    en relación con su objeto y sustituye a cualquier
+    acuerdo o entendimiento previo, oral o escrito.
+
+9.2 Modificaciones: Ninguna modificación del presente
+    Acuerdo será válida salvo que conste por escrito y
+    esté firmada por todas las Partes.
+
+9.3 Divisibilidad: Si cualquier disposición del presente
+    Acuerdo fuese declarada nula o inaplicable, dicha
+    nulidad no afectará a la validez de las restantes
+    disposiciones, que conservarán plena vigencia.
+
+9.4 Renuncia: La falta de ejercicio por cualquier Parte
+    de un derecho derivado del presente Acuerdo no
+    implicará renuncia al mismo ni precluirá su ejercicio
+    posterior.
+
+9.5 Ejemplares: El presente Acuerdo podrá suscribirse en
+    tantos ejemplares como Partes haya, constituyendo cada
+    uno de ellos un original y todos ellos, en conjunto,
+    un único instrumento.
+
+════════════════════════════════════════════════════
+ARTÍCULO 10 — LEY APLICABLE Y RESOLUCIÓN DE DISPUTAS
+════════════════════════════════════════════════════
+
+10.1 Ley aplicable: El presente Acuerdo se regirá e
+     interpretará conforme a la legislación de la
+     República de Irlanda, incluyendo el Companies Act
+     2014 y el Copyright and Related Rights Act 2000
+     en lo que resulte de aplicación.
+
+10.2 Resolución de disputas: Cualquier controversia
+     derivada del presente Acuerdo se someterá en
+     primera instancia a mediación en Irlanda durante
+     un período no inferior a 30 días. De no alcanzarse
+     acuerdo, las Partes se someten a la jurisdicción
+     exclusiva de los tribunales irlandeses.
+
+════════════════════════════════════════════════════
 FIRMAS
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
 
-${d('sha_f1_name')}                    Fecha: ___________
+El presente Shareholders Agreement se formaliza en la
+fecha indicada en el encabezamiento.
+
+FIRMADO por ${d('sha_f1_name')}
+en calidad de Fundador y Director:
+
 Firma: _______________________
+Nombre: ${d('sha_f1_name')}
+Fecha:  ___________
 
-${d('sha_f2_name')}                    Fecha: ___________
+En presencia de:
+Testigo (nombre): _______________
+Firma testigo:    _______________
+Domicilio testigo: ______________
+
+────────────────────────────────────────────────────
+
+FIRMADO por ${d('sha_f2_name')}
+en calidad de Fundador y Director:
+
 Firma: _______________________
+Nombre: ${d('sha_f2_name')}
+Fecha:  ___________
 
-NOTA: Este documento es una plantilla orientativa. Debe ser revisado por un abogado mercantilista cualificado en derecho irlandés antes de su firma.
+En presencia de:
+Testigo (nombre): _______________
+Firma testigo:    _______________
+Domicilio testigo: ______________
+
+────────────────────────────────────────────────────
+
+AVISO LEGAL: El presente documento es una plantilla
+orientativa elaborada con fines informativos. No
+constituye asesoramiento jurídico. Debe ser revisado
+y adaptado por un abogado mercantilista cualificado
+en derecho irlandés (Companies Act 2014) antes de
+su firma. Nuntio Technologies Ltd no asume
+responsabilidad alguna por el uso de esta plantilla
+sin supervisión jurídica profesional.
 `.trim(),
 
     ipa: () => `
 IP ASSIGNMENT AGREEMENT
 NUNTIO TECHNOLOGIES LIMITED
 
-Fecha: ${d('ipa_date') || today}
+Número de Referencia: IPA-NTL-${d('ipa_assignor').replace(/\s+/g,'').substring(0,6).toUpperCase()}-${today.replace(/\s/g,'')}
+CONFIDENCIAL
 
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+           INTELLECTUAL PROPERTY ASSIGNMENT AGREEMENT
+           (ACUERDO DE CESIÓN DE PROPIEDAD INTELECTUAL)
+════════════════════════════════════════════════════
+
 ENTRE:
-═══════════════════════════════════════════════
 
-CEDENTE: ${d('ipa_assignor')}
-Rol: ${d('ipa_role')}
+(1) ${d('ipa_assignor')}, con domicilio a efectos de
+    notificaciones en la dirección que conste en los
+    registros de la Sociedad ("el Cedente")
+
+(2) NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
+    constituida en Irlanda conforme al Companies Act 2014,
+    con número de registro CRO [NÚMERO CRO] ("la Sociedad"
+    o "el Cesionario")
+
+Fecha: ${d('ipa_date') || today}
+Rol del Cedente: ${d('ipa_role')}
 Fecha de inicio de actividad: ${d('ipa_start_date')}
 
-CESIONARIO: Nuntio Technologies Limited
-(Companies Registration Office Ireland)
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-═══════════════════════════════════════════════
-CLÁUSULA 1 — CESIÓN DE PROPIEDAD INTELECTUAL
-═══════════════════════════════════════════════
-1.1 El Cedente, por la presente, cede, transfiere y asigna irrevocablemente a Nuntio Technologies Limited todos los derechos de propiedad intelectual sobre:
+(A) El Cedente ha prestado o presta servicios a la Sociedad
+    en calidad de ${d('ipa_role')} desde ${d('ipa_start_date')}.
+
+(B) En el ejercicio de dichos servicios, el Cedente ha
+    creado, desarrollado o contribuido a crear propiedad
+    intelectual de valor estratégico para la Sociedad.
+
+(C) Las Partes reconocen que la titularidad de dicha
+    propiedad intelectual por la Sociedad es esencial para
+    su correcto funcionamiento, para la captación de
+    financiación y para el cumplimiento de sus obligaciones
+    frente a terceros.
+
+(D) El presente Acuerdo tiene por objeto formalizar la
+    cesión íntegra de dicha propiedad intelectual a la
+    Sociedad en los términos que se detallan a continuación.
+
+EN VIRTUD DE LO EXPUESTO, las Partes acuerdan lo siguiente:
+
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES
+════════════════════════════════════════════════════
+
+1.1 "Derechos de Propiedad Intelectual" o "DPI" significa
+    todos y cada uno de los siguientes derechos, existentes
+    en cualquier parte del mundo, con independencia de su
+    registro: (i) derechos de autor y derechos afines
+    conforme al Copyright and Related Rights Act 2000 y
+    normativa equivalente; (ii) derechos sobre patentes
+    e invenciones; (iii) derechos sobre marcas, nombres
+    comerciales y signos distintivos; (iv) derechos sobre
+    diseños industriales; (v) derechos sobre secretos
+    comerciales y know-how; (vi) derechos sobre bases de
+    datos; y (vii) cualquier otro derecho de propiedad
+    industrial o intelectual análogo.
+
+1.2 "IP Cedida" significa toda la propiedad intelectual
+    descrita en el Artículo 2 del presente Acuerdo.
+
+1.3 "IP Preexistente" significa los DPI del Cedente que
+    (i) existían con anterioridad al inicio de su actividad
+    con la Sociedad, y (ii) no guardan relación con el
+    negocio de la Sociedad, según se detalle en el Anexo A.
+
+════════════════════════════════════════════════════
+ARTÍCULO 2 — OBJETO Y ALCANCE DE LA CESIÓN
+════════════════════════════════════════════════════
+
+2.1 El Cedente cede, transfiere y asigna irrevocablemente
+    a la Sociedad, con pleno efecto legal, la totalidad de
+    los DPI sobre las siguientes obras, invenciones y
+    creaciones:
 
     ${d('ipa_ip_desc')}
 
-1.2 La cesión incluye, sin limitación:
-    - Todo el código fuente, binarios y documentación técnica
-    - Algoritmos, métodos, técnicas y know-how
-    - Diseños, interfaces de usuario, flujos de experiencia
-    - Secretos comerciales y información confidencial
-    - Derechos de patente (presentes y futuros)
-    - Nombres de dominio, marcas y signos distintivos relacionados
+2.2 Sin carácter limitativo, la cesión incluye:
 
-═══════════════════════════════════════════════
-CLÁUSULA 2 — RETROACTIVIDAD
-═══════════════════════════════════════════════
-2.1 La presente cesión tiene efecto retroactivo desde la Fecha de Inicio indicada, abarcando toda la IP creada desde el inicio de la colaboración del Cedente con la Sociedad.
+    (a) Todo el código fuente, código objeto, scripts,
+        módulos, librerías y documentación técnica;
+    (b) Algoritmos, metodologías, arquitecturas de sistema
+        y modelos de machine learning o de inteligencia
+        artificial;
+    (c) Diseños de interfaz de usuario (UI/UX), wireframes,
+        prototipos y activos gráficos;
+    (d) Secretos comerciales, know-how técnico y comercial;
+    (e) Marcas, nombres de producto, logos y signos
+        distintivos creados en el ejercicio de los servicios;
+    (f) Nombres de dominio y presencia en redes sociales;
+    (g) Documentación de producto, manuales y material
+        de formación;
+    (h) Bases de datos y conjuntos de datos de entrenamiento;
+    (i) Solicitudes de patente, invenciones patentables
+        y mejoras técnicas.
 
-═══════════════════════════════════════════════
-CLÁUSULA 3 — CONTRAPRESTACIÓN
-═══════════════════════════════════════════════
-3.1 Como contraprestación por la presente cesión, la Sociedad abonará al Cedente: ${d('ipa_consideration')}
+2.3 Efecto retroactivo: La presente cesión tiene efecto
+    retroactivo desde ${d('ipa_start_date')}, abarcando toda
+    la IP creada desde el inicio de la actividad del
+    Cedente con la Sociedad.
 
-═══════════════════════════════════════════════
-CLÁUSULA 4 — GARANTÍAS DEL CEDENTE
-═══════════════════════════════════════════════
-4.1 El Cedente declara y garantiza que:
-    a) Es el único titular de la IP cedida
-    b) La IP no infringe derechos de terceros
-    c) No existen cargas ni gravámenes sobre la IP
-    d) No ha cedido ni comprometido la IP a terceros
+════════════════════════════════════════════════════
+ARTÍCULO 3 — RENUNCIA A DERECHOS MORALES
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
+3.1 En la máxima medida permitida por la legislación
+    aplicable, el Cedente renuncia irrevocablemente a
+    todos los derechos morales (moral rights) que pudieran
+    corresponderle sobre la IP Cedida, incluyendo el
+    derecho de paternidad (attribution) y el derecho de
+    integridad, conforme al Copyright and Related Rights
+    Act 2000 (Ireland) y legislación equivalente.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — CONTRAPRESTACIÓN
+════════════════════════════════════════════════════
+
+4.1 Como contraprestación íntegra y suficiente por la
+    cesión de la IP Cedida, la Sociedad abonará al
+    Cedente la cantidad de: ${d('ipa_consideration')}
+
+4.2 Las Partes reconocen expresamente que la
+    contraprestación pactada es adecuada y suficiente,
+    teniendo en cuenta la relación global entre el
+    Cedente y la Sociedad.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — DECLARACIONES Y GARANTÍAS DEL CEDENTE
+════════════════════════════════════════════════════
+
+5.1 El Cedente declara y garantiza a la Sociedad que,
+    a la fecha del presente Acuerdo:
+
+    (a) Es el único y legítimo titular de todos los DPI
+        sobre la IP Cedida, libre de cargas, gravámenes,
+        licencias o derechos de terceros;
+    (b) La IP Cedida no infringe, ni hasta donde llega su
+        conocimiento infringirá, los derechos de propiedad
+        intelectual de ningún tercero;
+    (c) No ha cedido, licenciado ni comprometido ninguno
+        de los DPI cedidos a favor de tercero alguno;
+    (d) La IP Cedida ha sido creada de forma original por
+        el Cedente, sin utilizar software, código o material
+        de terceros sujeto a licencias incompatibles;
+    (e) No está sujeto a ningún acuerdo de no competencia
+        u obligación contractual que limite su capacidad
+        para suscribir el presente Acuerdo o para ceder
+        la IP Cedida.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — OBLIGACIÓN DE DIVULGACIÓN Y COOPERACIÓN
+════════════════════════════════════════════════════
+
+6.1 El Cedente se obliga a:
+    (a) Revelar inmediatamente a la Sociedad cualquier
+        nueva invención, mejora o creación que desarrolle
+        en el ejercicio de sus funciones;
+    (b) Suscribir cuantos documentos complementarios sean
+        necesarios para perfeccionar la cesión ante
+        registros públicos nacionales o internacionales;
+    (c) Prestar la colaboración razonable que la Sociedad
+        requiera para la defensa de los DPI cedidos frente
+        a terceros.
+
+════════════════════════════════════════════════════
+ARTÍCULO 7 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+7.1 Acuerdo completo: El presente documento constituye
+    el acuerdo íntegro entre las Partes en relación con
+    la cesión de la IP Cedida y sustituye a cualquier
+    acuerdo o entendimiento previo, oral o escrito.
+
+7.2 Modificaciones: Ninguna modificación será válida salvo
+    que conste por escrito y esté firmada por ambas Partes.
+
+7.3 Divisibilidad: Si cualquier disposición fuese declarada
+    nula, las restantes conservarán plena vigencia.
+
+7.4 Renuncia: La falta de ejercicio de un derecho no
+    implicará renuncia al mismo ni precluirá su ejercicio
+    posterior.
+
+7.5 Ejemplares: El presente Acuerdo podrá suscribirse en
+    tantos ejemplares como Partes haya, constituyendo todos
+    ellos un único instrumento.
+
+════════════════════════════════════════════════════
+ARTÍCULO 8 — LEY APLICABLE Y RESOLUCIÓN DE DISPUTAS
+════════════════════════════════════════════════════
+
+8.1 El presente Acuerdo se regirá conforme a la legislación
+    de la República de Irlanda, en particular el Copyright
+    and Related Rights Act 2000 y el Companies Act 2014.
+
+8.2 Las disputas se someterán en primera instancia a
+    mediación durante un período mínimo de 30 días. De no
+    alcanzarse acuerdo, las Partes se someten a la
+    jurisdicción exclusiva de los tribunales de la
+    República de Irlanda.
+
+════════════════════════════════════════════════════
 FIRMAS
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
 
-${d('ipa_assignor')} (Cedente)         Fecha: ___________
-Firma: _______________________
+FIRMADO por el Cedente:
 
-En representación de Nuntio Technologies Limited:
-Firma: _______________________    Fecha: ___________
+Nombre completo: ${d('ipa_assignor')}
+Rol:             ${d('ipa_role')}
+Firma:           _______________________
+Fecha:           ___________
 
-NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+En presencia de:
+Testigo (nombre):    _______________
+Firma del testigo:   _______________
+Domicilio testigo:   _______________
+
+────────────────────────────────────────────────────
+
+FIRMADO por y en nombre de
+NUNTIO TECHNOLOGIES LIMITED:
+
+Firma autorizada:  _______________________
+Nombre y cargo:    _______________  Director
+Fecha:             ___________
+
+────────────────────────────────────────────────────
+ANEXO A — IP PREEXISTENTE DEL CEDENTE
+(Completar o indicar "Ninguna")
+_______________________________________________
+_______________________________________________
+
+AVISO LEGAL: Plantilla orientativa. Revisión jurídica
+obligatoria antes de firma. Conforme a la legislación
+irlandesa, incluyendo el Copyright and Related Rights
+Act 2000. Nuntio Technologies Ltd no asume
+responsabilidad por uso sin supervisión jurídica.
 `.trim(),
 
     nda: () => `
-NON-DISCLOSURE AGREEMENT (NDA)
+NON-DISCLOSURE AGREEMENT
 NUNTIO TECHNOLOGIES LIMITED
 
+Número de Referencia: NDA-NTL-${Date.now()}
+ESTRICTAMENTE CONFIDENCIAL
+
+════════════════════════════════════════════════════
+              NON-DISCLOSURE AGREEMENT
+          (ACUERDO DE CONFIDENCIALIDAD)
+════════════════════════════════════════════════════
+
+ENTRE:
+
+(1) NUNTIO TECHNOLOGIES LIMITED, sociedad constituida en
+    Irlanda conforme al Companies Act 2014, con CRO número
+    [NÚMERO CRO] ("Parte Divulgante" o "Nuntio")
+
+(2) ${d('nda_party')}, con domicilio a efectos de
+    notificaciones en [DIRECCIÓN] ("Parte Receptora")
+
+Tipo de relación: ${d('nda_party_role')}
+Modalidad: ${d('nda_type')}
 Fecha: ${d('nda_date') || today}
 
-═══════════════════════════════════════════════
-ENTRE:
-═══════════════════════════════════════════════
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-PARTE DIVULGANTE: Nuntio Technologies Limited (Ireland)
-PARTE RECEPTORA: ${d('nda_party')}
-Tipo de relación: ${d('nda_party_role')}
-Tipo de NDA: ${d('nda_type')}
+(A) Las Partes están considerando iniciar o continuar una
+    relación de negocios con el siguiente propósito:
+    ${d('nda_purpose')}
 
-═══════════════════════════════════════════════
-CLÁUSULA 1 — PROPÓSITO
-═══════════════════════════════════════════════
-Las partes desean compartir información confidencial con el propósito de:
-${d('nda_purpose')}
+(B) En el contexto de dicha relación, la Parte Divulgante
+    podrá revelar a la Parte Receptora información de
+    carácter confidencial y sensible.
 
-═══════════════════════════════════════════════
-CLÁUSULA 2 — INFORMACIÓN CONFIDENCIAL
-═══════════════════════════════════════════════
-2.1 Se considera Información Confidencial toda información técnica, comercial, financiera, estratégica o de producto de Nuntio Technologies Limited, incluyendo pero no limitado a: código fuente, algoritmos de orquestación agéntica, modelos de negocio, listas de clientes, términos comerciales, estrategia de producto y cualquier información marcada como confidencial.
+(C) Las Partes desean establecer los términos y condiciones
+    bajo los cuales se regirá el tratamiento de dicha
+    información confidencial.
 
-═══════════════════════════════════════════════
-CLÁUSULA 3 — OBLIGACIONES
-═══════════════════════════════════════════════
-3.1 La Parte Receptora se compromete a:
-    a) Mantener estricta confidencialidad sobre la Información Confidencial
-    b) No divulgar a terceros sin consentimiento previo por escrito
-    c) Usar la información únicamente para el propósito indicado
-    d) Proteger la información con el mismo cuidado que protege la propia
-    e) Notificar inmediatamente cualquier divulgación no autorizada
+EN VIRTUD DE LO EXPUESTO, las Partes acuerdan lo siguiente:
 
-═══════════════════════════════════════════════
-DURACIÓN Y TERMINACIÓN
-═══════════════════════════════════════════════
-Duración del acuerdo: ${d('nda_term')} desde la fecha de firma.
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
+1.1 "Información Confidencial" significa toda información,
+    dato, documento o material, en cualquier soporte o
+    formato (escrito, electrónico, oral o visual), que:
+
+    (a) La Parte Divulgante designe expresamente como
+        "confidencial" o "reservado"; o
+    (b) Por su naturaleza o por las circunstancias de su
+        divulgación razonablemente deba entenderse como
+        confidencial,
+
+    incluyendo sin limitación: tecnología, código fuente,
+    algoritmos de orquestación e inteligencia artificial,
+    arquitectura de sistemas, datos de usuarios, estrategia
+    comercial y de producto, términos de contratos, datos
+    financieros, proyecciones, planes de negocio, listas
+    de clientes y proveedores, know-how, y cualquier
+    información sobre inversores, socios o empleados.
+
+1.2 Información NO Confidencial: No tendrá la consideración
+    de Información Confidencial aquella que:
+
+    (a) Fuese o llegase a ser de dominio público sin
+        incumplimiento del presente Acuerdo por la Parte
+        Receptora;
+    (b) Fuese ya conocida por la Parte Receptora con
+        anterioridad a su divulgación, según prueba
+        documental fehaciente;
+    (c) Fuese recibida legítimamente de un tercero no
+        sujeto a obligación de confidencialidad;
+    (d) Fuese desarrollada de forma independiente por la
+        Parte Receptora sin uso de la Información
+        Confidencial, según prueba documental fehaciente.
+
+1.3 "Propósito" significa la finalidad específica descrita
+    en el Considerando (A) del presente Acuerdo.
+
+════════════════════════════════════════════════════
+ARTÍCULO 2 — OBLIGACIONES DE CONFIDENCIALIDAD
+════════════════════════════════════════════════════
+
+2.1 La Parte Receptora se compromete a:
+
+    (a) Tratar la Información Confidencial con el mismo
+        grado de diligencia y cuidado que aplica a su
+        propia información confidencial más sensible, y
+        en todo caso con un nivel de diligencia no
+        inferior al razonablemente exigible;
+    (b) No divulgar, reproducir, publicar ni comunicar la
+        Información Confidencial a ningún tercero sin
+        consentimiento previo por escrito de la Parte
+        Divulgante;
+    (c) Utilizar la Información Confidencial exclusivamente
+        para el Propósito indicado en el presente Acuerdo;
+    (d) Limitar el acceso a la Información Confidencial a
+        aquellos empleados, directivos o asesores que la
+        necesiten conocer (need-to-know basis) y que estén
+        sujetos a obligaciones de confidencialidad no menos
+        restrictivas que las del presente Acuerdo;
+    (e) Notificar a la Parte Divulgante de forma inmediata
+        y por escrito cualquier divulgación no autorizada
+        o acceso indebido a la Información Confidencial de
+        que tenga conocimiento.
+
+2.2 Divulgación forzosa: En el supuesto de que la Parte
+    Receptora se vea legalmente obligada a divulgar la
+    Información Confidencial por requerimiento judicial,
+    regulatorio o administrativo, deberá (i) notificarlo
+    a la Parte Divulgante con la mayor antelación posible,
+    (ii) cooperar razonablemente para obtener la protección
+    confidencial que proceda, y (iii) divulgar únicamente
+    la información estrictamente necesaria.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — DURACIÓN
+════════════════════════════════════════════════════
+
+3.1 El presente Acuerdo entrará en vigor en la fecha de
+    su firma y permanecerá vigente durante ${d('nda_term')}.
+
+3.2 Las obligaciones de confidencialidad previstas en el
+    Artículo 2 continuarán en vigor durante ${d('nda_term')}
+    adicionales tras la extinción o resolución del Acuerdo.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — DEVOLUCIÓN Y DESTRUCCIÓN
+════════════════════════════════════════════════════
+
+4.1 A requerimiento de la Parte Divulgante, o a la
+    extinción del presente Acuerdo, la Parte Receptora
+    deberá, a elección de la Parte Divulgante:
+
+    (a) Devolver de forma inmediata toda la Información
+        Confidencial en su poder, incluyendo copias; o
+    (b) Destruir toda la Información Confidencial y
+        confirmar por escrito dicha destrucción en un
+        plazo máximo de 5 Días Hábiles.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — REMEDIOS Y TUTELA CAUTELAR
+════════════════════════════════════════════════════
+
+5.1 Las Partes reconocen que cualquier incumplimiento del
+    presente Acuerdo causaría un daño irreparable a la
+    Parte Divulgante que no podría ser adecuadamente
+    compensado mediante indemnización económica.
+
+5.2 En consecuencia, la Parte Divulgante tendrá derecho a
+    solicitar la tutela cautelar o definitiva que proceda,
+    incluyendo órdenes de cesación e injunctions, sin
+    necesidad de acreditar daño efectivo ni de prestar
+    caución o garantía.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+6.1 Acuerdo completo: El presente Acuerdo constituye la
+    totalidad del acuerdo entre las Partes en materia de
+    confidencialidad y sustituye a cualquier acuerdo previo.
+
+6.2 Modificaciones: Solo serán válidas si constan por
+    escrito y están firmadas por ambas Partes.
+
+6.3 Divisibilidad: Si cualquier disposición fuese declarada
+    nula, las restantes conservarán plena vigencia.
+
+6.4 Cesión: Ninguna Parte podrá ceder sus derechos u
+    obligaciones bajo el presente Acuerdo sin consentimiento
+    previo por escrito de la otra Parte.
+
+6.5 Renuncia: La falta de ejercicio de un derecho no
+    implicará renuncia al mismo ni precluirá su ejercicio
+    posterior.
+
+6.6 Ejemplares: El presente Acuerdo podrá firmarse en
+    múltiples ejemplares, constituyendo todos ellos un
+    único instrumento.
+
+════════════════════════════════════════════════════
+ARTÍCULO 7 — LEY APLICABLE Y JURISDICCIÓN
+════════════════════════════════════════════════════
+
+7.1 El presente Acuerdo se regirá por la legislación de
+    la República de Irlanda.
+
+7.2 Las Partes se someten a la jurisdicción exclusiva de
+    los tribunales de la República de Irlanda para la
+    resolución de cualquier disputa derivada del presente
+    Acuerdo, sin perjuicio del derecho de cualquier Parte
+    a solicitar medidas cautelares ante cualquier tribunal
+    competente.
+
+════════════════════════════════════════════════════
 FIRMAS
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
 
-Nuntio Technologies Limited          Fecha: ___________
-Firma: _______________________
+FIRMADO por y en nombre de
+NUNTIO TECHNOLOGIES LIMITED:
 
-${d('nda_party')}                    Fecha: ___________
-Firma: _______________________
+Firma:  _______________________
+Nombre: _______________  |  Cargo: Director
+Fecha:  ___________
 
-NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+────────────────────────────────────────────────────
+
+FIRMADO por la Parte Receptora:
+
+Firma:  _______________________
+Nombre: ${d('nda_party')}
+Fecha:  ___________
+
+En presencia de:
+Testigo (nombre):  _______________
+Firma del testigo: _______________
+Domicilio testigo: _______________
+
+────────────────────────────────────────────────────
+AVISO LEGAL: Plantilla orientativa. Revisión jurídica
+recomendada antes de su firma. Regido por la
+legislación irlandesa (Companies Act 2014).
 `.trim(),
 
     vest: () => `
-FOUNDER VESTING SCHEDULE
+FOUNDER VESTING AGREEMENT
 NUNTIO TECHNOLOGIES LIMITED
-Fecha: ${today}
 
-═══════════════════════════════════════════════
-ACUERDO DE MADURACIÓN DE ACCIONES (VESTING)
-═══════════════════════════════════════════════
+Número de Referencia: VEST-NTL-${today.replace(/\s/g,'')}
 
-Este documento formaliza el plan de vesting acordado entre los fundadores de Nuntio Technologies Limited.
+════════════════════════════════════════════════════
+          ACUERDO DE VESTING DE FUNDADORES
+════════════════════════════════════════════════════
 
-─────────────────────────────────────────────
-FUNDADOR 1
-─────────────────────────────────────────────
-Nombre:           ${d('vest_f1')}
-Acciones totales: ${d('vest_f1_shares')}
+ENTRE:
 
-─────────────────────────────────────────────
-FUNDADOR 2
-─────────────────────────────────────────────
-Nombre:           ${d('vest_f2')}
-Acciones totales: ${d('vest_f2_shares')}
+(1) Nuntio Technologies Limited, sociedad constituida en
+    Irlanda conforme al Companies Act 2014 ("la Sociedad")
 
-═══════════════════════════════════════════════
-CONDICIONES DEL PLAN
-═══════════════════════════════════════════════
+(2) ${d('vest_f1')}, fundador y director ("Fundador 1")
 
-Fecha de inicio del vesting: ${d('vest_start')}
-Período cliff:               ${d('vest_cliff')}
-Período total:               ${d('vest_total')}
+(3) ${d('vest_f2')}, fundador y director ("Fundador 2")
 
-DESCRIPCIÓN:
-Las acciones se adquieren ("vest") de forma mensual tras el período cliff.
-Si un fundador abandona la empresa antes del cliff, no conserva acciones.
-Al completar el período total, el 100% de las acciones están vestidas.
+Fecha de Inicio del Vesting: ${d('vest_start')}
+Período Cliff:               ${d('vest_cliff')}
+Período Total de Vesting:    ${d('vest_total')}
 
-═══════════════════════════════════════════════
-CLÁUSULAS CLAVE
-═══════════════════════════════════════════════
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-1. CLIFF: Durante los primeros ${d('vest_cliff')}, ninguna acción está vestida.
-   Al cumplir el cliff, se vesta el 25% de las acciones automáticamente.
+(A) Los Fundadores son titulares de acciones de la
+    Sociedad según el registro de accionistas vigente
+    en el Companies Registration Office de Irlanda.
 
-2. VESTING MENSUAL: Tras el cliff, las acciones se vestan en cuotas
-   mensuales iguales hasta completar el período total.
+(B) Las Partes reconocen que es práctica estándar en
+    la industria tecnológica y de capital riesgo someter
+    las participaciones de los fundadores a un plan de
+    vesting, con el fin de alinear incentivos a largo
+    plazo y proteger los intereses de la Sociedad y de
+    futuros inversores.
 
-3. ACELERACIÓN: En caso de adquisición o cambio de control de la empresa,
-   el Board puede aprobar aceleración total o parcial del vesting.
+(C) El presente Acuerdo establece el plan de vesting
+    aplicable a las acciones de ambos Fundadores,
+    conforme al Companies Act 2014 (Ireland).
 
-4. GOOD LEAVER: Fundador que sale por causas justificadas (enfermedad,
-   desacuerdo estratégico, muerte) conserva las acciones ya vestidas.
+EN VIRTUD DE LO EXPUESTO, las Partes acuerdan lo siguiente:
 
-5. BAD LEAVER: Fundador que abandona sin causa o incumple obligaciones,
-   sujeto a buy-back al valor nominal por las acciones no vestidas.
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
+1.1 "Acciones Vestidas" significa las Acciones sobre las
+    que el Fundador ha adquirido derechos plenos conforme
+    al calendario del presente Acuerdo.
+
+1.2 "Acciones No Vestidas" significa las Acciones aún
+    sujetas al derecho de recompra de la Sociedad.
+
+1.3 "Fecha de Inicio" significa ${d('vest_start')}.
+
+1.4 "Período Cliff" significa ${d('vest_cliff')} contados
+    desde la Fecha de Inicio, durante los cuales no se
+    devenga ninguna Acción.
+
+1.5 "Evento de Aceleración" significa (i) un cambio de
+    control de la Sociedad (adquisición de más del 50%
+    del capital o de activos materiales), o (ii) cese
+    del Fundador sin causa justificada por la Sociedad.
+
+1.6 "Fair Market Value" significa el valor razonable de
+    mercado de las Acciones, determinado de buena fe por
+    el Board conforme a los últimos estados financieros
+    auditados o cualquier valoración independiente reciente.
+
+════════════════════════════════════════════════════
+ARTÍCULO 2 — PLAN DE VESTING
+════════════════════════════════════════════════════
+
+2.1 Acciones sujetas al plan:
+    - ${d('vest_f1')}: ${d('vest_f1_shares')} acciones
+    - ${d('vest_f2')}: ${d('vest_f2_shares')} acciones
+
+2.2 Mecánica del vesting:
+
+    FASE 1 — CLIFF (${d('vest_cliff')}):
+    Durante los primeros ${d('vest_cliff')} desde la
+    Fecha de Inicio, ninguna Acción quedará vestida.
+    Si el Fundador cesa antes de cumplir el Cliff, no
+    conservará Acción alguna (salvo disposición Good
+    Leaver aplicable).
+
+    FASE 2 — VESTING MENSUAL POST-CLIFF:
+    Al cumplirse el Cliff, el 25% de las Acciones totales
+    quedará vestido automáticamente. Las Acciones restantes
+    (75%) se devengarán en cuotas mensuales iguales hasta
+    completar el período total de ${d('vest_total')}.
+
+    Cuota mensual por Fundador:
+    - Fundador 1: ${d('vest_f1_shares')} ÷ meses totales
+    - Fundador 2: ${d('vest_f2_shares')} ÷ meses totales
+
+2.3 El vesting cesará en la fecha en que el Fundador deje
+    de prestar servicios a la Sociedad, salvo en los
+    supuestos de aceleración previstos en el Artículo 4.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — GOOD LEAVER / BAD LEAVER
+════════════════════════════════════════════════════
+
+3.1 GOOD LEAVER:
+    Son supuestos de Good Leaver: (i) fallecimiento;
+    (ii) incapacidad permanente total debidamente
+    acreditada; (iii) cese por la Sociedad sin causa
+    justificada; (iv) dimisión por causa justificada
+    (breach material de la Sociedad).
+
+    Consecuencias: El Fundador retiene sus Acciones
+    Vestidas en su totalidad. Las Acciones No Vestidas
+    serán recompradas por la Sociedad al Fair Market
+    Value o al precio de emisión, a elección del Board.
+
+3.2 BAD LEAVER:
+    Son supuestos de Bad Leaver: (i) dimisión voluntaria
+    sin causa justificada; (ii) cese por causa grave
+    (gross misconduct); (iii) incumplimiento material
+    de obligaciones contractuales o fiduciarias; (iv)
+    violación de acuerdos de confidencialidad o no
+    competencia.
+
+    Consecuencias: La Sociedad tendrá derecho a recomprar
+    la totalidad de las Acciones (Vestidas y No Vestidas)
+    al precio nominal de emisión.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — ACELERACIÓN
+════════════════════════════════════════════════════
+
+4.1 Aceleración Simple (Single Trigger): En caso de
+    cambio de control, el Board podrá, a su discreción,
+    aprobar la aceleración total o parcial del vesting
+    pendiente de cualquier Fundador.
+
+4.2 Aceleración Doble (Double Trigger): Si un Fundador
+    es cesado sin causa justificada dentro de los 12 meses
+    siguientes a un cambio de control, sus Acciones No
+    Vestidas quedarán automáticamente vestidas.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+5.1 Acuerdo completo: El presente Acuerdo constituye el
+    acuerdo íntegro entre las Partes respecto a su objeto
+    y sustituye a cualquier acuerdo previo sobre vesting.
+
+5.2 Modificaciones: Solo serán válidas por escrito con
+    firma de todas las Partes.
+
+5.3 Divisibilidad: La nulidad de una cláusula no afecta
+    a la validez de las restantes.
+
+5.4 Renuncia: La falta de ejercicio de un derecho no
+    implica renuncia al mismo.
+
+5.5 Ejemplares: Puede suscribirse en múltiples ejemplares,
+    constituyendo todos ellos un único instrumento.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — LEY APLICABLE Y JURISDICCIÓN
+════════════════════════════════════════════════════
+
+6.1 El presente Acuerdo se regirá por la legislación de
+    la República de Irlanda (Companies Act 2014).
+
+6.2 Las disputas se someterán en primera instancia a
+    mediación durante un mínimo de 30 días. De no
+    alcanzarse acuerdo, las Partes se someten a la
+    jurisdicción exclusiva de los tribunales irlandeses.
+
+════════════════════════════════════════════════════
 FIRMAS
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
 
-${d('vest_f1')} (Fundador 1)      Fecha: ___________
-Firma: _______________________
+FIRMADO por y en nombre de la Sociedad:
+Firma:  _______________________  |  Cargo: Director
+Nombre: _______________
+Fecha:  ___________
 
-${d('vest_f2')} (Fundador 2)      Fecha: ___________
-Firma: _______________________
+────────────────────────────────────────────────────
 
-En representación del Board of Directors:
-Firma: _______________________    Fecha: ___________
+FIRMADO por ${d('vest_f1')} (Fundador 1):
+Firma:  _______________________
+Fecha:  ___________
 
-NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+En presencia de:
+Testigo (nombre):  _______________
+Firma del testigo: _______________
+
+────────────────────────────────────────────────────
+
+FIRMADO por ${d('vest_f2')} (Fundador 2):
+Firma:  _______________________
+Fecha:  ___________
+
+En presencia de:
+Testigo (nombre):  _______________
+Firma del testigo: _______________
+
+────────────────────────────────────────────────────
+AVISO LEGAL: Plantilla orientativa elaborada conforme
+al Companies Act 2014 (Ireland). Revisión jurídica
+obligatoria antes de firma.
 `.trim(),
 
     emp: () => `
-CONTRATO DE EMPLEO / PRESTACIÓN DE SERVICIOS
+SERVICE AGREEMENT / EMPLOYMENT CONTRACT
 NUNTIO TECHNOLOGIES LIMITED
-Fecha: ${today}
 
-═══════════════════════════════════════════════
-PARTES
-═══════════════════════════════════════════════
+Número de Referencia: EMP-NTL-${today.replace(/\s/g,'')}
+CONFIDENCIAL
 
-EMPLEADOR/EMPRESA:
-Nuntio Technologies Limited (Ireland)
+════════════════════════════════════════════════════
+   CONTRATO DE PRESTACIÓN DE SERVICIOS / EMPLEO
+════════════════════════════════════════════════════
 
-EMPLEADO/CONTRACTOR:
+ENTRE:
+
+(1) NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
+    constituida en Irlanda conforme al Companies Act
+    2014, con número de registro CRO [NÚMERO CRO]
+    ("la Empresa" o "la Sociedad")
+
+(2) ${d('emp_name')}, con domicilio a efectos de
+    notificaciones en la dirección que conste en los
+    registros de la Sociedad ("el Empleado" o el
+    "Prestador de Servicios")
+
+Rol:              ${d('emp_role')}
+Tipo de relación: ${d('emp_type')}
+Fecha de inicio:  ${d('emp_start')}
+Remuneración:     ${d('emp_salary')}
+
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
+
+(A) La Sociedad desea contratar los servicios de
+    ${d('emp_name')} en calidad de ${d('emp_role')},
+    bajo las condiciones establecidas en el presente
+    Acuerdo.
+
+(B) ${d('emp_name')} posee la cualificación, experiencia
+    y capacidad necesarias para desempeñar el rol
+    indicado y acepta las condiciones del presente
+    Acuerdo.
+
+(C) Las Partes reconocen la importancia de proteger la
+    propiedad intelectual y la información confidencial
+    de la Sociedad, elementos esenciales para su
+    actividad y competitividad.
+
+EN VIRTUD DE LO EXPUESTO, las Partes acuerdan lo siguiente:
+
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES
+════════════════════════════════════════════════════
+
+1.1 "DPI" significa Derechos de Propiedad Intelectual,
+    tal y como se define en el Artículo 4.
+
+1.2 "Información Confidencial" tiene el significado
+    atribuido en el Artículo 5.
+
+1.3 "Período de Preaviso" significa ${d('emp_notice')}.
+
+1.4 "Servicios" significa las funciones y responsabilidades
+    propias del rol de ${d('emp_role')} y cualesquiera
+    otras que le sean razonablemente asignadas por la
+    Sociedad.
+
+════════════════════════════════════════════════════
+ARTÍCULO 2 — OBJETO Y CONDICIONES PRINCIPALES
+════════════════════════════════════════════════════
+
+2.1 La Sociedad encomienda a ${d('emp_name')} la
+    prestación de los Servicios en calidad de
+    ${d('emp_role')}, con efectos desde ${d('emp_start')}.
+
+2.2 Remuneración: La contraprestación por los Servicios
+    será: ${d('emp_salary')}
+
+2.3 La relación se establece bajo la modalidad de
+    ${d('emp_type')}.
+
+2.4 ${d('emp_name')} prestará los Servicios con la
+    diligencia, profesionalidad y dedicación que el
+    cargo requiere, de conformidad con las directrices
+    que establezca el Board of Directors.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — ALCANCE DE LOS SERVICIOS
+════════════════════════════════════════════════════
+
+3.1 ${d('emp_name')} prestará servicios en el rol de
+    ${d('emp_role')}, incluyendo sin limitación:
+
+    (a) Todas las responsabilidades propias del cargo;
+    (b) Participación en reuniones de equipo y Board;
+    (c) Reporte directo según la estructura organizativa;
+    (d) Cualesquiera otras funciones que le sean
+        razonablemente asignadas por la Sociedad.
+
+3.2 ${d('emp_name')} dedicará el tiempo y esfuerzo
+    necesarios para desempeñar sus funciones con
+    el estándar de excelencia que la Sociedad requiere.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — PROPIEDAD INTELECTUAL
+════════════════════════════════════════════════════
+
+4.1 Toda obra, invención, creación, desarrollo,
+    mejora, software, algoritmo, diseño, metodología
+    o cualquier otro resultado intelectual creado por
+    ${d('emp_name')} en el ejercicio de los Servicios
+    o con recursos de la Sociedad pertenecerá
+    exclusivamente a la Sociedad desde el momento de
+    su creación.
+
+4.2 ${d('emp_name')} cede irrevocablemente a la Sociedad,
+    con carácter exclusivo y sin limitación territorial
+    ni temporal, todos los Derechos de Propiedad
+    Intelectual sobre dichas obras y creaciones,
+    conforme al Copyright and Related Rights Act 2000
+    (Ireland) y legislación equivalente.
+
+4.3 ${d('emp_name')} renuncia en la máxima medida
+    permitida por la ley a cualesquiera derechos morales
+    (moral rights) sobre las obras cedidas.
+
+4.4 La cesión incluye el derecho de la Sociedad a:
+    modificar, adaptar, sublicenciar, publicar y
+    explotar comercialmente las obras por cualquier
+    medio conocido o por conocer.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — CONFIDENCIALIDAD
+════════════════════════════════════════════════════
+
+5.1 ${d('emp_name')} se compromete a mantener la más
+    estricta confidencialidad sobre toda Información
+    Confidencial de la Sociedad, incluyendo sin
+    limitación:
+
+    (a) Código fuente, arquitectura y tecnología de
+        los productos y servicios de la Sociedad;
+    (b) Estrategia de negocio, planes de producto
+        y roadmap tecnológico;
+    (c) Información financiera, proyecciones y datos
+        de gestión;
+    (d) Datos e información de clientes, partners
+        e inversores;
+    (e) Términos de contratos y acuerdos comerciales;
+    (f) Cualquier información designada como
+        confidencial por la Sociedad.
+
+5.2 Las obligaciones de confidencialidad subsistirán
+    durante 3 años tras la extinción del presente
+    Acuerdo.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — NO COMPETENCIA Y NO SOLICITUD
+════════════════════════════════════════════════════
+
+6.1 No competencia: Durante la vigencia del presente
+    Acuerdo y durante 12 meses tras su extinción,
+    ${d('emp_name')} no podrá participar, directa ni
+    indirectamente, en actividades que compitan con
+    el negocio principal de la Sociedad en los
+    territorios en que ésta opere.
+
+6.2 No solicitud: Durante el mismo período, ${d('emp_name')}
+    no podrá solicitar ni contratar a ningún empleado,
+    contractor o advisor de la Sociedad.
+
+════════════════════════════════════════════════════
+ARTÍCULO 7 — TERMINACIÓN
+════════════════════════════════════════════════════
+
+7.1 Cualquiera de las Partes podrá resolver el presente
+    Acuerdo mediante preaviso por escrito de
+    ${d('emp_notice')}.
+
+7.2 La Sociedad podrá resolver el Acuerdo con efecto
+    inmediato por causa justificada (gross misconduct,
+    incumplimiento material, violación de
+    confidencialidad o no competencia, o conducta
+    perjudicial para la Sociedad).
+
+7.3 A la extinción del Acuerdo, ${d('emp_name')} deberá:
+    (a) Devolver todos los activos, equipos y documentos
+        de la Sociedad;
+    (b) Eliminar cualquier información confidencial de
+        sus dispositivos personales;
+    (c) Cesar en el uso de credenciales y accesos.
+
+════════════════════════════════════════════════════
+ARTÍCULO 8 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+8.1 Acuerdo completo: El presente Acuerdo constituye el
+    acuerdo íntegro entre las Partes y sustituye a
+    cualquier acuerdo previo sobre su objeto.
+
+8.2 Modificaciones: Solo válidas por escrito con firma
+    de ambas Partes.
+
+8.3 Divisibilidad: La nulidad de una cláusula no afecta
+    a la validez de las restantes.
+
+8.4 Renuncia: La falta de ejercicio de un derecho no
+    implica renuncia al mismo.
+
+════════════════════════════════════════════════════
+ARTÍCULO 9 — LEY APLICABLE Y JURISDICCIÓN
+════════════════════════════════════════════════════
+
+9.1 El presente Acuerdo se regirá por la legislación
+    de la República de Irlanda.
+
+9.2 Las disputas se someterán en primera instancia a
+    mediación (mínimo 30 días). De no alcanzarse acuerdo,
+    las Partes se someten a la jurisdicción exclusiva
+    de los tribunales de la República de Irlanda.
+
+════════════════════════════════════════════════════
+FIRMAS
+════════════════════════════════════════════════════
+
+FIRMADO por y en nombre de
+NUNTIO TECHNOLOGIES LIMITED:
+
+Firma:  _______________________
+Nombre: _______________  |  Cargo: Director
+Fecha:  ___________
+
+────────────────────────────────────────────────────
+
+FIRMADO por ${d('emp_name')}:
+
+Firma:  _______________________
 Nombre: ${d('emp_name')}
 Rol:    ${d('emp_role')}
-Tipo:   ${d('emp_type')}
+Fecha:  ___________
 
-═══════════════════════════════════════════════
-CONDICIONES PRINCIPALES
-═══════════════════════════════════════════════
+En presencia de:
+Testigo (nombre):  _______________
+Firma del testigo: _______________
+Domicilio testigo: _______________
 
-Fecha de inicio:     ${d('emp_start')}
-Remuneración:        ${d('emp_salary')}
-Período de preaviso: ${d('emp_notice')}
-
-═══════════════════════════════════════════════
-CLÁUSULA 1 — SCOPE OF WORK
-═══════════════════════════════════════════════
-1.1 ${d('emp_name')} prestará servicios en el rol de ${d('emp_role')} para Nuntio Technologies Limited.
-1.2 El alcance incluye todas las responsabilidades asociadas al rol y las que razonablemente le sean asignadas.
-
-═══════════════════════════════════════════════
-CLÁUSULA 2 — PROPIEDAD INTELECTUAL
-═══════════════════════════════════════════════
-2.1 Toda IP creada durante la relación pertenece exclusivamente a Nuntio Technologies Limited.
-2.2 Esto incluye código fuente, diseños, algoritmos, documentación y cualquier obra derivada.
-2.3 ${d('emp_name')} cede irrevocablemente todos los derechos a la empresa.
-
-═══════════════════════════════════════════════
-CLÁUSULA 3 — CONFIDENCIALIDAD
-═══════════════════════════════════════════════
-3.1 ${d('emp_name')} se compromete a mantener absoluta confidencialidad sobre:
-    - Tecnología y código fuente de Nuntio
-    - Información de clientes y partners
-    - Estrategia de negocio y roadmap de producto
-    - Información financiera y datos internos
-
-═══════════════════════════════════════════════
-CLÁUSULA 4 — TERMINACIÓN
-═══════════════════════════════════════════════
-4.1 Cualquiera de las partes puede terminar esta relación con ${d('emp_notice')} de preaviso.
-4.2 La empresa puede terminar inmediatamente por causa justificada.
-
-═══════════════════════════════════════════════
-FIRMAS
-═══════════════════════════════════════════════
-
-En representación de Nuntio Technologies Limited:
-Firma: _______________________    Fecha: ___________
-
-${d('emp_name')} (${d('emp_role')}):
-Firma: _______________________    Fecha: ___________
-
-NOTA: Plantilla orientativa. Requiere revisión legal antes de firma.
+────────────────────────────────────────────────────
+AVISO LEGAL: Plantilla orientativa conforme al
+Companies Act 2014 y Copyright and Related Rights
+Act 2000 (Ireland). Revisión jurídica obligatoria
+antes de firma.
 `.trim(),
 
     captable: () => `
-CAP TABLE FORMAL — TABLA DE CAPITALIZACIÓN
+CAP TABLE — TABLA DE CAPITALIZACIÓN FORMAL
 NUNTIO TECHNOLOGIES LIMITED
-Actualizado: ${today}
 
-═══════════════════════════════════════════════
-ESTRUCTURA DE CAPITAL
-═══════════════════════════════════════════════
+Número de Referencia: CT-NTL-${today.replace(/\s/g,'')}
+CONFIDENCIAL — DOCUMENTO CORPORATIVO INTERNO
 
-Total acciones autorizadas: ${d('ct_total')}
-Valor nominal por acción:   ${d('ct_par_value')}
+════════════════════════════════════════════════════
+         TABLA DE CAPITALIZACIÓN (CAP TABLE)
+════════════════════════════════════════════════════
 
-─────────────────────────────────────────────
-ACCIONISTAS ACTUALES
-─────────────────────────────────────────────
+Sociedad: Nuntio Technologies Limited
+Jurisdicción: República de Irlanda (Companies Act 2014)
+CRO: [NÚMERO CRO]
+Fecha de actualización: ${today}
 
-Nombre                   Acciones
-─────────────────────────────────────────────
-${d('ct_f1_name')}       ${d('ct_f1_shares')}
-${d('ct_f2_name')}       ${d('ct_f2_shares')}
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-─────────────────────────────────────────────
-POOLS RESERVADOS
-─────────────────────────────────────────────
+(A) La presente Cap Table refleja la estructura de capital
+    de la Sociedad a la fecha indicada, conforme a los
+    registros del Companies Registration Office (CRO)
+    de Irlanda y al Register of Members de la Sociedad.
 
-Pool Inversores (reservado): ${d('ct_investor_pool')}
-Pool ESOP Equipo/Advisors:   ${d('ct_esop_pool')}
+(B) El Board of Directors aprueba y certifica la presente
+    Cap Table como documento corporativo oficial.
 
-═══════════════════════════════════════════════
-NOTAS DE GOBIERNO
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+ARTÍCULO 1 — ESTRUCTURA DE CAPITAL
+════════════════════════════════════════════════════
 
-1. ACCIONES EMITIDAS: Las acciones de fundadores están emitidas y registradas
-   en el Companies Registration Office (CRO) de Irlanda.
+1.1 Parámetros globales:
 
-2. POOL DE INVERSORES: Acciones reservadas para emisión en ronda Seed.
-   No emitidas hasta cierre de ronda.
+    Total de acciones autorizadas: ${d('ct_total')}
+    Valor nominal por acción:      ${d('ct_par_value')}
 
-3. ESOP: Acciones reservadas para el Employee Stock Option Plan. Se emiten
-   según grants aprobados por el Board of Directors.
+1.2 Tabla de accionistas (acciones emitidas):
 
-4. FULLY DILUTED: En caso de ejercicio de todas las opciones, la estructura
-   quedaría según el desglose indicado arriba.
+    ┌──────────────────────────────────────────────────┐
+    │ Accionista       │ Acciones  │ % Capital emitido  │
+    ├──────────────────────────────────────────────────┤
+    │ ${d('ct_f1_name').padEnd(16)} │ ${d('ct_f1_shares').padEnd(9)} │ [calcular]         │
+    │ ${d('ct_f2_name').padEnd(16)} │ ${d('ct_f2_shares').padEnd(9)} │ [calcular]         │
+    └──────────────────────────────────────────────────┘
 
-5. PRE-MONEY VALUATION: La valoración se calcula como precio por acción
-   multiplicado por el total de acciones fully diluted.
+1.3 Pools reservados (acciones autorizadas, no emitidas):
 
-═══════════════════════════════════════════════
-APROBACIÓN DEL BOARD
-═══════════════════════════════════════════════
+    ┌──────────────────────────────────────────────────┐
+    │ Pool                    │ Acciones reservadas     │
+    ├──────────────────────────────────────────────────┤
+    │ Pool Inversores         │ ${d('ct_investor_pool').padEnd(23)} │
+    │ Pool ESOP Equipo        │ ${d('ct_esop_pool').padEnd(23)} │
+    └──────────────────────────────────────────────────┘
 
-${d('ct_f1_name')} (Director)    Fecha: ___________
+════════════════════════════════════════════════════
+ARTÍCULO 2 — NOTAS DE GOBIERNO CORPORATIVO
+════════════════════════════════════════════════════
+
+2.1 Acciones emitidas: Las acciones de fundadores están
+    emitidas y registradas en el Companies Registration
+    Office (CRO) de Irlanda. Cada transferencia o nueva
+    emisión requiere actualización del Register of Members
+    y notificación al CRO conforme al Companies Act 2014.
+
+2.2 Pool de inversores: Acciones autorizadas pero no
+    emitidas, reservadas para emisión en ronda Seed o
+    Series A. Su emisión requiere aprobación del Board
+    como Reserved Matter y resolución de accionistas.
+
+2.3 Pool ESOP: Acciones reservadas para el Employee Stock
+    Option Plan. Se emiten mediante grants individuales
+    aprobados por resolución del Board. Cada grant debe
+    documentarse en un Option Agreement individual.
+
+2.4 Capitalización totalmente diluida (Fully Diluted):
+    La capitalización diluida total incluye todas las
+    acciones emitidas más todos los pools reservados
+    más cualquier instrumento convertible vigente.
+
+2.5 Valoración pre-money: Se calcula como precio por
+    acción multiplicado por el total de acciones fully
+    diluted. El precio por acción lo determina el Board
+    en cada ronda de financiación.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — RESTRICCIONES Y DERECHOS
+════════════════════════════════════════════════════
+
+3.1 Las acciones de los fundadores están sujetas a las
+    restricciones de transmisión establecidas en el
+    Shareholders Agreement vigente (derecho de tanteo,
+    tag-along, drag-along y lock-up).
+
+3.2 Las acciones del pool ESOP están sujetas al plan
+    de vesting aprobado en cada Option Agreement.
+
+3.3 Cualquier nueva emisión o transferencia de acciones
+    requiere el cumplimiento de los procedimientos
+    establecidos en el Companies Act 2014 y en los
+    estatutos sociales de la Sociedad.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — APROBACIÓN DEL BOARD
+════════════════════════════════════════════════════
+
+La presente Cap Table ha sido revisada y aprobada por
+el Board of Directors de Nuntio Technologies Limited
+en la fecha indicada.
+
+FIRMADO por los Directores:
+
+${d('ct_f1_name')} (Director):
 Firma: _______________________
+Fecha: ___________
 
-${d('ct_f2_name')} (Director)    Fecha: ___________
+${d('ct_f2_name')} (Director):
 Firma: _______________________
+Fecha: ___________
 
-NOTA: Orientativo. Para efectos legales, consultar registro oficial en CRO.ie
+────────────────────────────────────────────────────
+AVISO LEGAL: Documento corporativo interno orientativo.
+Para efectos legales y de due diligence, consultar
+los registros oficiales en CRO.ie y el Register of
+Members de la Sociedad. Regido por el Companies Act
+2014 (Ireland).
 `.trim(),
 
     esop: () => `
 EMPLOYEE STOCK OPTION PLAN (ESOP)
 NUNTIO TECHNOLOGIES LIMITED
-Aprobado por Board: ${today}
 
-═══════════════════════════════════════════════
-PLAN DE OPCIONES SOBRE ACCIONES
-═══════════════════════════════════════════════
+Número de Referencia: ESOP-NTL-${today.replace(/\s/g,'')}
+APROBADO POR EL BOARD OF DIRECTORS
 
-Nuntio Technologies Limited establece el presente Plan de Opciones para
-atraer, retener y motivar a los miembros del equipo y advisors.
+════════════════════════════════════════════════════
+         PLAN DE OPCIONES SOBRE ACCIONES
+        (EMPLOYEE STOCK OPTION PLAN — ESOP)
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-PARÁMETROS DEL PLAN
-═══════════════════════════════════════════════
+Sociedad: Nuntio Technologies Limited
+Jurisdicción: República de Irlanda (Companies Act 2014)
+Fecha de aprobación: ${today}
+Aprobado por: ${d('esop_board')}
 
-Tamaño del Pool:              ${d('esop_pool')}
-Precio de ejercicio (strike): ${d('esop_strike')}
-Vesting estándar:             ${d('esop_vesting')}
-Ventana de ejercicio:         ${d('esop_window')}
-Aprobación de grants:         ${d('esop_board')}
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-═══════════════════════════════════════════════
-CLÁUSULA 1 — ELEGIBILIDAD
-═══════════════════════════════════════════════
-1.1 Son elegibles para recibir opciones bajo este plan:
-    - Empleados a tiempo completo de Nuntio Technologies Limited
-    - Contractors que presten servicios continuados
-    - Advisors estratégicos con Advisor Agreement vigente
-    - Directores no ejecutivos aprobados por el Board
+(A) El Board of Directors de Nuntio Technologies Limited
+    reconoce que la atracción y retención de talento
+    extraordinario es esencial para la consecución de
+    los objetivos estratégicos de la Sociedad.
 
-═══════════════════════════════════════════════
-CLÁUSULA 2 — VESTING
-═══════════════════════════════════════════════
-2.1 El vesting estándar del plan es: ${d('esop_vesting')}
-2.2 Las opciones no vestidas se pierden al terminar la relación.
-2.3 El Board puede aprobar aceleración en casos especiales.
+(B) El presente Plan de Opciones tiene por objeto alinear
+    los incentivos del equipo y asesores estratégicos con
+    los intereses a largo plazo de la Sociedad y sus
+    accionistas.
 
-═══════════════════════════════════════════════
-CLÁUSULA 3 — EJERCICIO
-═══════════════════════════════════════════════
-3.1 Precio de ejercicio: ${d('esop_strike')} por opción.
-3.2 Tras terminar la relación, el beneficiario tiene ${d('esop_window')} para ejercer.
-3.3 Las opciones no ejercidas dentro del plazo caducan automáticamente.
+(C) El presente Plan se establece al amparo del Companies
+    Act 2014 y cualquier normativa fiscal aplicable en
+    Irlanda (Revenue Commissioners).
 
-═══════════════════════════════════════════════
-CLÁUSULA 4 — EVENTOS DE LIQUIDEZ
-═══════════════════════════════════════════════
-4.1 En caso de adquisición o IPO, las opciones no vestidas pueden
-    acelerarse según decida el Board.
-4.2 El precio de ejercicio en evento de liquidez se calculará según
-    el precio de la transacción, sujeto a aprobación del Board.
+EN VIRTUD DE LO EXPUESTO, el Board aprueba el siguiente
+Plan de Opciones sobre Acciones:
 
-═══════════════════════════════════════════════
-APROBACIÓN DEL BOARD
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES
+════════════════════════════════════════════════════
+
+1.1 "Beneficiario" significa cualquier empleado, director
+    no ejecutivo, contractor o advisor que reciba un Grant
+    bajo el presente Plan conforme al Artículo 3.
+
+1.2 "Grant" significa la concesión de un número determinado
+    de Opciones a un Beneficiario, mediante resolución del
+    Board y Option Agreement individual.
+
+1.3 "Opción" significa el derecho irrevocable de adquirir
+    una Acción de la Sociedad al Precio de Ejercicio,
+    sujeto a las condiciones del presente Plan.
+
+1.4 "Período de Ejercicio" o "Exercise Window" significa
+    el plazo de ${d('esop_window')} durante el cual el
+    Beneficiario puede ejercer sus Opciones Vestidas.
+
+1.5 "Pool ESOP" significa el conjunto de Acciones
+    reservadas para el presente Plan: ${d('esop_pool')}
+
+1.6 "Precio de Ejercicio" o "Strike Price" significa
+    ${d('esop_strike')} por Opción, determinado por el
+    Board en el momento de cada Grant.
+
+════════════════════════════════════════════════════
+ARTÍCULO 2 — PARÁMETROS DEL PLAN
+════════════════════════════════════════════════════
+
+2.1 Resumen de condiciones:
+
+    ┌─────────────────────────────────────────────┐
+    │ Parámetro             │ Valor                │
+    ├─────────────────────────────────────────────┤
+    │ Tamaño del Pool ESOP  │ ${d('esop_pool').padEnd(20)} │
+    │ Precio de ejercicio   │ ${d('esop_strike').padEnd(20)} │
+    │ Vesting estándar      │ ${d('esop_vesting').padEnd(20)} │
+    │ Ventana de ejercicio  │ ${d('esop_window').padEnd(20)} │
+    │ Aprobación de grants  │ ${d('esop_board').padEnd(20)} │
+    └─────────────────────────────────────────────┘
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — ELEGIBILIDAD
+════════════════════════════════════════════════════
+
+3.1 Son elegibles para recibir Grants bajo el presente
+    Plan, previa aprobación del Board:
+
+    (a) Empleados a tiempo completo de la Sociedad;
+    (b) Contractors que presten servicios continuados
+        y significativos a la Sociedad;
+    (c) Advisors estratégicos con Advisor Agreement
+        vigente y debidamente firmado;
+    (d) Directores no ejecutivos designados por el Board.
+
+3.2 La elegibilidad no otorga derecho a recibir un Grant.
+    Cada Grant es discrecional y requerirá aprobación
+    expresa del Board mediante resolución.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — VESTING DE OPCIONES
+════════════════════════════════════════════════════
+
+4.1 El vesting estándar del Plan es: ${d('esop_vesting')}
+
+4.2 Las Opciones Vestidas son las únicas ejercitables.
+    Las Opciones No Vestidas se perderán automáticamente
+    a la extinción de la relación del Beneficiario con
+    la Sociedad, salvo aceleración aprobada por el Board.
+
+4.3 El Board podrá aprobar planes de vesting específicos
+    distintos del estándar para Grants individuales,
+    documentando dicha especificidad en el Option
+    Agreement correspondiente.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — EJERCICIO DE OPCIONES
+════════════════════════════════════════════════════
+
+5.1 Precio de ejercicio: ${d('esop_strike')} por Opción.
+
+5.2 Procedimiento: El Beneficiario ejercerá sus Opciones
+    Vestidas mediante notificación escrita al Board,
+    junto con el pago del Precio de Ejercicio
+    correspondiente.
+
+5.3 Post-terminación: Tras la extinción de la relación
+    del Beneficiario con la Sociedad, éste dispondrá de
+    ${d('esop_window')} para ejercer sus Opciones Vestidas.
+    Las Opciones no ejercidas dentro del plazo caducarán
+    automáticamente sin derecho a compensación.
+
+5.4 Good Leaver / Bad Leaver: El Board aplicará los
+    criterios de Good Leaver / Bad Leaver conforme a
+    los términos del Option Agreement individual y del
+    Shareholders Agreement vigente.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — EVENTOS DE LIQUIDEZ
+════════════════════════════════════════════════════
+
+6.1 En caso de adquisición, fusión, IPO o cualquier
+    otro evento de liquidez significativo:
+
+    (a) El Board podrá, a su discreción, aprobar la
+        aceleración total o parcial de las Opciones
+        No Vestidas de cualquier Beneficiario;
+    (b) Los Beneficiarios recibirán notificación con
+        al menos 10 Días Hábiles de antelación al
+        evento de liquidez para ejercer sus Opciones
+        Vestidas.
+
+6.2 El tratamiento de las Opciones en un evento de
+    liquidez se regulará en cada Option Agreement
+    individual conforme a los términos de la transacción.
+
+════════════════════════════════════════════════════
+ARTÍCULO 7 — CONSIDERACIONES FISCALES
+════════════════════════════════════════════════════
+
+7.1 Los Beneficiarios son responsables de cumplir con
+    sus obligaciones fiscales derivadas del ejercicio
+    de Opciones conforme a la legislación irlandesa
+    (Revenue Commissioners) y cualquier otra jurisdicción
+    aplicable.
+
+7.2 La Sociedad no asume responsabilidad fiscal alguna
+    por cuenta de los Beneficiarios. Se recomienda que
+    cada Beneficiario consulte con un asesor fiscal
+    cualificado antes de ejercer sus Opciones.
+
+════════════════════════════════════════════════════
+ARTÍCULO 8 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+8.1 El presente Plan podrá ser modificado o terminado
+    por el Board mediante resolución, sin perjuicio de
+    los derechos ya adquiridos por los Beneficiarios.
+
+8.2 El presente Plan se regirá por la legislación de
+    la República de Irlanda (Companies Act 2014).
+
+8.3 Las disputas se someterán a la jurisdicción exclusiva
+    de los tribunales de la República de Irlanda.
+
+════════════════════════════════════════════════════
+APROBACIÓN DEL BOARD OF DIRECTORS
+════════════════════════════════════════════════════
+
+El presente Plan ha sido aprobado por unanimidad del
+Board of Directors de Nuntio Technologies Limited.
 
 Aprobado por: ${d('esop_board')}
 
 Director 1:
-Firma: _______________________    Fecha: ___________
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
 
 Director 2:
-Firma: _______________________    Fecha: ___________
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
 
-NOTA: Plantilla orientativa. Requiere revisión legal y aprobación formal del Board.
+────────────────────────────────────────────────────
+AVISO LEGAL: Plantilla orientativa conforme al
+Companies Act 2014 (Ireland). Revisión jurídica y
+fiscal obligatoria antes de implementación.
 `.trim(),
 
     euipo: () => `
 RESOLUCIÓN DEL BOARD OF DIRECTORS
 NUNTIO TECHNOLOGIES LIMITED
-Fecha: ${today}
 
-═══════════════════════════════════════════════
-ACTA DE RESOLUCIÓN — REGISTRO DE MARCA EUIPO
-═══════════════════════════════════════════════
+Número de Referencia: EUIPO-NTL-${today.replace(/\s/g,'')}
+DOCUMENTO CORPORATIVO OFICIAL
 
-Los directores de Nuntio Technologies Limited adoptan la siguiente
-resolución por unanimidad:
+════════════════════════════════════════════════════
+    ACTA DE RESOLUCIÓN DEL BOARD OF DIRECTORS
+    RELATIVA AL REGISTRO DE MARCA EN LA EUIPO
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-DATOS DE LA SOLICITUD
-═══════════════════════════════════════════════
+Sociedad: Nuntio Technologies Limited
+Jurisdicción: República de Irlanda (Companies Act 2014)
+CRO: [NÚMERO CRO]
+Fecha de la resolución: ${today}
 
-Nº de Solicitud EUIPO:      ${d('eu_appnum')}
-Fecha de solicitud:         ${d('eu_date')}
-Clases registradas:         ${d('eu_classes')}
-Estado actual:              ${d('eu_status')}
-Fecha esperada de registro: ${d('eu_expected')}
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-═══════════════════════════════════════════════
-RESOLUCIÓN
-═══════════════════════════════════════════════
+(A) La marca denominativa "NUNTIO" constituye un activo
+    estratégico de propiedad intelectual de primera
+    importancia para la Sociedad, en tanto identifica
+    sus productos y servicios en el mercado.
 
-EL BOARD OF DIRECTORS RESUELVE:
+(B) El Board of Directors ha aprobado la solicitud de
+    registro de la marca "NUNTIO" ante la Oficina de
+    Propiedad Intelectual de la Unión Europea (EUIPO),
+    con el fin de obtener protección en los 27 Estados
+    Miembros de la Unión Europea.
 
-1. RECONOCER la solicitud de registro de la marca 'NUNTIO' en EUIPO
-   con número de solicitud ${d('eu_appnum')}, presentada el ${d('eu_date')}.
+(C) El presente documento formaliza la resolución del
+    Board y los compromisos corporativos asociados.
 
-2. CONFIRMAR que la marca 'NUNTIO' es un activo de Nuntio Technologies
-   Limited y no de ningún director o fundador a título personal.
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DATOS DE LA SOLICITUD
+════════════════════════════════════════════════════
 
-3. INSTRUIR al Company Secretary para:
-   a) Archivar el número de solicitud en el registro corporativo
-   b) Incorporar el certificado al Data Room cuando sea recibido
-   c) Monitorear el estado en EUIPO TMview
+1.1 Parámetros de la solicitud EUIPO:
 
-4. AUTORIZAR a los directores a defender la marca contra posibles
-   oposiciones durante el período de publicación.
+    ┌─────────────────────────────────────────────┐
+    │ Concepto                  │ Detalle          │
+    ├─────────────────────────────────────────────┤
+    │ Nº de Solicitud EUIPO     │ ${d('eu_appnum').padEnd(16)} │
+    │ Fecha de solicitud        │ ${d('eu_date').padEnd(16)} │
+    │ Clases registradas (Niza) │ ${d('eu_classes').padEnd(16)} │
+    │ Estado actual             │ ${d('eu_status').padEnd(16)} │
+    │ Fecha esperada de regist. │ ${d('eu_expected').padEnd(16)} │
+    └─────────────────────────────────────────────┘
 
-5. RECONOCER las clases de Niza registradas: ${d('eu_classes')}
+════════════════════════════════════════════════════
+ARTÍCULO 2 — RESOLUCIÓN DEL BOARD
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
+EL BOARD OF DIRECTORS DE NUNTIO TECHNOLOGIES LIMITED
+RESUELVE POR UNANIMIDAD:
+
+2.1 RECONOCER la solicitud de registro de la marca
+    "NUNTIO" ante la EUIPO con número ${d('eu_appnum')},
+    presentada el ${d('eu_date')}, como acto corporativo
+    válido y vinculante para la Sociedad.
+
+2.2 CONFIRMAR que la marca "NUNTIO" y todos los derechos
+    derivados de su registro son y serán activos de
+    titularidad exclusiva de Nuntio Technologies Limited,
+    y no de ningún director, fundador ni accionista a
+    título personal.
+
+2.3 INSTRUIR al Company Secretary para:
+
+    (a) Archivar el número de solicitud y todos los
+        documentos EUIPO en el registro corporativo;
+    (b) Incorporar el certificado de registro al Data
+        Room de la Sociedad una vez recibido;
+    (c) Monitorear el estado de la solicitud en el
+        portal EUIPO TMview de forma periódica;
+    (d) Notificar al Board cualquier oposición o
+        incidencia durante el período de publicación.
+
+2.4 AUTORIZAR a los directores a:
+
+    (a) Defender la marca frente a posibles oposiciones
+        de terceros durante el período de publicación;
+    (b) Contratar los servicios de un agente de marcas
+        cualificado si fuese necesario para la defensa;
+    (c) Suscribir cuantos documentos sean precisos para
+        la tramitación y mantenimiento del registro.
+
+2.5 RECONOCER las clases de Niza registradas: ${d('eu_classes')}
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — COBERTURA Y VALOR ESTRATÉGICO
+════════════════════════════════════════════════════
+
+3.1 El registro EUIPO de la marca "NUNTIO" otorgará
+    protección automática en los 27 Estados Miembros
+    de la Unión Europea, incluyendo Irlanda, España,
+    Francia, Alemania, Italia y los Países Bajos.
+
+3.2 El Board reconoce que el registro de marca constituye
+    un activo de propiedad intelectual cuantificable que:
+
+    (a) Incrementa el valor de la Sociedad en procesos
+        de due diligence de inversores;
+    (b) Protege la identidad de la Sociedad frente a
+        imitadores y usos no autorizados;
+    (c) Es renovable cada 10 años indefinidamente;
+    (d) Puede extenderse a terceros territorios mediante
+        el sistema de Madrid (OMPI) en el futuro.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — OBLIGACIONES DE CUMPLIMIENTO
+════════════════════════════════════════════════════
+
+4.1 La Sociedad se compromete a:
+
+    (a) Mantener el registro vigente mediante el pago
+        puntual de las tasas de renovación EUIPO;
+    (b) Usar la marca "NUNTIO" de forma continuada en
+        el tráfico mercantil para evitar su caducidad
+        por falta de uso (cinco años desde registro);
+    (c) Notificar al Board cualquier uso no autorizado
+        de la marca por terceros;
+    (d) Archivar el certificado original en el Data Room.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — LEY APLICABLE
+════════════════════════════════════════════════════
+
+5.1 El presente documento se rige por la legislación
+    de la República de Irlanda (Companies Act 2014) y
+    el Reglamento (UE) 2017/1001 sobre la marca de la
+    Unión Europea.
+
+════════════════════════════════════════════════════
 FIRMAS DE LOS DIRECTORES
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+
+La presente resolución ha sido adoptada por unanimidad
+del Board of Directors en la fecha indicada.
 
 Director 1:
-Firma: _______________________    Fecha: ___________
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
 
 Director 2:
-Firma: _______________________    Fecha: ___________
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
 
 Company Secretary:
-Firma: _______________________    Fecha: ___________
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
 
-NOTA: Esta resolución debe archivarse en el registro corporativo de la empresa.
+────────────────────────────────────────────────────
+AVISO LEGAL: Resolución corporativa interna. Debe
+archivarse en el registro corporativo de la Sociedad
+conforme al Companies Act 2014 (Ireland).
 `.trim(),
 
     termsheet: () => `
-TERM SHEET — GUÍA DE NEGOCIACIÓN
+TERM SHEET — HOJA DE TÉRMINOS
 NUNTIO TECHNOLOGIES LIMITED
-Preparado: ${today}
 
-═══════════════════════════════════════════════
-PARÁMETROS DE INVERSIÓN OBJETIVO
-═══════════════════════════════════════════════
+Número de Referencia: TS-NTL-${today.replace(/\s/g,'')}
+CONFIDENCIAL — NO VINCULANTE SALVO INDICACIÓN EXPRESA
 
-Valoración pre-money objetivo: ${d('ts_premoney') || '[A negociar]'}
-Monto a levantar:              ${d('ts_raise') || '[A definir]'}
-Instrumento preferido:         ${d('ts_instrument') || '[A definir]'}
-Asientos de Board para VCs:    ${d('ts_board') || '[A negociar]'}
+════════════════════════════════════════════════════
+        TERM SHEET / HOJA DE TÉRMINOS INDICATIVOS
+         PROPUESTA DE INVERSIÓN EN NUNTIO TECHNOLOGIES
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-GLOSARIO DE TÉRMINOS CLAVE
-═══════════════════════════════════════════════
+Sociedad: Nuntio Technologies Limited
+Jurisdicción: República de Irlanda (Companies Act 2014)
+Fecha: ${today}
 
-PRE-MONEY VALUATION
-La valoración de Nuntio ANTES de que entre el dinero del inversor.
-Si la pre-money es €2M y el VC invierte €500K, la post-money es €2.5M
-y el VC posee el 20% (500K / 2.5M).
+NOTA: La presente Hoja de Términos es indicativa y no
+vinculante, salvo las cláusulas de confidencialidad y
+exclusividad, que tendrán pleno efecto jurídico desde
+su firma.
 
-LIQUIDATION PREFERENCE (1x non-participating)
-El inversor recupera primero su inversión en caso de venta.
-Con "1x non-participating": recupera su dinero y no participa en el resto.
-Con "participating": recupera su dinero Y además participa en el upside.
-→ Evitar liquidation preference participating si es posible.
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-ANTI-DILUCIÓN (Broad-based weighted average)
-Protege al VC si emites acciones más baratas en el futuro (down round).
-El tipo más justo para founders: "broad-based weighted average".
-Evitar "full ratchet" que es muy dilutivo para founders.
+(A) Nuntio Technologies Limited está considerando una
+    ronda de financiación y desea establecer los términos
+    indicativos de la misma para facilitar la negociación
+    con inversores potenciales.
 
-PRO-RATA RIGHTS
-El derecho del VC a mantener su % en rondas futuras.
-Estándar y razonable, siempre conceder.
+(B) La presente Hoja de Términos resume los principales
+    parámetros económicos y de gobierno aplicables a la
+    inversión propuesta.
 
-BOARD SEATS: ${d('ts_board') || 'Por definir'}
-Founders deben mantener control del Board en ronda Seed.
-Máximo 1 asiento para el VC en esta etapa.
+════════════════════════════════════════════════════
+ARTÍCULO 1 — PARÁMETROS ECONÓMICOS
+════════════════════════════════════════════════════
 
-INSTRUMENTO: ${d('ts_instrument') || 'Por definir'}
-- SAFE (YC): sin interés, sin vencimiento, convierte en próxima ronda
-- Convertible Note: deuda con interés que convierte en equity
-- Priced Round: valoración fijada hoy, más costoso pero más claro
+1.1 Estructura de la operación:
 
-═══════════════════════════════════════════════
-RED FLAGS EN UN TERM SHEET
-═══════════════════════════════════════════════
+    ┌─────────────────────────────────────────────┐
+    │ Parámetro                  │ Valor           │
+    ├─────────────────────────────────────────────┤
+    │ Valoración pre-money       │ ${(d('ts_premoney') || '[A negociar]').padEnd(15)} │
+    │ Importe a levantar         │ ${(d('ts_raise') || '[A definir]').padEnd(15)} │
+    │ Instrumento                │ ${(d('ts_instrument') || '[A definir]').padEnd(15)} │
+    │ Asientos Board para VCs    │ ${(d('ts_board') || '[A negociar]').padEnd(15)} │
+    └─────────────────────────────────────────────┘
 
-❌ Full-ratchet anti-dilution (muy dilutivo para founders)
-❌ Participating preferred sin cap (el VC cobra doble)
-❌ >1x liquidation preference
-❌ Mayoría de Board para el VC en Seed
-❌ Right of first refusal muy amplio sobre ventas de acciones
-❌ Drag-along sin protecciones para founders
+════════════════════════════════════════════════════
+ARTÍCULO 2 — GLOSARIO DE TÉRMINOS CLAVE
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-PRÓXIMOS PASOS
-═══════════════════════════════════════════════
+2.1 PRE-MONEY VALUATION (${d('ts_premoney') || '[A negociar]'}):
+    La valoración de la Sociedad ANTES de que entre el
+    capital del inversor. Si la pre-money es €2M y el
+    inversor suscribe €500K, la post-money es €2.5M
+    y el inversor posee el 20% (€500K / €2.5M).
 
-1. Preparar Data Room completo antes de recibir un term sheet
-2. Contratar abogado especialista en VC irlandés/europeo
-3. Hablar con otros founders sobre su experiencia negociando
-4. Tener al menos 2-3 conversaciones paralelas con VCs (leverage)
+2.2 LIQUIDATION PREFERENCE (recomendado: 1x no participante):
+    El inversor recupera preferentemente su inversión en
+    caso de venta o liquidación de la Sociedad.
 
-NOTA: Este documento es una guía educativa. Contrata un abogado
-especialista en VC antes de firmar cualquier term sheet real.
+    - 1x non-participating (estándar): recupera su
+      capital y no participa en el reparto restante.
+    - Participating: recupera su capital Y además
+      participa en el upside (muy dilutivo para founders).
+    Recomendación: negociar siempre "1x non-participating".
+
+2.3 ANTI-DILUCIÓN (recomendado: broad-based weighted avg):
+    Protege al inversor si se emiten acciones a precio
+    inferior en rondas futuras (down round).
+
+    - Broad-based weighted average: el más equilibrado
+      para founders e inversores.
+    - Full ratchet: muy dilutivo para founders; evitar.
+
+2.4 PRO-RATA RIGHTS:
+    El derecho del inversor a mantener su porcentaje en
+    rondas futuras suscribiendo su parte proporcional.
+    Estándar y razonable; conceder siempre en Seed.
+
+2.5 BOARD SEATS (${d('ts_board') || '[A negociar]'}):
+    En ronda Seed, los founders deben mantener el control
+    del Board. Máximo 1 asiento para el inversor en esta
+    etapa. La composición del Board es un punto crítico.
+
+2.6 INSTRUMENTO DE INVERSIÓN (${d('ts_instrument') || '[A definir]'}):
+
+    - SAFE (YC Simple Agreement for Future Equity): sin
+      interés ni vencimiento; convierte en la próxima
+      ronda priced. Ideal para rondas pre-Seed.
+    - Convertible Note: deuda con interés (5-8% anual)
+      que convierte en equity en la siguiente ronda.
+    - Priced Round (acciones preferentes): valoración
+      fijada hoy. Más costoso legalmente pero más claro
+      para todas las partes.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — TÉRMINOS HABITUALES EN RONDAS SEED
+════════════════════════════════════════════════════
+
+3.1 Derechos habituales del inversor:
+
+    (a) Derecho de información: estados financieros
+        trimestrales y presupuesto anual;
+    (b) Pro-rata rights en rondas futuras;
+    (c) Derecho de tanteo (ROFR) sobre transferencias;
+    (d) Anti-dilución (weighted average);
+    (e) Liquidation preference 1x non-participating;
+    (f) Representación en el Board (1 asiento o observer).
+
+3.2 Derechos habituales de los founders:
+
+    (a) Control del Board (mayoría de asientos);
+    (b) Drag-along con protecciones para founders;
+    (c) Aceleración de vesting en double-trigger;
+    (d) Derecho de co-venta (tag-along) en secundarias.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — RED FLAGS EN UN TERM SHEET
+════════════════════════════════════════════════════
+
+4.1 Los founders deben rechazar o negociar activamente:
+
+    (a) Full-ratchet anti-dilution (muy dilutivo);
+    (b) Participating preferred sin cap (double dip);
+    (c) Liquidation preference superior a 1x;
+    (d) Mayoría de Board para el inversor en Seed;
+    (e) ROFR excesivamente amplio sobre acciones;
+    (f) Drag-along sin protecciones mínimas para founders;
+    (g) Cláusulas de no-shop superiores a 30 días sin
+        contrapartida.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — PROCESO Y PRÓXIMOS PASOS
+════════════════════════════════════════════════════
+
+5.1 Proceso recomendado:
+
+    (a) Preparar Data Room completo antes de recibir
+        un term sheet (incluir: cap table, SHA, ESOP,
+        contratos clave, estados financieros, IP);
+    (b) Contratar un abogado especialista en VC irlandés
+        (William Fry, Matheson, Mason Hayes & Curran);
+    (c) Mantener conversaciones paralelas con al menos
+        2-3 inversores para generar leverage;
+    (d) No firmar exclusividad sin haber recibido un
+        term sheet definitivo y negociado.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — CONFIDENCIALIDAD Y EXCLUSIVIDAD
+════════════════════════════════════════════════════
+
+6.1 Las Partes se comprometen a mantener en estricta
+    confidencialidad los términos de la presente Hoja
+    durante el proceso de negociación.
+
+6.2 La Sociedad no negociará con terceros inversores
+    durante un período de [X] días desde la firma
+    de la presente Hoja (cláusula de exclusividad).
+
+════════════════════════════════════════════════════
+FIRMAS
+════════════════════════════════════════════════════
+
+FIRMADO por y en nombre de
+NUNTIO TECHNOLOGIES LIMITED:
+
+Firma:  _______________________
+Nombre: _______________  |  Cargo: Director / CEO
+Fecha:  ___________
+
+────────────────────────────────────────────────────
+
+FIRMADO por el Inversor:
+
+Firma:  _______________________
+Nombre y entidad: _______________
+Fecha:  ___________
+
+────────────────────────────────────────────────────
+AVISO LEGAL: La presente Hoja de Términos es indicativa
+y no vinculante (salvo las cláusulas de confidencialidad
+y exclusividad). No constituye asesoramiento jurídico.
+Contrate un abogado especialista antes de firmar
+cualquier documento de inversión. Regido por la
+legislación de la República de Irlanda.
 `.trim(),
 
     advisor: () => `
 ADVISOR AGREEMENT
 NUNTIO TECHNOLOGIES LIMITED
+
+Número de Referencia: ADV-NTL-${today.replace(/\s/g,'')}
+CONFIDENCIAL
+
+════════════════════════════════════════════════════
+              ACUERDO DE ASESORÍA ESTRATÉGICA
+              (ADVISOR AGREEMENT)
+════════════════════════════════════════════════════
+
+ENTRE:
+
+(1) NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
+    constituida en Irlanda conforme al Companies Act
+    2014, con CRO número [NÚMERO CRO]
+    ("la Sociedad" o "la Empresa")
+
+(2) ${d('adv_name')}, con domicilio a efectos de
+    notificaciones en la dirección que conste en los
+    registros de la Sociedad ("el Advisor")
+
+Área de expertise: ${d('adv_expertise')}
+Compromiso mensual: ${d('adv_hours')}
 Fecha: ${today}
 
-═══════════════════════════════════════════════
-PARTES
-═══════════════════════════════════════════════
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-EMPRESA:  Nuntio Technologies Limited (Ireland)
-ADVISOR:  ${d('adv_name')}
-ÁREA:     ${d('adv_expertise')}
+(A) El Advisor posee conocimiento, experiencia y red
+    de contactos de alto valor en el área de
+    ${d('adv_expertise')}, que la Sociedad considera
+    esenciales para su desarrollo estratégico.
 
-═══════════════════════════════════════════════
-CLÁUSULA 1 — SERVICIOS DE ASESORÍA
-═══════════════════════════════════════════════
-1.1 ${d('adv_name')} prestará servicios de asesoría estratégica a Nuntio
-    Technologies Limited en el área de ${d('adv_expertise')}.
+(B) La Sociedad desea formalizar la relación de asesoría
+    con el Advisor, estableciendo sus derechos, obligaciones
+    y la compensación en equity correspondiente.
 
-1.2 Compromiso mensual acordado: ${d('adv_hours')}
+(C) El presente Acuerdo se basa en el modelo FAST
+    (Founder/Advisor Standard Template), adaptado a
+    la legislación irlandesa.
 
-1.3 Los servicios incluyen:
-    - Reuniones mensuales de seguimiento con el equipo fundador
-    - Introducción a su red de contactos relevante para Nuntio
-    - Revisión y feedback sobre estrategia en su área de expertise
-    - Apoyo en pitches y presentaciones cuando sea requerido
+EN VIRTUD DE LO EXPUESTO, las Partes acuerdan lo siguiente:
 
-═══════════════════════════════════════════════
-CLÁUSULA 2 — COMPENSACIÓN EN EQUITY
-═══════════════════════════════════════════════
-2.1 Como compensación, Nuntio Technologies Limited otorgará a ${d('adv_name')}
-    opciones equivalentes al ${d('adv_equity')} del capital (fully diluted),
-    sujeto a vesting.
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DEFINICIONES
+════════════════════════════════════════════════════
 
-2.2 Período de vesting: ${d('adv_vest_period')}
+1.1 "Opciones" significa las opciones sobre acciones
+    ordinarias de la Sociedad otorgadas al Advisor
+    conforme al Artículo 3 del presente Acuerdo.
 
-2.3 Las opciones se otorgan del pool ESOP aprobado por el Board.
+1.2 "Plan ESOP" significa el Employee Stock Option Plan
+    de la Sociedad aprobado por el Board.
 
-2.4 El precio de ejercicio será el valor nominal vigente en el momento
-    del grant, según determine el Board.
+1.3 "Servicios de Asesoría" tiene el significado
+    atribuido en el Artículo 2.
 
-═══════════════════════════════════════════════
-CLÁUSULA 3 — CONFIDENCIALIDAD
-═══════════════════════════════════════════════
-3.1 ${d('adv_name')} mantendrá estricta confidencialidad sobre toda
-    información de Nuntio: tecnología, clientes, estrategia y finanzas.
+1.4 "Período de Vesting" significa ${d('adv_vest_period')}.
 
-3.2 Esta obligación se mantiene durante y tras la finalización del acuerdo.
+════════════════════════════════════════════════════
+ARTÍCULO 2 — SERVICIOS DE ASESORÍA
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-CLÁUSULA 4 — NO SOLICITUD
-═══════════════════════════════════════════════
-4.1 Durante este acuerdo y por 12 meses después, ${d('adv_name')} no podrá
-    solicitar ni contratar a ningún miembro del equipo de Nuntio.
+2.1 El Advisor prestará a la Sociedad servicios de
+    asesoría estratégica en el área de ${d('adv_expertise')},
+    incluyendo sin limitación:
 
-═══════════════════════════════════════════════
-CLÁUSULA 5 — TERMINACIÓN
-═══════════════════════════════════════════════
-5.1 Cualquiera de las partes puede terminar este acuerdo con 30 días
-    de preaviso por escrito.
+    (a) Reuniones periódicas de seguimiento con el equipo
+        fundador (frecuencia mínima: ${d('adv_hours')});
+    (b) Introducción a su red de contactos relevante para
+        la Sociedad (inversores, clientes, partners);
+    (c) Revisión y feedback sobre estrategia en su área
+        de expertise;
+    (d) Apoyo en pitches, presentaciones y procesos de
+        fundraising cuando sea requerido;
+    (e) Mentoría y orientación al equipo fundador en
+        decisiones estratégicas clave.
 
-5.2 Al terminar, ${d('adv_name')} conservará únicamente las opciones
-    ya vestidas según el calendario de vesting.
+2.2 El Advisor prestará los Servicios de forma
+    independiente y sin exclusividad, salvo en lo relativo
+    a competencia directa con la Sociedad.
 
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+ARTÍCULO 3 — COMPENSACIÓN EN EQUITY
+════════════════════════════════════════════════════
+
+3.1 Como única compensación por los Servicios de Asesoría,
+    la Sociedad otorgará al Advisor Opciones equivalentes
+    al ${d('adv_equity')} del capital totalmente diluido
+    (fully diluted), sujetas a vesting conforme al
+    Artículo 4.
+
+3.2 Las Opciones se otorgarán del Pool ESOP aprobado por
+    el Board y se documentarán en un Option Agreement
+    individual, que formará parte del presente Acuerdo.
+
+3.3 Precio de ejercicio: el valor nominal de las acciones
+    ordinarias vigente en el momento del grant, según
+    determine el Board de conformidad con la normativa
+    aplicable.
+
+3.4 Las Partes reconocen que las Opciones constituyen la
+    única retribución del Advisor. No se devengará ninguna
+    compensación en efectivo por los Servicios, salvo
+    reembolso de gastos expresamente autorizados.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — VESTING
+════════════════════════════════════════════════════
+
+4.1 Las Opciones se devengarán conforme al siguiente
+    calendario: ${d('adv_vest_period')}
+
+4.2 Las Opciones No Vestidas se perderán automáticamente
+    a la extinción del presente Acuerdo, salvo aceleración
+    aprobada por el Board.
+
+4.3 En caso de cambio de control de la Sociedad, el Board
+    podrá aprobar la aceleración total o parcial del
+    vesting pendiente del Advisor.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — CONFIDENCIALIDAD
+════════════════════════════════════════════════════
+
+5.1 El Advisor se compromete a mantener estricta
+    confidencialidad sobre toda información de la Sociedad
+    a la que tenga acceso en el ejercicio de sus funciones,
+    incluyendo: tecnología, estrategia, finanzas, clientes
+    e información de inversores.
+
+5.2 Esta obligación se mantendrá durante la vigencia del
+    Acuerdo y durante 3 años tras su extinción.
+
+════════════════════════════════════════════════════
+ARTÍCULO 6 — PROPIEDAD INTELECTUAL
+════════════════════════════════════════════════════
+
+6.1 Toda obra, análisis, recomendación, metodología o
+    material creado por el Advisor en el ejercicio de
+    los Servicios de Asesoría pertenecerá a la Sociedad.
+
+6.2 El Advisor cede irrevocablemente a la Sociedad todos
+    los derechos de propiedad intelectual sobre dichos
+    materiales, conforme al Copyright and Related Rights
+    Act 2000 (Ireland).
+
+════════════════════════════════════════════════════
+ARTÍCULO 7 — NO SOLICITUD
+════════════════════════════════════════════════════
+
+7.1 Durante la vigencia del presente Acuerdo y durante
+    12 meses tras su extinción, el Advisor no podrá
+    solicitar, contratar ni inducir a ningún empleado,
+    contractor o advisor de la Sociedad a abandonarla.
+
+════════════════════════════════════════════════════
+ARTÍCULO 8 — TERMINACIÓN
+════════════════════════════════════════════════════
+
+8.1 Cualquiera de las Partes podrá resolver el presente
+    Acuerdo mediante preaviso escrito de 30 días.
+
+8.2 La Sociedad podrá resolver el Acuerdo con efecto
+    inmediato en caso de incumplimiento material por
+    el Advisor de sus obligaciones.
+
+8.3 A la extinción del Acuerdo, el Advisor conservará
+    únicamente las Opciones ya Vestidas conforme al
+    calendario del Artículo 4.
+
+════════════════════════════════════════════════════
+ARTÍCULO 9 — DISPOSICIONES GENERALES
+════════════════════════════════════════════════════
+
+9.1 Acuerdo completo: El presente Acuerdo, junto con
+    el Option Agreement, constituye el acuerdo íntegro
+    entre las Partes y sustituye a cualquier acuerdo
+    previo sobre asesoría.
+
+9.2 Modificaciones: Solo válidas por escrito con firma
+    de ambas Partes.
+
+9.3 Divisibilidad: La nulidad de una cláusula no afecta
+    a la validez de las restantes.
+
+════════════════════════════════════════════════════
+ARTÍCULO 10 — LEY APLICABLE Y JURISDICCIÓN
+════════════════════════════════════════════════════
+
+10.1 El presente Acuerdo se regirá por la legislación
+     de la República de Irlanda.
+
+10.2 Las disputas se someterán en primera instancia a
+     mediación (mínimo 30 días). De no alcanzarse acuerdo,
+     las Partes se someten a la jurisdicción exclusiva
+     de los tribunales de la República de Irlanda.
+
+════════════════════════════════════════════════════
 FIRMAS
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
 
-En representación de Nuntio Technologies Limited:
-Firma: _______________________    Fecha: ___________
+FIRMADO por y en nombre de
+NUNTIO TECHNOLOGIES LIMITED:
 
-${d('adv_name')} (Advisor):
-Firma: _______________________    Fecha: ___________
+Firma:  _______________________
+Nombre: _______________  |  Cargo: Director
+Fecha:  ___________
 
-NOTA: Basado en el modelo FAST (Founder/Advisor Standard Template).
-Requiere revisión legal antes de firma.
+────────────────────────────────────────────────────
+
+FIRMADO por el Advisor:
+
+Firma:  _______________________
+Nombre: ${d('adv_name')}
+Área:   ${d('adv_expertise')}
+Fecha:  ___________
+
+En presencia de:
+Testigo (nombre):  _______________
+Firma del testigo: _______________
+
+────────────────────────────────────────────────────
+AVISO LEGAL: Basado en el modelo FAST (Founder/Advisor
+Standard Template), adaptado a la legislación irlandesa
+(Companies Act 2014, Copyright and Related Rights Act
+2000). Revisión jurídica recomendada antes de firma.
 `.trim(),
 
     incorp: () => `
-CERTIFICADO DE CONSTITUCIÓN — RESUMEN EJECUTIVO
+CERTIFICATE OF INCORPORATION — RESUMEN EJECUTIVO
 NUNTIO TECHNOLOGIES LIMITED
-Actualizado: ${today}
 
-═══════════════════════════════════════════════
-DATOS CORPORATIVOS OFICIALES
-═══════════════════════════════════════════════
+Número de Referencia: INC-NTL-${today.replace(/\s/g,'')}
+DOCUMENTO CORPORATIVO OFICIAL
 
-Nombre Legal:            Nuntio Technologies Limited
-Jurisdicción:            Irlanda (Companies Registration Office)
-CRO Registration Number: ${d('inc_cro')}
-Fecha de constitución:   ${d('inc_date')}
-Registered Address:      ${d('inc_address')}
-Company Secretary:       ${d('inc_secretary')}
-Capital social emitido:  ${d('inc_capital')}
+════════════════════════════════════════════════════
+      CERTIFICATE OF INCORPORATION — RESUMEN
+          Y CUMPLIMIENTO CORPORATIVO CRO
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-DOCUMENTOS CORPORATIVOS PRINCIPALES
-═══════════════════════════════════════════════
+Sociedad: Nuntio Technologies Limited
+Jurisdicción: República de Irlanda
+Ley aplicable: Companies Act 2014
+Fecha de actualización: ${today}
 
-1. CERTIFICATE OF INCORPORATION
-   Emitido por: Companies Registration Office (CRO), Irlanda
-   Confirma: existencia legal de Nuntio Technologies Limited
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
 
-2. MEMORANDUM & ARTICLES OF ASSOCIATION (M&A)
-   Define: objeto social, estructura de gobierno, derechos de accionistas
+(A) Nuntio Technologies Limited es una private company
+    limited by shares válidamente constituida en Irlanda
+    conforme al Companies Act 2014.
 
-3. REGISTER OF DIRECTORS
-   Directores actuales registrados en CRO
+(B) El presente documento resume los datos corporativos
+    oficiales y el estado de cumplimiento de la Sociedad
+    ante el Companies Registration Office (CRO) de
+    Irlanda, como referencia para el Data Room y
+    procesos de due diligence.
 
-4. REGISTER OF MEMBERS (SHAREHOLDERS)
-   Cap table oficial registrada en CRO
+════════════════════════════════════════════════════
+ARTÍCULO 1 — DATOS CORPORATIVOS OFICIALES
+════════════════════════════════════════════════════
 
-═══════════════════════════════════════════════
-CUMPLIMIENTO CRO — CHECKLIST
-═══════════════════════════════════════════════
+1.1 Datos de identificación:
 
-☐ Annual Return presentado en plazo (aniversario + 28 días)
-☐ Financial Statements adjuntos al Annual Return
-☐ Cambios de directores notificados (Form B10)
-☐ Transferencias de acciones notificadas (Form B5)
-☐ Registered address actualizada si hubo cambio (Form B2)
-☐ Company Secretary designado y registrado
+    ┌─────────────────────────────────────────────┐
+    │ Dato                  │ Valor                │
+    ├─────────────────────────────────────────────┤
+    │ Nombre legal          │ Nuntio Technologies  │
+    │                       │ Limited              │
+    │ Jurisdicción          │ República de Irlanda │
+    │ CRO Registration No.  │ ${d('inc_cro').padEnd(20)} │
+    │ Fecha constitución    │ ${d('inc_date').padEnd(20)} │
+    │ Registered Address    │ ${d('inc_address').padEnd(20)} │
+    │ Company Secretary     │ ${d('inc_secretary').padEnd(20)} │
+    │ Capital emitido       │ ${d('inc_capital').padEnd(20)} │
+    └─────────────────────────────────────────────┘
 
-═══════════════════════════════════════════════
-INFORMACIÓN PARA DATA ROOM
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+ARTÍCULO 2 — DOCUMENTOS CORPORATIVOS PRINCIPALES
+════════════════════════════════════════════════════
 
-Para due diligence de inversores, incluir en el Data Room:
-• Certificate of Incorporation (original escaneado)
-• M&A (Memorandum & Articles of Association) completo
-• Annual Returns de los últimos 3 años
-• Register of Members actualizado
-• Resoluciones de Board relevantes
+2.1 Los siguientes documentos constituyen la base
+    corporativa de la Sociedad:
 
-═══════════════════════════════════════════════
-NOTA LEGAL
-═══════════════════════════════════════════════
-Este resumen es orientativo. Para efectos legales y de due diligence,
-consultar directamente los documentos oficiales en CRO.ie
+    (a) CERTIFICATE OF INCORPORATION:
+        Emitido por el Companies Registration Office
+        (CRO) de Irlanda. Acredita la existencia legal
+        de Nuntio Technologies Limited como entidad
+        jurídica autónoma.
+
+    (b) CONSTITUTION (ex Memorandum & Articles):
+        Define el objeto social de la Sociedad, su
+        estructura de gobierno, los derechos y
+        obligaciones de los accionistas y directores,
+        y los procedimientos de toma de decisiones.
+
+    (c) REGISTER OF DIRECTORS:
+        Registro de los directores actuales de la
+        Sociedad, inscrito en el CRO conforme al
+        Companies Act 2014.
+
+    (d) REGISTER OF MEMBERS (SHAREHOLDERS):
+        Cap table oficial de la Sociedad, que refleja
+        la titularidad de todas las acciones emitidas.
+
+    (e) ANNUAL RETURN (B1):
+        Declaración anual obligatoria ante el CRO,
+        que incluye los estados financieros y cualquier
+        cambio en la estructura de la Sociedad.
+
+════════════════════════════════════════════════════
+ARTÍCULO 3 — CHECKLIST DE CUMPLIMIENTO CRO
+════════════════════════════════════════════════════
+
+3.1 Obligaciones anuales de cumplimiento:
+
+    (a) Annual Return (B1): debe presentarse en el
+        aniversario de la constitución + 28 días.
+        Incluir estados financieros si corresponde.
+
+    (b) Cambios de directores: notificar mediante
+        Form B10 en un plazo de 14 días desde el cambio.
+
+    (c) Transferencias de acciones: notificar mediante
+        Form B5 y actualizar el Register of Members.
+
+    (d) Cambio de registered address: notificar mediante
+        Form B2 en el plazo establecido.
+
+    (e) Company Secretary: designado y registrado en
+        el CRO en todo momento.
+
+    (f) Cambio de nombre: requiere resolución especial
+        de accionistas y Form B11.
+
+════════════════════════════════════════════════════
+ARTÍCULO 4 — DOCUMENTACIÓN PARA DATA ROOM
+════════════════════════════════════════════════════
+
+4.1 Para procesos de due diligence de inversores, la
+    Sociedad deberá incluir en el Data Room:
+
+    (a) Certificate of Incorporation (original escaneado);
+    (b) Constitution completa (M&A o Constitution Act);
+    (c) Annual Returns de los últimos 3 años;
+    (d) Register of Members actualizado (cap table);
+    (e) Resoluciones de Board relevantes;
+    (f) Contratos clave (SHA, IPA, ESOP, Advisors);
+    (g) Certificado de marca EUIPO (cuando disponible);
+    (h) Estados financieros auditados o certificados.
+
+════════════════════════════════════════════════════
+ARTÍCULO 5 — LEY APLICABLE
+════════════════════════════════════════════════════
+
+5.1 La Sociedad se rige íntegramente por el Companies
+    Act 2014 de Irlanda y cualquier normativa de
+    desarrollo aplicable.
+
+════════════════════════════════════════════════════
+APROBACIÓN DEL BOARD
+════════════════════════════════════════════════════
+
+El presente resumen ha sido revisado y aprobado por
+el Board of Directors de Nuntio Technologies Limited.
+
+Director 1:
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
+
+Director 2:
+Firma: _______________________
+Nombre: _______________
+Fecha:  ___________
+
+────────────────────────────────────────────────────
+AVISO LEGAL: Resumen orientativo para Data Room. Para
+efectos legales, consultar los documentos oficiales
+en CRO.ie. Regido por el Companies Act 2014 (Ireland).
 `.trim(),
 
     deck: () => `
 PITCH DECK — ESTRUCTURA Y CONTENIDO
 NUNTIO TECHNOLOGIES LIMITED
-Versión: ${today}
 
-═══════════════════════════════════════════════
+Número de Referencia: DECK-NTL-${today.replace(/\s/g,'')}
+CONFIDENCIAL — ESTRICTAMENTE PRIVADO
+
+════════════════════════════════════════════════════
+     PITCH DECK — GUÍA DE CONTENIDO PROFESIONAL
+════════════════════════════════════════════════════
+
+Sociedad: Nuntio Technologies Limited
+Fecha de preparación: ${today}
+CONFIDENCIAL: Este documento contiene información
+estratégica y financiera. No distribuir sin NDA firmado.
+
+────────────────────────────────────────────────────
+                    CONSIDERANDO
+────────────────────────────────────────────────────
+
+(A) El presente Pitch Deck ha sido preparado por Nuntio
+    Technologies Limited con el propósito exclusivo de
+    presentar la oportunidad de inversión a inversores
+    cualificados potenciales.
+
+(B) La información contenida en el presente documento
+    es confidencial. Su recepción implica la aceptación
+    de tratarla como tal.
+
+════════════════════════════════════════════════════
 DATOS DE LA RONDA
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
 
-Tagline:       ${d('deck_tagline')}
-Mercado (TAM): ${d('deck_tam')}
-Modelo:        ${d('deck_model')}
-Ask:           ${d('deck_ask')}
+    Tagline:       ${d('deck_tagline')}
+    Mercado (TAM): ${d('deck_tam')}
+    Modelo:        ${d('deck_model')}
+    Ask:           ${d('deck_ask')}
 
-═══════════════════════════════════════════════
-ESTRUCTURA DEL DECK (11 SLIDES)
-═══════════════════════════════════════════════
+════════════════════════════════════════════════════
+ESTRUCTURA DEL PITCH DECK (12 SLIDES)
+════════════════════════════════════════════════════
 
-SLIDE 1 — COVER
+────────────────────────────────────────────────────
+SLIDE 1 — COVER (PORTADA)
+────────────────────────────────────────────────────
 Nuntio Technologies Limited
 "${d('deck_tagline')}"
-[Logo] [Email CEO] [Website: nuntio.io]
 
-─────────────────────────────────────────────
+[Logo Nuntio]
+[Email CEO] | [LinkedIn] | nuntio.io
+Dublin, Ireland
+
+────────────────────────────────────────────────────
 SLIDE 2 — EL PROBLEMA
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
+HEADLINE: [El problema en una frase impactante]
+
 ${d('deck_problem')}
 
-─────────────────────────────────────────────
-SLIDE 3 — LA SOLUCIÓN
-─────────────────────────────────────────────
-Nuntio es un runtime agéntico que automatiza procesos empresariales
-complejos con agentes de IA especializados que trabajan en equipo.
+Datos cuantitativos del problema:
+• [Estadística 1 con fuente]
+• [Estadística 2 con fuente]
+• [Cita de cliente o estudio de mercado]
 
-─────────────────────────────────────────────
-SLIDE 4 — PRODUCTO
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
+SLIDE 3 — LA SOLUCIÓN
+────────────────────────────────────────────────────
+Nuntio es un runtime agéntico que automatiza procesos
+empresariales complejos mediante agentes de IA
+especializados que colaboran en tiempo real.
+
+Propuesta de valor:
+• [Beneficio 1 cuantificado]
+• [Beneficio 2 cuantificado]
+• [Diferenciador clave vs. alternativas]
+
+────────────────────────────────────────────────────
+SLIDE 4 — DEMO / PRODUCTO
+────────────────────────────────────────────────────
+[Captura de pantalla o demo del producto]
+
+Funcionalidades clave:
 • Orquestación multi-agente en tiempo real
 • Integración con herramientas empresariales existentes
 • Panel de control con visibilidad total de agentes
 • API-first: compatible con cualquier stack tecnológico
+• [Funcionalidad 4 diferenciadora]
 
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
 SLIDE 5 — MERCADO
-─────────────────────────────────────────────
-TAM: ${d('deck_tam')}
-Vientos de cola: Boom de IA agéntica, reducción costes LLMs,
-adopción masiva de IA en empresas (2025+)
+────────────────────────────────────────────────────
+TAM (Total Addressable Market):  ${d('deck_tam')}
+SAM (Serviceable Addressable):   [% del TAM]
+SOM (Serviceable Obtainable):    [Target realista]
 
-─────────────────────────────────────────────
+Vientos de cola:
+• Explosión del mercado de IA agéntica (2025+)
+• Reducción exponencial del coste de inferencia LLM
+• Adopción masiva de IA en enterprise
+• Ventana de oportunidad antes de consolidación
+
+────────────────────────────────────────────────────
 SLIDE 6 — BUSINESS MODEL
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
 Modelo: ${d('deck_model')}
 
-─────────────────────────────────────────────
-SLIDE 7 — TRACCIÓN
-─────────────────────────────────────────────
-[Incluir métricas actuales: usuarios, demos, LoIs, MRR]
+Métricas unitarias objetivo:
+• ACV (Annual Contract Value): [€X]
+• CAC (Customer Acquisition Cost): [€X]
+• LTV (Lifetime Value): [€X]
+• LTV/CAC ratio: [>3x objetivo]
+• Gross Margin: [>70% objetivo para SaaS]
 
-─────────────────────────────────────────────
-SLIDE 8 — COMPETENCIA
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
+SLIDE 7 — TRACCIÓN
+────────────────────────────────────────────────────
+[Métricas actuales reales]
+
+• MRR actual: [€X]
+• Clientes pagantes: [X]
+• Pipeline: [€X en negociación]
+• Letters of Intent (LoIs): [X]
+• NPS / Retención: [X%]
+• [Hito clave conseguido]
+
+────────────────────────────────────────────────────
+SLIDE 8 — COMPETENCIA Y POSICIONAMIENTO
+────────────────────────────────────────────────────
+[Cuadrante competitivo o tabla comparativa]
+
 Ventajas competitivas de Nuntio:
 • Especializado en enterprise (no developer-only)
 • Orquestación multi-agente nativa
 • Foco en ROI medible y automatización end-to-end
+• [Ventaja técnica o de mercado específica]
+• [Barrera de entrada / moat]
 
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
 SLIDE 9 — EQUIPO
-─────────────────────────────────────────────
-4 fundadores complementarios:
-• Ingeniería de sistemas agénticos
-• Go-to-market y ventas enterprise
-• Producto y UX
-• Operaciones y legal
+────────────────────────────────────────────────────
+[Fotos y bios del equipo fundador]
 
-─────────────────────────────────────────────
-SLIDE 10 — FINANCIALS
-─────────────────────────────────────────────
-Proyecciones 18-24 meses disponibles en Data Room
-(Ver documento Financial Model)
+Equipo fundador de 4 personas:
+• [Fundador 1]: [Rol] — [Experiencia clave]
+• [Fundador 2]: [Rol] — [Experiencia clave]
+• [Fundador 3]: [Rol] — [Experiencia clave]
+• [Fundador 4]: [Rol] — [Experiencia clave]
 
-─────────────────────────────────────────────
+Advisors: [nombres y credenciales]
+
+────────────────────────────────────────────────────
+SLIDE 10 — FINANCIALS Y PROYECCIONES
+────────────────────────────────────────────────────
+[Tabla o gráfico de proyecciones]
+
+Proyecciones 24 meses (ver Financial Model completo):
+• Mes 6:  MRR €[X] | [X] clientes
+• Mes 12: MRR €[X] | [X] clientes
+• Mes 18: MRR €[X] | [X] clientes
+• Mes 24: MRR €[X] | Break-even
+
+────────────────────────────────────────────────────
 SLIDE 11 — THE ASK
-─────────────────────────────────────────────
+────────────────────────────────────────────────────
 Buscamos: ${d('deck_ask')}
 
 Uso de los fondos:
 ${d('deck_use')}
 
-═══════════════════════════════════════════════
-CONTACTO
-═══════════════════════════════════════════════
+Milestone a 18 meses con este funding:
+• [Milestone 1 específico y medible]
+• [Milestone 2 específico y medible]
+• [Milestone 3: preparados para Series A]
+
+────────────────────────────────────────────────────
+SLIDE 12 — CONTACTO Y PRÓXIMOS PASOS
+────────────────────────────────────────────────────
 Nuntio Technologies Limited
 hello@nuntio.io | nuntio.io | Dublin, Ireland
+
+[QR code al Data Room]
+
+Próximos pasos propuestos:
+1. Demo técnica (30 min)
+2. Acceso al Data Room completo (bajo NDA)
+3. Reunión con el equipo completo
+4. Term Sheet
+
+════════════════════════════════════════════════════
+AVISO LEGAL
+════════════════════════════════════════════════════
+
+El presente Pitch Deck contiene declaraciones
+prospectivas sujetas a incertidumbres. Los resultados
+reales pueden diferir materialmente de los proyectados.
+La información aquí contenida es confidencial y está
+destinada exclusivamente al destinatario. Nuntio
+Technologies Limited no asume responsabilidad por
+decisiones de inversión basadas en este documento sin
+due diligence adicional. Regido por la legislación
+de la República de Irlanda.
 `.trim(),
 
     financial: () => `
