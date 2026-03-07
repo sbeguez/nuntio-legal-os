@@ -2658,61 +2658,526 @@ function downloadDoc(taskId) {
   if (!task) return;
   const data = state.formData[taskId] || {};
   const missing = task.docFields.filter(f => f.required && !data[f.id]);
-
-  if (missing.length > 0) {
-    toast(`⚠️ Completa primero los campos requeridos`, 'amber');
-    return;
-  }
+  if (missing.length > 0) { toast(`⚠️ Completa primero los campos requeridos`, 'amber'); return; }
 
   const docText = buildDocumentText(task, data);
-  const escaped = docText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const docTitle = escHtml(task.title) + ' — Nuntio Technologies';
   const dateStr = new Date().toISOString().slice(0,10);
   const fileName = `Nuntio_${task.id.toUpperCase()}_${dateStr}`;
+  const refNum = `NTL-${task.id.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
+  const printDate = new Date().toLocaleDateString('es-ES', {year:'numeric',month:'long',day:'numeric'});
+
+  const bodyHTML = renderLegalDocHTML(docText);
+
+  const LOGO_SVG = `<svg viewBox="0 0 153 45" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;width:auto"><path d="M19.25 9.9502H25.5V16.2002H19.25V9.9502ZM13 16.2002H0.5V22.4502H8.96351L5.10676 27.1232C4.69969 27.6165 4.18857 28.0137 3.61 28.2863C3.03143 28.559 2.39973 28.7003 1.76014 28.7002H0.5V34.9502H2.72703C5.27432 34.9502 7.68919 33.8124 9.31081 31.8475L13 27.3779V34.9502H19.25V16.2002H13Z" fill="#1a1a2e"/><path d="M19.25 16.2002H25.5V9.9502H19.25V16.2002ZM19.25 16.2002V34.9502H13V27.3779L9.31081 31.8475C7.68919 33.8124 5.27432 34.9502 2.72703 34.9502H0.5V28.7002H1.76014C2.39973 28.7003 3.03143 28.559 3.61 28.2863C4.18857 28.0137 4.69969 27.6165 5.10676 27.1232L8.96351 22.4502H0.5V16.2002H13H19.25Z" fill="#1a1a2e" stroke="#1a1a2e" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.24 34.54V20.02H35.5V16.54H39.1V19.3H40.36C40.98 18.3 41.83 17.54 42.91 17.02C43.99 16.48 45.26 16.21 46.72 16.21C49.04 16.21 50.87 16.88 52.21 18.22C53.55 19.54 54.22 21.31 54.22 23.53V34.54H50.86V24.1C50.86 22.48 50.42 21.25 49.54 20.41C48.68 19.57 47.41 19.15 45.73 19.15C44.07 19.15 42.8 19.57 41.92 20.41C41.04 21.25 40.6 22.48 40.6 24.1V34.54H37.24Z" fill="#1a1a2e"/><path d="M66.28 34.87C63.96 34.87 62.14 34.23 60.82 32.95C59.5 31.65 58.84 29.91 58.84 27.73V16.54H62.2V27.01C62.2 28.63 62.62 29.86 63.46 30.7C64.3 31.52 65.52 31.93 67.12 31.93C68.82 31.93 70.13 31.5 71.05 30.64C71.99 29.76 72.46 28.54 72.46 26.98V16.54H75.82V31.06H77.56V34.54H73.96V31.78H72.7C72.06 32.78 71.2 33.55 70.12 34.09C69.04 34.61 67.76 34.87 66.28 34.87Z" fill="#1a1a2e"/><path d="M81.6423 34.54V20.02H79.9023V16.54H83.5023V19.3H84.7623C85.3823 18.3 86.2323 17.54 87.3123 17.02C88.3923 16.48 89.6623 16.21 91.1223 16.21C93.4423 16.21 95.2723 16.88 96.6123 18.22C97.9523 19.54 98.6223 21.31 98.6223 23.53V34.54H95.2623V24.1C95.2623 22.48 94.8223 21.25 93.9423 20.41C93.0823 19.57 91.8123 19.15 90.1323 19.15C88.4723 19.15 87.2023 19.57 86.3223 20.41C85.4423 21.25 85.0023 22.48 85.0023 24.1V34.54H81.6423Z" fill="#1a1a2e"/><path d="M107.862 34.54C106.902 34.54 106.152 34.3 105.612 33.82C105.092 33.32 104.832 32.58 104.832 31.6V19.12H101.472V16.54H104.862V11.14H108.162V16.54H112.872V19.12H108.192V31.9H113.352V34.54H107.862Z" fill="#1a1a2e"/><path d="M116.691 34.54V16.54H120.051V34.54H116.691ZM118.371 14.08C117.811 14.08 117.331 13.88 116.931 13.48C116.531 13.08 116.331 12.6 116.331 12.04C116.331 11.48 116.531 11 116.931 10.6C117.331 10.2 117.811 10 118.371 10C118.931 10 119.411 10.2 119.811 10.6C120.211 11 120.411 11.48 120.411 12.04C120.411 12.6 120.211 13.08 119.811 13.48C119.411 13.88 118.931 14.08 118.371 14.08Z" fill="#1a1a2e"/><path d="M133.309 34.9C131.449 34.9 129.819 34.52 128.419 33.76C127.039 32.98 125.969 31.89 125.209 30.49C124.449 29.09 124.069 27.44 124.069 25.54C124.069 23.64 124.449 21.99 125.209 20.59C125.969 19.19 127.039 18.11 128.419 17.35C129.819 16.57 131.449 16.18 133.309 16.18C135.229 16.18 136.869 16.56 138.229 17.32C139.609 18.08 140.669 19.16 141.409 20.56C142.169 21.96 142.549 23.62 142.549 25.54C142.549 27.44 142.169 29.1 141.409 30.52C140.669 31.92 139.609 33 138.229 33.76C136.849 34.52 135.209 34.9 133.309 34.9ZM133.309 31.96C135.169 31.96 136.609 31.4 137.629 30.28C138.669 29.14 139.189 27.56 139.189 25.54C139.189 23.5 138.669 21.92 137.629 20.8C136.609 19.68 135.169 19.12 133.309 19.12C131.469 19.12 130.029 19.69 128.989 20.83C127.949 21.95 127.429 23.52 127.429 25.54C127.429 27.56 127.949 29.14 128.989 30.28C130.029 31.4 131.469 31.96 133.309 31.96Z" fill="#1a1a2e"/></svg>`;
 
   const win = window.open('', '_blank');
   if (!win) { toast('⚠️ Permite las ventanas emergentes para descargar', 'amber'); return; }
+
   win.document.write(`<!DOCTYPE html><html lang="es"><head>
-  <meta charset="UTF-8"><title>${docTitle}</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Georgia', 'Times New Roman', serif; font-size: 11.5pt; line-height: 2; color: #0f0f1a; background: #fff; }
-    .toolbar { background: #f5f4ef; border-bottom: 2px solid #d9d7d0; padding: 12px 32px; display: flex; align-items: center; gap: 12px; font-family: -apple-system, sans-serif; font-size: 13px; position: sticky; top: 0; z-index: 10; }
-    .toolbar-logo { display: flex; align-items: center; } .toolbar-logo svg { height: 18px; width: auto; }
-    .toolbar-title { flex: 1; color: #6b6461; }
-    .btn-pdf { padding: 8px 20px; background: #059669; color: white; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
-    .btn-pdf:hover { background: #047857; }
-    .btn-txt { padding: 8px 14px; background: white; color: #444; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; }
-    .btn-txt:hover { border-color: #7c3aed; color: #7c3aed; }
-    .page { max-width: 740px; margin: 0 auto; padding: 3cm 2.5cm; }
-    pre { white-space: pre-wrap; font-family: inherit; font-size: inherit; line-height: inherit; }
-    @page { margin: 2.5cm; size: A4; }
-    @media print { .toolbar { display: none; } .page { padding: 0; max-width: 100%; } }
-  </style>
-</head><body>
-  <div class="toolbar">
-    <span class="toolbar-logo"><svg viewBox="0 0 153 45" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.25 9.9502H25.5V16.2002H19.25V9.9502ZM13 16.2002H0.5V22.4502H8.96351L5.10676 27.1232C4.69969 27.6165 4.18857 28.0137 3.61 28.2863C3.03143 28.559 2.39973 28.7003 1.76014 28.7002H0.5V34.9502H2.72703C5.27432 34.9502 7.68919 33.8124 9.31081 31.8475L13 27.3779V34.9502H19.25V16.2002H13Z" fill="#0f0f1a"/><path d="M19.25 16.2002H25.5V9.9502H19.25V16.2002ZM19.25 16.2002V34.9502H13V27.3779L9.31081 31.8475C7.68919 33.8124 5.27432 34.9502 2.72703 34.9502H0.5V28.7002H1.76014C2.39973 28.7003 3.03143 28.559 3.61 28.2863C4.18857 28.0137 4.69969 27.6165 5.10676 27.1232L8.96351 22.4502H0.5V16.2002H13H19.25Z" fill="#0f0f1a" stroke="#0f0f1a" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.24 34.54V20.02H35.5V16.54H39.1V19.3H40.36C40.98 18.3 41.83 17.54 42.91 17.02C43.99 16.48 45.26 16.21 46.72 16.21C49.04 16.21 50.87 16.88 52.21 18.22C53.55 19.54 54.22 21.31 54.22 23.53V34.54H50.86V24.1C50.86 22.48 50.42 21.25 49.54 20.41C48.68 19.57 47.41 19.15 45.73 19.15C44.07 19.15 42.8 19.57 41.92 20.41C41.04 21.25 40.6 22.48 40.6 24.1V34.54H37.24Z" fill="#0f0f1a"/><path d="M66.28 34.87C63.96 34.87 62.14 34.23 60.82 32.95C59.5 31.65 58.84 29.91 58.84 27.73V16.54H62.2V27.01C62.2 28.63 62.62 29.86 63.46 30.7C64.3 31.52 65.52 31.93 67.12 31.93C68.82 31.93 70.13 31.5 71.05 30.64C71.99 29.76 72.46 28.54 72.46 26.98V16.54H75.82V31.06H77.56V34.54H73.96V31.78H72.7C72.06 32.78 71.2 33.55 70.12 34.09C69.04 34.61 67.76 34.87 66.28 34.87Z" fill="#0f0f1a"/><path d="M81.6423 34.54V20.02H79.9023V16.54H83.5023V19.3H84.7623C85.3823 18.3 86.2323 17.54 87.3123 17.02C88.3923 16.48 89.6623 16.21 91.1223 16.21C93.4423 16.21 95.2723 16.88 96.6123 18.22C97.9523 19.54 98.6223 21.31 98.6223 23.53V34.54H95.2623V24.1C95.2623 22.48 94.8223 21.25 93.9423 20.41C93.0823 19.57 91.8123 19.15 90.1323 19.15C88.4723 19.15 87.2023 19.57 86.3223 20.41C85.4423 21.25 85.0023 22.48 85.0023 24.1V34.54H81.6423Z" fill="#0f0f1a"/><path d="M107.862 34.54C106.902 34.54 106.152 34.3 105.612 33.82C105.092 33.32 104.832 32.58 104.832 31.6V19.12H101.472V16.54H104.862V11.14H108.162V16.54H112.872V19.12H108.192V31.9H113.352V34.54H107.862Z" fill="#0f0f1a"/><path d="M116.691 34.54V16.54H120.051V34.54H116.691ZM118.371 14.08C117.811 14.08 117.331 13.88 116.931 13.48C116.531 13.08 116.331 12.6 116.331 12.04C116.331 11.48 116.531 11 116.931 10.6C117.331 10.2 117.811 10 118.371 10C118.931 10 119.411 10.2 119.811 10.6C120.211 11 120.411 11.48 120.411 12.04C120.411 12.6 120.211 13.08 119.811 13.48C119.411 13.88 118.931 14.08 118.371 14.08Z" fill="#0f0f1a"/><path d="M133.309 34.9C131.449 34.9 129.819 34.52 128.419 33.76C127.039 32.98 125.969 31.89 125.209 30.49C124.449 29.09 124.069 27.44 124.069 25.54C124.069 23.64 124.449 21.99 125.209 20.59C125.969 19.19 127.039 18.11 128.419 17.35C129.819 16.57 131.449 16.18 133.309 16.18C135.229 16.18 136.869 16.56 138.229 17.32C139.609 18.08 140.669 19.16 141.409 20.56C142.169 21.96 142.549 23.62 142.549 25.54C142.549 27.44 142.169 29.1 141.409 30.52C140.669 31.92 139.609 33 138.229 33.76C136.849 34.52 135.209 34.9 133.309 34.9ZM133.309 31.96C135.169 31.96 136.609 31.4 137.629 30.28C138.669 29.14 139.189 27.56 139.189 25.54C139.189 23.5 138.669 21.92 137.629 20.8C136.609 19.68 135.169 19.12 133.309 19.12C131.469 19.12 130.029 19.69 128.989 20.83C127.949 21.95 127.429 23.52 127.429 25.54C127.429 27.56 127.949 29.14 128.989 30.28C130.029 31.4 131.469 31.96 133.309 31.96Z" fill="#0f0f1a"/></svg></span>
-    <span class="toolbar-title">${docTitle}</span>
-    <button class="btn-txt" onclick="downloadTxt()">↓ .TXT</button>
-    <button class="btn-pdf" onclick="window.print()">🖨&nbsp; Guardar como PDF</button>
-  </div>
-  <div class="page"><pre>${escaped}</pre></div>
-  <script>
-    function downloadTxt() {
-      const c = ${JSON.stringify(docText)};
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([c], {type:'text/plain;charset=utf-8'}));
-      a.download = '${fileName}.txt'; a.click();
+<meta charset="UTF-8">
+<title>${escHtml(task.title)} — Nuntio Technologies Limited</title>
+<style>
+  /* ── RESET ── */
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  /* ── SCREEN TOOLBAR ── */
+  .toolbar {
+    background:#f8f7f4; border-bottom:2px solid #1a1a2e;
+    padding:10px 40px; display:flex; align-items:center; gap:14px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:13px; position:sticky; top:0; z-index:100;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  .toolbar-ref { flex:1; color:#666; font-size:11px; font-family:monospace; }
+  .btn-dl { padding:8px 22px; border:none; border-radius:5px; font-size:13px;
+    font-weight:700; cursor:pointer; font-family:inherit; transition:.15s; }
+  .btn-dl.pdf { background:#1a1a2e; color:#fff; }
+  .btn-dl.pdf:hover { background:#2d2d4e; }
+  .btn-dl.txt { background:#fff; color:#444; border:1px solid #ccc; }
+  .btn-dl.txt:hover { border-color:#1a1a2e; }
+
+  /* ── PAGE LAYOUT ── */
+  @page {
+    size: A4 portrait;
+    margin: 2.2cm 2.8cm 2.8cm 2.8cm;
+    @bottom-center {
+      content: "— " counter(page) " de " counter(pages) " —";
+      font-family:'Georgia','Times New Roman',serif; font-size:8.5pt; color:#888;
     }
-  <\/script>
+  }
+  body {
+    font-family:'Georgia','Times New Roman',Times,serif;
+    font-size:10.5pt; line-height:1.75; color:#111827;
+    background:#e8e6e0; counter-reset:page;
+  }
+  .page-wrapper { max-width:800px; margin:32px auto 60px; padding:0 40px; }
+
+  /* ── PAPER PAGE ── */
+  .doc-page {
+    background:#fff;
+    padding:2.8cm 3cm 3cm;
+    box-shadow:0 4px 32px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.1);
+    position:relative; min-height:29.7cm;
+  }
+
+  /* ── MEMBRETE (LETTERHEAD) ── */
+  .letterhead {
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding-bottom:16px; margin-bottom:6px;
+    border-bottom:3px solid #1a1a2e;
+  }
+  .lh-left { display:flex; flex-direction:column; gap:4px; }
+  .lh-firm { font-size:8pt; color:#555; font-family:-apple-system,sans-serif;
+    letter-spacing:.08em; text-transform:uppercase; margin-top:5px; }
+  .lh-right { text-align:right; font-size:8.5pt; color:#444;
+    font-family:-apple-system,sans-serif; line-height:1.6; }
+  .lh-ref { font-family:monospace; font-size:8pt; color:#888;
+    background:#f3f3f3; padding:2px 8px; border-radius:3px; display:inline-block;
+    margin-bottom:4px; letter-spacing:.04em; }
+  .lh-confidential {
+    background:#1a1a2e; color:#fff; font-size:7.5pt; font-weight:700;
+    padding:3px 10px; border-radius:3px; letter-spacing:.12em;
+    text-transform:uppercase; display:inline-block; margin-bottom:6px;
+    font-family:-apple-system,sans-serif;
+  }
+
+  /* ── DOCUMENT TITLE BLOCK ── */
+  .doc-title-block {
+    text-align:center; margin:28px 0 22px; padding:20px 0;
+    border-top:1px solid #ddd; border-bottom:1px solid #ddd;
+  }
+  .doc-title { font-size:15pt; font-weight:bold; letter-spacing:.04em;
+    text-transform:uppercase; color:#1a1a2e; line-height:1.3; }
+  .doc-subtitle { font-size:10pt; color:#555; margin-top:6px;
+    font-style:italic; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-header {
+    font-size:9pt; font-weight:bold; letter-spacing:.1em;
+    text-transform:uppercase; color:#fff; background:#1a1a2e;
+    padding:5px 12px; margin:26px -12px 14px; display:block;
+  }
+  .sec-divider-thick { border:none; border-top:2px solid #1a1a2e; margin:20px 0 4px; }
+  .sec-divider-thin  { border:none; border-top:1px solid #bbb; margin:14px 0; }
+
+  /* ── ARTICLE TITLES ── */
+  .article-title {
+    font-size:11pt; font-weight:bold; color:#1a1a2e;
+    margin:22px 0 10px; padding-bottom:4px;
+    border-bottom:1px solid #ddd; text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+
+  /* ── CONTENT BLOCKS ── */
+  .recital-block { background:#f8f9fa; border-left:3px solid #1a1a2e;
+    padding:12px 16px; margin:14px 0; font-style:italic; font-size:10pt; }
+  .recital-item { margin:6px 0; }
+  .recital-letter { font-weight:bold; color:#1a1a2e; margin-right:6px; }
+
+  .clause-num { font-weight:bold; color:#1a1a2e; margin-right:4px; }
+  p.clause { margin:8px 0; text-align:justify; hyphens:auto; }
+  p.clause-indent { margin:6px 0 6px 24px; text-align:justify; }
+
+  .list-item { margin:4px 0 4px 28px; text-align:justify;
+    position:relative; list-style:none; }
+  .list-item::before { content:'·'; position:absolute; left:-16px;
+    color:#1a1a2e; font-weight:bold; }
+  .list-item-lettered { margin:5px 0 5px 28px; list-style:none; }
+
+  /* ── PARTIES BLOCK ── */
+  .parties-block { border:1px solid #ddd; padding:16px 20px;
+    margin:16px 0; background:#fafafa; }
+  .party-row { display:flex; gap:12px; margin:8px 0;
+    padding-bottom:8px; border-bottom:1px dashed #e0e0e0; }
+  .party-row:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .party-num { font-weight:bold; color:#1a1a2e; min-width:24px; font-size:11pt; }
+  .party-text { flex:1; font-size:10pt; }
+
+  /* ── TABLE ── */
+  .doc-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:9.5pt; }
+  .doc-table th { background:#1a1a2e; color:#fff; padding:7px 12px;
+    text-align:left; font-weight:600; letter-spacing:.03em; }
+  .doc-table td { padding:7px 12px; border-bottom:1px solid #e5e7eb; }
+  .doc-table tr:nth-child(even) td { background:#f9f9f9; }
+
+  /* ── SIGNATURE SECTION ── */
+  .sig-section {
+    margin-top:36px; padding-top:20px;
+    border-top:2px solid #1a1a2e; page-break-inside:avoid;
+  }
+  .sig-title { font-size:11pt; font-weight:bold; text-transform:uppercase;
+    letter-spacing:.08em; color:#1a1a2e; margin-bottom:24px;
+    text-align:center; }
+  .sig-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .sig-block {
+    border:1px solid #ddd; padding:20px;
+    page-break-inside:avoid; background:#fafafa; position:relative;
+  }
+  .sig-party { font-weight:bold; font-size:10pt; color:#1a1a2e;
+    margin-bottom:2px; }
+  .sig-role { font-size:8.5pt; color:#666; font-style:italic;
+    margin-bottom:18px; }
+  .sig-line { border-bottom:1px solid #333; margin:28px 0 6px; width:100%; }
+  .sig-field { font-size:8.5pt; color:#888; margin-top:4px; }
+  .sig-date-line { border-bottom:1px dotted #999; margin:20px 0 6px;
+    width:60%; }
+  .witness-box { margin-top:16px; padding-top:12px;
+    border-top:1px dashed #ccc; }
+  .witness-title { font-size:8pt; color:#888; text-transform:uppercase;
+    letter-spacing:.08em; margin-bottom:8px; }
+
+  /* ── SEAL CIRCLE ── */
+  .seal-area {
+    position:absolute; bottom:16px; right:16px;
+    width:90px; height:90px; border-radius:50%;
+    border:2px dashed #bbb; display:flex;
+    flex-direction:column; align-items:center; justify-content:center;
+    background:#f9f9f9;
+  }
+  .seal-text { font-size:7pt; color:#aaa; text-align:center;
+    text-transform:uppercase; letter-spacing:.06em; line-height:1.3;
+    font-family:-apple-system,sans-serif; }
+
+  /* ── LEGAL NOTICE ── */
+  .legal-notice {
+    margin-top:36px; padding:12px 16px;
+    background:#fffbeb; border:1px solid #f59e0b;
+    border-left:4px solid #f59e0b; font-size:8.5pt;
+    color:#78350f; line-height:1.5;
+  }
+  .legal-notice strong { color:#92400e; }
+
+  /* ── FOOTER (screen) ── */
+  .doc-footer {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:40px; padding-top:12px; border-top:1px solid #ddd;
+    font-size:8pt; color:#999; font-family:-apple-system,sans-serif;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background:#fff; }
+    .toolbar { display:none; }
+    .page-wrapper { margin:0; padding:0; max-width:100%; }
+    .doc-page { box-shadow:none; padding:0; min-height:auto; }
+    .letterhead { padding-top:0; }
+    .sig-section { page-break-before:auto; }
+    .doc-footer { display:none; }
+    a { color:inherit; text-decoration:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR (screen only) -->
+<div class="toolbar">
+  ${LOGO_SVG}
+  <span class="toolbar-ref">${refNum} &nbsp;·&nbsp; ${printDate}</span>
+  <button class="btn-dl txt" onclick="dlTxt()">↓ .TXT</button>
+  <button class="btn-dl pdf" onclick="window.print()">⬇ Descargar PDF</button>
+</div>
+
+<div class="page-wrapper">
+<div class="doc-page">
+
+  <!-- MEMBRETE -->
+  <div class="letterhead">
+    <div class="lh-left">
+      ${LOGO_SVG}
+      <span class="lh-firm">Nuntio Technologies Limited · Dublin, Ireland</span>
+    </div>
+    <div class="lh-right">
+      <div class="lh-confidential">Confidencial</div>
+      <div class="lh-ref">${refNum}</div>
+      <div>Emitido: ${printDate}</div>
+      <div>Formato: A4 · Derecho Irlandés</div>
+    </div>
+  </div>
+
+  <!-- CUERPO DEL DOCUMENTO -->
+  ${bodyHTML}
+
+  <!-- PIE (screen) -->
+  <div class="doc-footer">
+    <span>${refNum}</span>
+    <span>Nuntio Technologies Limited — Documento Legal Interno</span>
+    <span>Generado: ${printDate}</span>
+  </div>
+
+</div><!-- /.doc-page -->
+</div><!-- /.page-wrapper -->
+
+<script>
+  function dlTxt(){
+    const c=${JSON.stringify(docText)};
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([c],{type:'text/plain;charset=utf-8'}));
+    a.download='${fileName}.txt'; a.click();
+  }
+  window.addEventListener('load',()=>{ document.title='${escHtml(task.title)} — ${refNum}'; });
+<\/script>
 </body></html>`);
   win.document.close();
 
   state.docsGenerated.add(taskId);
   saveState();
   updateGlobalStats();
-  toast('📄 Documento listo — usa "Guardar como PDF" en la nueva pestaña');
+  toast('📄 Documento listo — pulsa "Descargar PDF" en la nueva pestaña');
   if (USE_SUPABASE) saveDocumentToDB(taskId, docText);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RENDERER: convierte el texto plano del template en HTML legal
+   ───────────────────────────────────────────────────────────── */
+function renderLegalDocHTML(text) {
+  const lines = text.split('\n');
+  let html = '';
+  let i = 0;
+  let inRecital = false;
+  let inSigSection = false;
+  let sigBlocks = [];
+  let currentSigBlock = null;
+
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  // Pre-scan: extract title block (first 3 non-empty lines)
+  let titleLines = [], foundTitle = 0;
+  for (const l of lines) {
+    if (l.trim() && foundTitle < 2) { titleLines.push(l.trim()); foundTitle++; }
+  }
+  const mainTitle = titleLines[0] || '';
+  const subTitle  = titleLines[1] || '';
+
+  // Render title block
+  html += `<div class="doc-title-block">
+    <div class="doc-title">${esc(mainTitle)}</div>
+    ${subTitle && subTitle !== mainTitle ? `<div class="doc-subtitle">${esc(subTitle)}</div>` : ''}
+  </div>`;
+
+  i = 0;
+  let skipFirst = 0;
+
+  while (i < lines.length) {
+    const raw = lines[i];
+    const line = raw.trim();
+
+    // Skip the title lines already rendered
+    if (skipFirst < 2 && line && line === titleLines[skipFirst]) { skipFirst++; i++; continue; }
+
+    // Empty line
+    if (!line) { i++; continue; }
+
+    // Thick rule ════
+    if (/^═{4,}/.test(line)) { html += `<hr class="sec-divider-thick">`; i++; continue; }
+
+    // Thin rule ────
+    if (/^─{4,}/.test(line)) { html += `<hr class="sec-divider-thin">`; i++; continue; }
+
+    // ARTÍCULO N — TITLE
+    if (/^ARTÍCULO\s+\d+\s*[—–-]/i.test(line)) {
+      html += `<div class="article-title">${esc(line)}</div>`;
+      inRecital = false; i++; continue;
+    }
+
+    // CONSIDERANDO / WHEREAS block header
+    if (/^(CONSIDERANDO|WHEREAS|RECITALS)/i.test(line)) {
+      html += `<hr class="sec-divider-thin"><div class="article-title">${esc(line)}</div>`;
+      inRecital = true; i++; continue;
+    }
+
+    // ENTRE: / PARTES header
+    if (/^(ENTRE|PARTES|BETWEEN|PARTIES)\s*[:/]?\s*$/.test(line)) {
+      html += `<div class="article-title">${esc(line)}</div><div class="parties-block">`;
+      i++;
+      // Collect party lines until empty or next section
+      while (i < lines.length) {
+        const pl = lines[i].trim();
+        if (!pl || /^═{3,}/.test(pl) || /^─{3,}/.test(pl) || /^ARTÍCULO/i.test(pl)) break;
+        const partyMatch = pl.match(/^\((\d+)\)\s+(.*)/);
+        if (partyMatch) {
+          html += `<div class="party-row"><div class="party-num">(${partyMatch[1]})</div><div class="party-text">${esc(partyMatch[2])}</div></div>`;
+        } else if (pl) {
+          html += `<div class="party-row"><div class="party-num"></div><div class="party-text">${esc(pl)}</div></div>`;
+        }
+        i++;
+      }
+      html += `</div>`;
+      continue;
+    }
+
+    // FIRMAS section
+    if (/^FIRMAS?$/i.test(line) || /^SIGNATURE\s*PAGE/i.test(line)) {
+      // Flush remaining lines as sig section
+      html += renderSignatureSection(lines.slice(i), esc);
+      break;
+    }
+
+    // Section header (ALL CAPS line that is short and "header-like")
+    if (line === line.toUpperCase() && line.length > 6 && line.length < 80
+      && !/^\d+\./.test(line) && !/^\(/.test(line) && !/^[─═●•▸-]/.test(line)
+      && !/^Ref\.|^Nº|^Fecha|^Modalidad|^Tipo|^Pool|^Tamaño|^Strike|^Emitido|^CRO|^Nombre|^Total|^Acciones/.test(line)) {
+      html += `<div class="sec-header">${esc(line)}</div>`;
+      i++; continue;
+    }
+
+    // Recital items: (A) (B) ...
+    if (inRecital && /^\([A-Z]\)/.test(line)) {
+      const letter = line.match(/^\(([A-Z])\)/)[1];
+      const rest = line.replace(/^\([A-Z]\)\s*/, '');
+      html += `<div class="recital-block"><span class="recital-letter">(${letter})</span>${esc(rest)}</div>`;
+      i++; continue;
+    }
+
+    // Sub-items: (a) (b) ... or a) b)
+    if (/^\s{2,}\([a-z]\)/.test(raw) || /^\s{4,}[a-z]\)/.test(raw)) {
+      const rest = line.replace(/^\([a-z]\)\s*|^[a-z]\)\s*/, '');
+      html += `<p class="clause-indent"><span class="clause-num">${line.match(/\(([a-z])\)|([a-z])\)/)?.[0] || ''}</span> ${esc(rest)}</p>`;
+      i++; continue;
+    }
+
+    // Numbered sub-clauses: 1.1 / 2.3 etc
+    if (/^\d+\.\d+/.test(line)) {
+      const numMatch = line.match(/^(\d+\.\d+)\s*(.*)/);
+      if (numMatch) {
+        html += `<p class="clause"><span class="clause-num">${numMatch[1]}</span> ${esc(numMatch[2])}</p>`;
+        i++; continue;
+      }
+    }
+
+    // Numbered items: 1. 2. 3.
+    if (/^\d+\.\s+/.test(line)) {
+      const numMatch = line.match(/^(\d+\.)\s+(.*)/);
+      if (numMatch) {
+        html += `<p class="clause"><strong>${numMatch[1]}</strong> ${esc(numMatch[2])}</p>`;
+        i++; continue;
+      }
+    }
+
+    // Bullet list items: - or •
+    if (/^\s{2,}[•\-]\s+/.test(raw) || /^\s{4,}/.test(raw) && line.startsWith('-')) {
+      const rest = line.replace(/^[•\-]\s*/, '');
+      html += `<li class="list-item">${esc(rest)}</li>`;
+      i++; continue;
+    }
+
+    // Table-like rows (│ separator)
+    if (line.includes('│') && line.includes('│')) {
+      // Collect all table rows
+      const tableLines = [];
+      while (i < lines.length && (lines[i].includes('│') || /^[┌┐└┘├┤┬┴┼─]+/.test(lines[i].trim()))) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      if (tableLines.length) {
+        html += `<table class="doc-table">`;
+        let isFirst = true;
+        for (const tl of tableLines) {
+          if (/^[┌┐└┘├┤┬┴┼─]+/.test(tl) || /^[─]+/.test(tl)) continue;
+          const cells = tl.split('│').filter(c => c.trim());
+          if (isFirst) {
+            html += `<thead><tr>${cells.map(c=>`<th>${esc(c.trim())}</th>`).join('')}</tr></thead><tbody>`;
+            isFirst = false;
+          } else {
+            html += `<tr>${cells.map(c=>`<td>${esc(c.trim())}</td>`).join('')}</tr>`;
+          }
+        }
+        html += `</tbody></table>`;
+        continue;
+      }
+      continue;
+    }
+
+    // AVISO LEGAL / Legal notice
+    if (/^AVISO LEGAL/i.test(line)) {
+      let noticeText = line;
+      i++;
+      while (i < lines.length && lines[i].trim() && !/^═{3,}/.test(lines[i].trim())) {
+        noticeText += ' ' + lines[i].trim(); i++;
+      }
+      html += `<div class="legal-notice"><strong>⚖️ Aviso Legal:</strong> ${esc(noticeText.replace(/^AVISO LEGAL[:\s]*/i,''))}</div>`;
+      continue;
+    }
+
+    // Key: value pairs (metadata)
+    if (/^[A-Za-záéíóúÁÉÍÓÚüÜñÑ\s\/()]+:\s+\S/.test(line) && line.length < 120 && !line.startsWith('http')) {
+      const colonIdx = line.indexOf(':');
+      const key = line.substring(0, colonIdx);
+      const val = line.substring(colonIdx + 1).trim();
+      html += `<p class="clause"><strong>${esc(key)}:</strong> ${esc(val)}</p>`;
+      i++; continue;
+    }
+
+    // Default: regular paragraph
+    html += `<p class="clause">${esc(line)}</p>`;
+    i++;
+  }
+
+  return html;
+}
+
+function renderSignatureSection(lines, esc) {
+  let html = `<div class="sig-section"><div class="sig-title">━━━ Firmas y Sello Oficial ━━━</div><div class="sig-grid">`;
+
+  // Parse signature blocks
+  const blocks = [];
+  let current = null;
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (/^FIRMAS?$/i.test(line) || /^SIGNATURE/i.test(line)) continue;
+
+    // Detect new signatory: starts with FIRMADO POR or contains "Director", "Fundador"
+    if (/^FIRMADO\s+POR/i.test(line) || /^En\s+representaci/i.test(line)) {
+      if (current) blocks.push(current);
+      current = { header: line, role: '', lines: [] };
+    } else if (current) {
+      // Detect role line
+      if (/calidad\s+de|en\s+calidad/i.test(line)) {
+        current.role = line.replace(/.*calidad\s+de\s*/i,'').replace(/[:.]/g,'').trim();
+      }
+      current.lines.push(line);
+    } else {
+      // First block before any FIRMADO POR marker
+      if (!current) current = { header: 'Firmante', role: '', lines: [] };
+      current.lines.push(line);
+    }
+  }
+  if (current) blocks.push(current);
+
+  // Render each block
+  const signers = blocks.length ? blocks : [
+    { header:'Firmante 1', role:'Director', lines:[] },
+    { header:'Firmante 2', role:'Director', lines:[] }
+  ];
+
+  signers.forEach((b, idx) => {
+    const name = b.header.replace(/^FIRMADO\s+POR\s*/i,'').replace(/^En\s+representaci[oó]n\s+de\s*/i,'').trim();
+    html += `
+    <div class="sig-block">
+      <div class="sig-party">${esc(name || 'Parte ' + (idx+1))}</div>
+      <div class="sig-role">${esc(b.role || 'Firmante')}</div>
+      <div class="sig-line"></div>
+      <div class="sig-field">Firma</div>
+      <div style="margin-top:14px">
+        <div class="sig-date-line"></div>
+        <div class="sig-field">Fecha</div>
+      </div>
+      <div class="witness-box">
+        <div class="witness-title">Testigo</div>
+        <div class="sig-date-line" style="width:100%;margin-top:16px"></div>
+        <div class="sig-field">Nombre y firma del testigo</div>
+        <div class="sig-date-line" style="width:70%;margin-top:12px"></div>
+        <div class="sig-field">DNI / Pasaporte</div>
+      </div>
+      <div class="seal-area">
+        <div class="seal-text">Sello<br>Oficial<br>· Stamp ·</div>
+      </div>
+    </div>`;
+  });
+
+  html += `</div></div>`; // close grid + sig-section
+  return html;
 }
 
 async function sendSignLink(taskId) {
