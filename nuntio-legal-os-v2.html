@@ -56,6 +56,7 @@ body::before {
 .sidebar {
   background: var(--s1);
   border-right: 1px solid var(--border);
+  box-shadow: 2px 0 12px rgba(0,0,0,.04);
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -183,7 +184,7 @@ body::before {
   position: relative;
 }
 
-.nav-item:hover { background: var(--s2); }
+.nav-item:hover { background: var(--s2); border-color: var(--border); }
 .nav-item.active {
   background: var(--green-dim);
   border-color: rgba(5,150,105,0.22);
@@ -275,7 +276,12 @@ body::before {
 }
 
 .hero-title .hi { color: var(--green); }
-.hero-title .company { color: var(--purple); }
+.hero-title .company {
+  background: linear-gradient(135deg, var(--purple) 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 .hero-sub {
   font-size: 14px;
@@ -359,12 +365,14 @@ body::before {
   display: flex;
   align-items: center;
   gap: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
 }
 
 .phase-card:hover {
   border-color: var(--border2);
   background: var(--s2);
   transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
 }
 
 .phase-card-icon {
@@ -441,7 +449,7 @@ body::before {
   transition: all 0.2s;
 }
 
-.task-item:hover { border-color: var(--border2); }
+.task-item:hover { border-color: var(--border2); border-left-color: var(--purple); }
 .task-item.completed { border-color: rgba(5,150,105,0.28); background: rgba(5,150,105,0.04); }
 .task-item.expanded { border-color: var(--purple); }
 
@@ -1016,7 +1024,7 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 20px 60px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.8);
 }
 .login-logo {
   display: flex;
@@ -1258,6 +1266,37 @@ body::before {
   border-color: var(--red);
   color: var(--red);
 }
+
+/* ── TEAM VIEW ── */
+.team-view-wrap { display: flex; flex-direction: column; height: 100%; }
+.team-header {
+  padding: 40px 48px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+}
+.team-body { padding: 28px 48px 48px; max-width: 760px; }
+.team-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted2); font-family: var(--mono); margin-bottom: 10px; }
+.members-list { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--s1); }
+.member-row {
+  display: grid; grid-template-columns: 44px 1fr auto auto; align-items: center; gap: 14px;
+  padding: 14px 18px; border-bottom: 1px solid var(--border); transition: background .15s;
+}
+.member-row:last-child { border-bottom: none; }
+.member-row:hover { background: var(--s2); }
+.member-avatar {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; font-family: var(--mono); flex-shrink: 0;
+}
+.member-email { font-size: 13px; font-weight: 600; color: var(--text); }
+.member-id { font-size: 11px; color: var(--muted2); font-family: var(--mono); margin-top: 1px; }
+.role-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
+.member-you { font-size: 11px; color: var(--muted2); font-family: var(--mono); }
+.btn-revoke { font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 7px; border: 1px solid rgba(220,38,38,0.3); background: rgba(220,38,38,0.06); color: var(--red); cursor: pointer; transition: all .15s; white-space: nowrap; }
+.btn-revoke:hover { background: rgba(220,38,38,0.12); border-color: var(--red); }
+.btn-copy-link { font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 7px; border: 1px solid var(--border2); background: var(--s2); color: var(--text); cursor: pointer; transition: all .15s; white-space: nowrap; }
+.btn-copy-link:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-dim); }
+.invite-info-box { margin-top: 24px; padding: 16px 18px; background: var(--s2); border: 1px solid var(--border); border-radius: 12px; display: flex; gap: 12px; align-items: flex-start; }
 </style>
 </head>
 <body>
@@ -1519,6 +1558,34 @@ body::before {
     </div>
   </div>
 </div>
+<!-- ═══ INVITE MODAL ═══ -->
+<div class="modal-bg" id="inviteModal" style="display:none">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-badge" style="background:var(--purple-dim);color:var(--purple)">👥 Invitar usuario</div>
+    <h2 style="margin-top:16px;margin-bottom:8px">Nueva invitación</h2>
+    <p style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.5">Se generará un link único para que el usuario acceda y se una automáticamente a tu empresa.</p>
+    <div style="display:grid;gap:16px">
+      <div class="login-field">
+        <div class="login-label">Email del usuario *</div>
+        <input class="login-input" type="email" id="inv-email" placeholder="usuario@empresa.com" onkeydown="if(event.key==='Enter')sendInvite()">
+      </div>
+      <div class="login-field">
+        <div class="login-label">Rol</div>
+        <select class="login-input" id="inv-role" style="height:44px;cursor:pointer">
+          <option value="owner">👑 Owner — Acceso completo</option>
+          <option value="legal" selected>⚖️ Abogado — Ver y gestionar docs legales</option>
+          <option value="investor">💼 Inversor — Ver paquete inversor</option>
+        </select>
+      </div>
+    </div>
+    <div class="login-error" id="inv-error" style="margin-top:12px"></div>
+    <div style="display:flex;gap:10px;margin-top:24px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeInviteModal()">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2" onclick="sendInvite()">Generar link de invitación</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ COMPLETION MODAL ═══ -->
 <div class="modal-bg" id="completionModal">
   <div class="modal">
@@ -2080,7 +2147,8 @@ let state = {
   expandedTask: null,
   drFiles: [],
   contracts: [],
-  teamMembers: []
+  teamMembers: [],
+  invites: []
 };
 let currentDrFilter = 'all';
 let currentContractFilter = 'all';
@@ -6572,6 +6640,31 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     .eq('user_id', SESSION_ID)
     .maybeSingle();
   if (!roleData) {
+    // Check for pending invite before auto-setup
+    const accepted = await acceptPendingInvite();
+    if (accepted) {
+      const { data: newRoleData } = await _supabase
+        .from('nuntio_user_roles')
+        .select('role, company_id, email, nuntio_companies(name)')
+        .eq('user_id', SESSION_ID)
+        .maybeSingle();
+      if (newRoleData) {
+        COMPANY_ID = newRoleData.company_id;
+        USER_ROLE = newRoleData.role;
+        COMPANY_NAME = newRoleData.nuntio_companies?.name || null;
+        hideLoginScreen();
+        hideCompanySetup();
+        renderSidebarByRole();
+        updateDashboardHero();
+        toast('✅ Te has unido a ' + (COMPANY_NAME || 'la empresa'), 'green');
+        if (USER_ROLE === 'investor') {
+          loadContracts().then(() => { showLoadingOverlay(false); showView('investor'); });
+        } else if (USER_ROLE === 'legal') {
+          loadContracts().then(() => { showLoadingOverlay(false); showView('contracts'); });
+        } else { loadStateFromDB(); }
+        return;
+      }
+    }
     autoSetupNuntio();
   } else {
     COMPANY_ID = roleData.company_id;
@@ -6604,7 +6697,7 @@ async function logout() {
   SESSION_ID = null; COMPANY_ID = null; USER_ROLE = null; COMPANY_NAME = null; USER_EMAIL = null;
   state.completed = new Set(); state.docsGenerated = new Set(); state.signsSent = new Set();
   state.formData = {}; state.signTokens = {}; state.expandedTask = null;
-  state.contracts = []; state.teamMembers = [];
+  state.contracts = []; state.teamMembers = []; state.invites = [];
   sessionStorage.removeItem('nuntio_os_v2');
   showLoginScreen();
 }
@@ -7065,97 +7158,146 @@ async function loadTeam() {
   state.teamMembers = data || [];
 }
 
+async function loadInvites() {
+  if (!COMPANY_ID) return;
+  const { data } = await _supabase
+    .from('nuntio_invites')
+    .select('*')
+    .eq('company_id', COMPANY_ID)
+    .order('created_at', { ascending: false });
+  state.invites = data || [];
+}
+
 function renderTeamView() {
   const view = document.getElementById('view-team');
   if (!view) return;
 
   const roleColors = { owner: 'var(--purple)', legal: 'var(--amber)', investor: 'var(--green)' };
-  const roleLabels = { owner: 'Owner', legal: 'Legal', investor: 'Investor' };
+  const roleBg = { owner: 'var(--purple-dim)', legal: 'var(--amber-dim)', investor: 'var(--green-dim)' };
+  const roleLabels = { owner: 'Owner', legal: 'Abogado', investor: 'Inversor' };
+  const roleIcons = { owner: '👑', legal: '⚖️', investor: '💼' };
+
+  function initials(email) {
+    if (!email) return '?';
+    const parts = email.split('@')[0].split(/[._-]/);
+    return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
+  }
+
+  const membersHtml = state.teamMembers.length === 0 ? `
+    <div style="padding:48px 24px;text-align:center;color:var(--muted2)">
+      <div style="font-size:32px;margin-bottom:12px;opacity:.4">👥</div>
+      <div style="font-size:14px;font-weight:600">Solo tú por ahora</div>
+      <div style="font-size:12px;margin-top:4px">Invita a tu co-fundador, abogado o inversor</div>
+    </div>
+  ` : state.teamMembers.map(m => {
+    const ini = initials(m.email);
+    const isMe = m.user_id === SESSION_ID;
+    return `
+    <div class="member-row">
+      <div class="member-avatar" style="background:${roleBg[m.role]};color:${roleColors[m.role]}">${ini}</div>
+      <div class="member-info">
+        <div class="member-email">${m.email || 'Usuario ' + m.user_id.substring(0,8)}</div>
+        <div class="member-id">ID: ${m.user_id.substring(0,12)}…</div>
+      </div>
+      <span class="role-badge" style="background:${roleBg[m.role]};color:${roleColors[m.role]}">${roleIcons[m.role]} ${roleLabels[m.role]}</span>
+      ${isMe ? '<span class="member-you">Tú</span>' : `<button class="btn-revoke" onclick="removeMember('${m.id}','${m.email||m.user_id}')">Revocar</button>`}
+    </div>`;
+  }).join('');
+
+  const pendingHtml = (state.invites || []).filter(i => i.status === 'pending').map(inv => {
+    const inviteUrl = `${location.origin}${location.pathname}?invite=${inv.token}`;
+    return `
+    <div class="member-row" style="opacity:.75">
+      <div class="member-avatar" style="background:var(--s3);color:var(--muted2);font-size:16px">✉️</div>
+      <div class="member-info">
+        <div class="member-email">${inv.email}</div>
+        <div class="member-id">Invitación pendiente · ${roleLabels[inv.role] || inv.role}</div>
+      </div>
+      <span class="role-badge" style="background:var(--s3);color:var(--muted2)">Pendiente</span>
+      <button class="btn-copy-link" onclick="copyInviteLink('${inviteUrl}')">📋 Copiar link</button>
+    </div>`;
+  }).join('');
 
   view.innerHTML = `
-    <div class="task-view-header">
-      <div>
-        <div class="task-view-phase">Empresa</div>
-        <div class="task-view-title">Equipo</div>
-        <div class="task-view-desc">${state.teamMembers.length} miembro${state.teamMembers.length !== 1 ? 's' : ''}</div>
-      </div>
-      <button class="btn btn-primary" onclick="showInviteModal()">+ Invitar usuario</button>
-    </div>
-    <div style="padding:24px 48px 48px">
-      <div style="background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden">
-        <div style="display:grid;grid-template-columns:1fr auto auto;gap:0;padding:12px 20px;background:var(--s2);font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:0.06em">
-          <span>Usuario</span><span style="margin-right:60px">Rol</span><span></span>
+    <div class="team-view-wrap">
+      <div class="team-header">
+        <div>
+          <div class="task-view-phase">Empresa · ${COMPANY_NAME || 'Nuntio'}</div>
+          <div class="task-view-title">Equipo</div>
+          <div class="task-view-desc">${state.teamMembers.length} miembro${state.teamMembers.length !== 1 ? 's' : ''} activo${state.teamMembers.length !== 1 ? 's' : ''}</div>
         </div>
-        ${state.teamMembers.map(m => `
-          <div style="display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;padding:14px 20px;border-top:1px solid var(--border)">
-            <div>
-              <div style="font-size:13px;font-weight:600">${m.email || m.user_id.substring(0,16) + '...'}</div>
-              <div style="font-size:11px;color:var(--muted2)">ID: ${m.user_id.substring(0,8)}...</div>
-            </div>
-            <span style="padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;background:${roleColors[m.role]}22;color:${roleColors[m.role]}">${roleLabels[m.role]}</span>
-            ${m.user_id !== SESSION_ID ? `<button onclick="removeMember('${m.id}','${m.email||m.user_id}')" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;background:transparent;font-size:11px;cursor:pointer;color:var(--red)">Revocar</button>` : '<span style="font-size:11px;color:var(--muted2)">Tú</span>'}
-          </div>
-        `).join('')}
+        <button class="btn btn-primary" onclick="openInviteModal()">+ Invitar usuario</button>
       </div>
 
-      <div style="margin-top:24px;padding:16px 20px;background:var(--amber-dim);border:1px solid rgba(180,83,9,0.2);border-radius:10px;font-size:13px;color:var(--amber)">
-        <strong>Para invitar usuarios:</strong> ve a Supabase Dashboard → Authentication → Users → Invite user. Cuando el usuario active su cuenta, aparecerá aquí para asignarle un rol.
-      </div>
+      <div class="team-body">
+        <div class="team-section">
+          <div class="team-section-label">Miembros activos</div>
+          <div class="members-list">${membersHtml}</div>
+        </div>
 
-      <div id="invite-form" style="display:none;margin-top:20px;background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:20px">
-        <div style="font-size:15px;font-weight:700;margin-bottom:16px">Asignar rol a usuario existente</div>
-        <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end">
+        ${(state.invites || []).filter(i => i.status === 'pending').length > 0 ? `
+        <div class="team-section" style="margin-top:24px">
+          <div class="team-section-label">Invitaciones pendientes</div>
+          <div class="members-list">${pendingHtml}</div>
+        </div>` : ''}
+
+        <div class="invite-info-box">
+          <div style="font-size:18px">📨</div>
           <div>
-            <div class="login-label">User ID (auth.uid())</div>
-            <input class="login-input" type="text" id="invite-uid" placeholder="uuid del usuario en Supabase Auth">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px">¿Cómo funciona?</div>
+            <div style="font-size:12px;color:var(--muted2);line-height:1.6">Introduce el email y rol del usuario que quieres invitar. Se genera un link único que puedes copiar y enviar. Al acceder al link, el usuario crea su cuenta y queda vinculado automáticamente a tu empresa.</div>
           </div>
-          <select class="login-input" id="invite-role" style="height:44px">
-            <option value="legal">Legal</option>
-            <option value="investor">Investor</option>
-            <option value="owner">Owner</option>
-          </select>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
-          <div>
-            <div class="login-label">Email (para mostrar)</div>
-            <input class="login-input" type="email" id="invite-email" placeholder="usuario@empresa.com">
-          </div>
-        </div>
-        <div style="display:flex;gap:12px;margin-top:16px">
-          <button class="btn btn-ghost" onclick="document.getElementById('invite-form').style.display='none'">Cancelar</button>
-          <button class="btn btn-primary" onclick="assignRole()">Asignar rol</button>
         </div>
       </div>
     </div>
   `;
 }
 
-function showInviteModal() {
-  const form = document.getElementById('invite-form');
-  if (form) { form.style.display = form.style.display === 'none' ? 'block' : 'none'; }
+function openInviteModal() {
+  document.getElementById('inviteModal').style.display = 'flex';
+  document.getElementById('inv-email').value = '';
+  document.getElementById('inv-error').textContent = '';
 }
+function closeInviteModal() {
+  document.getElementById('inviteModal').style.display = 'none';
+}
+async function sendInvite() {
+  const email = document.getElementById('inv-email').value.trim().toLowerCase();
+  const role = document.getElementById('inv-role').value;
+  const errEl = document.getElementById('inv-error');
+  if (!email || !email.includes('@')) { errEl.textContent = 'Introduce un email válido.'; return; }
 
-async function assignRole() {
-  const uid = document.getElementById('invite-uid')?.value.trim();
-  const role = document.getElementById('invite-role')?.value;
-  const email = document.getElementById('invite-email')?.value.trim();
-  if (!uid) { alert('Introduce el User ID.'); return; }
+  const token = Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2,'0')).join('');
 
-  const { error } = await _supabase.from('nuntio_user_roles').insert({
-    company_id: COMPANY_ID, user_id: uid, role, email: email || null, invited_by: SESSION_ID
+  const { error } = await _supabase.from('nuntio_invites').insert({
+    company_id: COMPANY_ID,
+    email,
+    role,
+    token,
+    status: 'pending',
+    invited_by: SESSION_ID
   });
 
-  if (error) { alert('Error: ' + error.message); return; }
-  showToast('Rol asignado', '✓');
-  await loadTeam();
-  renderTeamView();
-}
+  if (error) { errEl.textContent = 'Error: ' + error.message; return; }
 
+  const inviteUrl = `${location.origin}${location.pathname}?invite=${token}`;
+  closeInviteModal();
+  await loadInvites();
+  renderTeamView();
+
+  // Auto-copy link to clipboard
+  try { await navigator.clipboard.writeText(inviteUrl); } catch(e) {}
+  toast('✅ Invitación creada — link copiado al portapapeles', 'green');
+}
+async function copyInviteLink(url) {
+  try { await navigator.clipboard.writeText(url); toast('📋 Link copiado', 'green'); }
+  catch(e) { toast('Link: ' + url, 'amber'); }
+}
 async function removeMember(id, label) {
   if (!confirm(`¿Revocar acceso a ${label}?`)) return;
   const { error } = await _supabase.from('nuntio_user_roles').delete().eq('id', id);
-  if (error) { alert('Error: ' + error.message); return; }
-  showToast('Acceso revocado', '✓');
+  if (error) { toast('Error: ' + error.message, 'red'); return; }
+  toast('Acceso revocado', 'green');
   await loadTeam();
   renderTeamView();
 }
@@ -7206,7 +7348,7 @@ function showView(viewId) {
 
   // Cargar datos si es necesario
   if (viewId === 'contracts') { loadContracts().then(() => renderContractsView(currentContractFilter)); }
-  else if (viewId === 'team') { loadTeam().then(() => renderTeamView()); }
+  else if (viewId === 'team') { Promise.all([loadTeam(), loadInvites()]).then(() => renderTeamView()); }
   else if (viewId === 'investor') { loadContracts().then(() => renderInvestorView()); }
   else if (viewId === 'dataroom') { loadDataRoom(); }
   else if (viewId === 'dashboard') { /* already rendered */ }
@@ -7216,8 +7358,49 @@ function showView(viewId) {
   }
 }
 
+// ─── ACCEPT INVITE HELPER ───
+async function acceptPendingInvite() {
+  const token = sessionStorage.getItem('nuntio_invite_token');
+  if (!token || !SESSION_ID) return false;
+  sessionStorage.removeItem('nuntio_invite_token');
+
+  const { data: inv } = await _supabase
+    .from('nuntio_invites')
+    .select('*')
+    .eq('token', token)
+    .eq('status', 'pending')
+    .maybeSingle();
+
+  if (!inv) return false;
+
+  // Check email matches (case insensitive)
+  if (inv.email.toLowerCase() !== USER_EMAIL.toLowerCase()) {
+    toast('⚠️ Este link de invitación es para ' + inv.email, 'amber');
+    return false;
+  }
+
+  // Create role
+  const { error: roleErr } = await _supabase.from('nuntio_user_roles').insert({
+    company_id: inv.company_id, user_id: SESSION_ID, role: inv.role, email: USER_EMAIL, invited_by: inv.invited_by
+  });
+  if (roleErr && !roleErr.message.includes('duplicate')) { toast('Error: ' + roleErr.message, 'red'); return false; }
+
+  // Mark invite accepted
+  await _supabase.from('nuntio_invites').update({ status: 'accepted', accepted_at: new Date().toISOString() }).eq('token', token);
+
+  return true;
+}
+
 // ─── ARRANCAR v2 ───
 (async () => {
+  // ─── CHECK INVITE TOKEN ───
+  const urlParams = new URLSearchParams(location.search);
+  const inviteToken = urlParams.get('invite');
+  if (inviteToken) {
+    sessionStorage.setItem('nuntio_invite_token', inviteToken);
+    history.replaceState({}, '', location.pathname);
+  }
+
   const { data: { session } } = await _supabase.auth.getSession();
   if (!session) { showLoginScreen(); return; }
 
@@ -7232,6 +7415,34 @@ function showView(viewId) {
     .maybeSingle();
 
   if (!roleData) {
+    // Check for pending invite before auto-setup
+    const accepted = await acceptPendingInvite();
+    if (accepted) {
+      // Re-fetch role after invite accepted
+      const { data: newRoleData } = await _supabase
+        .from('nuntio_user_roles')
+        .select('role, company_id, email, nuntio_companies(name)')
+        .eq('user_id', SESSION_ID)
+        .maybeSingle();
+      if (newRoleData) {
+        COMPANY_ID = newRoleData.company_id;
+        USER_ROLE = newRoleData.role;
+        COMPANY_NAME = newRoleData.nuntio_companies?.name || null;
+        hideLoginScreen();
+        hideCompanySetup();
+        renderSidebarByRole();
+        updateDashboardHero();
+        toast('✅ Te has unido a ' + (COMPANY_NAME || 'la empresa'), 'green');
+        if (USER_ROLE === 'investor') {
+          loadContracts().then(() => { showLoadingOverlay(false); showView('investor'); });
+        } else if (USER_ROLE === 'legal') {
+          loadContracts().then(() => { showLoadingOverlay(false); showView('contracts'); });
+        } else {
+          loadStateFromDB();
+        }
+        return;
+      }
+    }
     // Primera vez: auto-configurar Nuntio Technologies Limited
     autoSetupNuntio();
     return;
