@@ -1263,7 +1263,7 @@ body::before {
 <body>
 
 <!-- ═══ LOGIN SCREEN ═══ -->
-<div id="login-screen">
+<div id="login-screen" class="visible">
   <div class="login-card">
     <div class="login-logo">
       <svg class="login-full-logo" viewBox="0 0 153 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1422,7 +1422,7 @@ body::before {
 </div>
 
 <!-- ═══ COMPANY SETUP MODAL ═══ -->
-<div class="modal-bg" id="companySetupModal" style="display:flex">
+<div class="modal-bg" id="companySetupModal" style="display:none">
   <div class="modal" style="max-width:440px">
     <div class="modal-badge" style="background:var(--purple-dim);color:var(--purple)">⚡ Bienvenido a Nuntio Legal OS v2</div>
     <h2 style="margin-top:16px">Configura tu empresa</h2>
@@ -6579,6 +6579,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     USER_ROLE = roleData.role;
     COMPANY_NAME = roleData.nuntio_companies?.name || null;
     hideLoginScreen();
+    hideCompanySetup();
     renderSidebarByRole();
     updateDashboardHero();
     if (USER_ROLE === 'investor') {
@@ -7192,6 +7193,7 @@ function showView(viewId) {
   COMPANY_NAME = roleData.nuntio_companies?.name || null;
 
   hideLoginScreen();
+  hideCompanySetup();
   renderSidebarByRole();
   updateDashboardHero();
 
