@@ -9,12 +9,24 @@
     {
       "src": "nuntio-legal-os-v2.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "docs/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/v1",
       "dest": "/nuntio-legal-os.html"
+    },
+    {
+      "src": "/docs/(.*)",
+      "dest": "/docs/$1",
+      "headers": {
+        "Content-Disposition": "inline",
+        "Cache-Control": "public, max-age=31536000"
+      }
     },
     {
       "src": "/",

@@ -1125,6 +1125,28 @@ body::before {
 .dr-tab:hover { color: var(--text); }
 .dr-tab.active { color: var(--purple); border-bottom-color: var(--purple); }
 .dr-content { padding: 32px 48px 64px; }
+/* ── CORPORATE DOCS SECTION ── */
+.corp-docs-section { margin-bottom: 24px; }
+.corp-docs-grid { display: flex; flex-direction: column; gap: 10px; }
+.corp-doc-card {
+  background: var(--s1); border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px 20px; display: flex; align-items: center; gap: 16px;
+  border-left: 3px solid var(--purple); transition: all 0.2s;
+}
+.corp-doc-card:hover { border-color: var(--purple); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.corp-doc-icon { font-size: 28px; flex-shrink: 0; }
+.corp-doc-body { flex: 1; min-width: 0; }
+.corp-doc-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.corp-doc-meta { font-size: 12px; color: var(--muted2); line-height: 1.5; }
+.corp-doc-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 7px; font-weight: 600;
+  border: 1px solid var(--border2); background: var(--s2); color: var(--text);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+  cursor: pointer; transition: all .15s; white-space: nowrap; }
+.btn-sm:hover { border-color: var(--purple); background: var(--purple-dim); }
+.btn-sm.btn-primary { background: var(--purple); color: #fff; border-color: var(--purple); }
+.btn-sm.btn-primary:hover { background: #7c3aed; }
+
 .dr-empty {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 80px 24px; text-align: center; gap: 12px;
@@ -1527,9 +1549,20 @@ body::before {
 const COMPANY = {
   name: "Nuntio Technologies Limited",
   country: "Irlanda",
-  founders: ["Fundador 1 (Visión/Legal/Diseño)", "Fundador 2 (DevOps/Hacking/Dev)"],
+  cro: "810417",
+  incorporated: "10 March 2026",
+  type: "LTD — Private Company Limited by Shares",
+  registeredOffice: "The Black Church, St. Mary's Place, Dublin 7, D07 P4AX, Ireland",
+  shareCapital: "€1,000.00 (1,000 Ordinary shares of €1.00 each)",
+  sharesIssued: "600",
+  directors: [
+    { name: "Sebastian Beguez Labori", role: "Director & Secretary", shares: 300, pct: "50%" },
+    { name: "Ernesto González Rodríguez", role: "Director", shares: 300, pct: "50%" }
+  ],
+  founders: ["Sebastian Beguez Labori", "Ernesto González Rodríguez"],
   team: ["Lead Backend / Producto", "Frontend Developer"],
-  product: "SaaS Agéntico — Orquestador de Agentes IA"
+  product: "SaaS Agéntico — Orquestador de Agentes IA",
+  docsUrl: "/docs/escrituras-nuntio.pdf"
 };
 
 const phases = [
@@ -1901,11 +1934,11 @@ const phases = [
           ]
         },
         docFields: [
-          { id: "inc_cro", label: "CRO Registration Number", type: "text", placeholder: "ej. 12345678", required: true },
-          { id: "inc_date", label: "Fecha de constitución", type: "date", required: true },
-          { id: "inc_address", label: "Registered Address en Irlanda", type: "text", placeholder: "Dirección registrada completa", required: true },
-          { id: "inc_secretary", label: "Company Secretary", type: "text", placeholder: "Nombre o empresa secretaria", required: true },
-          { id: "inc_capital", label: "Capital social emitido (€)", type: "text", placeholder: "ej. €100 (1,000 acciones x €0.10)", required: true }
+          { id: "inc_cro", label: "CRO Registration Number", type: "text", placeholder: "ej. 12345678", required: true, default: "810417" },
+          { id: "inc_date", label: "Fecha de constitución", type: "date", required: true, default: "2026-03-10" },
+          { id: "inc_address", label: "Registered Address en Irlanda", type: "text", placeholder: "Dirección registrada completa", required: true, default: "The Black Church, St. Mary's Place, Dublin 7, D07 P4AX, Ireland" },
+          { id: "inc_secretary", label: "Company Secretary", type: "text", placeholder: "Nombre o empresa secretaria", required: true, default: "Sebastian Beguez Labori" },
+          { id: "inc_capital", label: "Capital social emitido (€)", type: "text", placeholder: "ej. €100 (1,000 acciones x €0.10)", required: true, default: "€1,000.00 (1,000 Ordinary shares of €1.00 each)" }
         ],
         signers: []
       },
@@ -2512,9 +2545,9 @@ function renderDocFields(task) {
     const f1 = fields[i];
     const f2 = fields[i+1];
     html += `<div class="doc-row">`;
-    html += renderField(task.id, f1, savedData[f1.id] || '');
+    html += renderField(task.id, f1, savedData[f1.id] || f1.default || '');
     if (f2) {
-      html += renderField(task.id, f2, savedData[f2.id] || '');
+      html += renderField(task.id, f2, savedData[f2.id] || f2.default || '');
     } else {
       html += '<div></div>';
     }
@@ -3271,7 +3304,7 @@ en relación con:
 
 NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
 constituida conforme a la legislación irlandesa, con
-número de registro CRO [NÚMERO CRO] y domicilio social
+número de registro CRO 810417 y domicilio social
 en Irlanda (la "Sociedad").
 
 Fecha: ${d('sha_date') || today}
@@ -3610,7 +3643,7 @@ ENTRE:
 
 (2) NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
     constituida en Irlanda conforme al Companies Act 2014,
-    con número de registro CRO [NÚMERO CRO] ("la Sociedad"
+    con número de registro CRO 810417 ("la Sociedad"
     o "el Cesionario")
 
 Fecha: ${d('ipa_date') || today}
@@ -3854,7 +3887,7 @@ ENTRE:
 
 (1) NUNTIO TECHNOLOGIES LIMITED, sociedad constituida en
     Irlanda conforme al Companies Act 2014, con CRO número
-    [NÚMERO CRO] ("Parte Divulgante" o "Nuntio")
+    810417 ("Parte Divulgante" o "Nuntio")
 
 (2) ${d('nda_party')}, con domicilio a efectos de
     notificaciones en [DIRECCIÓN] ("Parte Receptora")
@@ -4293,7 +4326,7 @@ ENTRE:
 
 (1) NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
     constituida en Irlanda conforme al Companies Act
-    2014, con número de registro CRO [NÚMERO CRO]
+    2014, con número de registro CRO 810417
     ("la Empresa" o "la Sociedad")
 
 (2) ${d('emp_name')}, con domicilio a efectos de
@@ -4543,7 +4576,7 @@ CONFIDENCIAL — DOCUMENTO CORPORATIVO INTERNO
 
 Sociedad: Nuntio Technologies Limited
 Jurisdicción: República de Irlanda (Companies Act 2014)
-CRO: [NÚMERO CRO]
+CRO: 810417
 Fecha de actualización: ${today}
 
 ────────────────────────────────────────────────────
@@ -4882,7 +4915,7 @@ DOCUMENTO CORPORATIVO OFICIAL
 
 Sociedad: Nuntio Technologies Limited
 Jurisdicción: República de Irlanda (Companies Act 2014)
-CRO: [NÚMERO CRO]
+CRO: 810417
 Fecha de la resolución: ${today}
 
 ────────────────────────────────────────────────────
@@ -5237,7 +5270,7 @@ ENTRE:
 
 (1) NUNTIO TECHNOLOGIES LIMITED, sociedad debidamente
     constituida en Irlanda conforme al Companies Act
-    2014, con CRO número [NÚMERO CRO]
+    2014, con CRO número 810417
     ("la Sociedad" o "la Empresa")
 
 (2) ${d('adv_name')}, con domicilio a efectos de
@@ -6227,9 +6260,9 @@ function renderDataRoom(filter) {
   container.innerHTML = `
     <div class="dr-view-header">
       <div class="dr-header-left">
-        <div class="dr-header-eyebrow">Nuntio Technologies Ltd.</div>
-        <div class="dr-header-title">📁 Mis Documentos</div>
-        <div class="dr-header-sub">Documentos corporativos · ${allFiles.length} archivo${allFiles.length !== 1 ? 's' : ''}</div>
+        <div class="dr-header-eyebrow">Nuntio Technologies Limited · CRO 810417 · Dublin, Ireland</div>
+        <div class="dr-header-title">📁 Data Room</div>
+        <div class="dr-header-sub">Documentos corporativos · ${allFiles.length} archivo${allFiles.length !== 1 ? 's' : ''} subidos</div>
       </div>
       <button class="btn btn-purple" onclick="document.getElementById('dr-file-input').click()">
         ☁ Subir Archivo
@@ -6259,6 +6292,30 @@ function renderDataRoom(filter) {
     </div>
 
     <div class="dr-content">
+
+      <!-- ── DOCUMENTOS CORPORATIVOS OFICIALES ── -->
+      <div class="corp-docs-section">
+        <div class="dr-section-label" style="margin-bottom:12px">📋 Documentos Corporativos Oficiales</div>
+        <div class="corp-docs-grid">
+          <div class="corp-doc-card">
+            <div class="corp-doc-icon">🏛️</div>
+            <div class="corp-doc-body">
+              <div class="corp-doc-title">Constitution & Certificate of Incorporation</div>
+              <div class="corp-doc-meta">
+                CRO Nº <strong>810417</strong> · Incorporada 10 Mar 2026 · LTD Ireland
+              </div>
+              <div class="corp-doc-meta" style="margin-top:4px">
+                Sebastian Beguez Labori (300 acc.) · Ernesto González Rodríguez (300 acc.)
+              </div>
+            </div>
+            <div class="corp-doc-actions">
+              <a class="btn btn-sm" href="/docs/escrituras-nuntio.pdf" target="_blank">👁 Ver</a>
+              <a class="btn btn-sm btn-primary" href="/docs/escrituras-nuntio.pdf" download="Escrituras-Nuntio-Technologies.pdf">⬇ Descargar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="upload-zone" id="dr-upload-zone"
         onclick="document.getElementById('dr-file-input').click()"
         ondragover="event.preventDefault(); this.classList.add('dragover')"
