@@ -6634,11 +6634,12 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   SESSION_ID = data.user.id;
   USER_EMAIL = data.user.email;
   // Re-run init to detect role
-  const { data: roleData } = await _supabase
+  const { data: roleData, error: roleQueryErr } = await _supabase
     .from('nuntio_user_roles')
     .select('role, company_id, email, nuntio_companies(name)')
     .eq('user_id', SESSION_ID)
     .maybeSingle();
+  if (roleQueryErr) console.warn('[auth] roleData query error:', roleQueryErr.message);
   if (!roleData) {
     // Check for pending invite before auto-setup
     const accepted = await acceptPendingInvite();
@@ -6839,7 +6840,21 @@ async function autoSetupNuntio() {
     const { error: roleErr } = await _supabase
       .from('nuntio_user_roles')
       .insert({ company_id: companyId, user_id: SESSION_ID, role: 'owner', email: USER_EMAIL });
-    if (roleErr) throw roleErr;
+
+    // Si ya existe el rol (duplicate key), buscarlo directamente
+    if (roleErr && (roleErr.code === '23505' || roleErr.message?.includes('duplicate'))) {
+      const { data: existingRole } = await _supabase
+        .from('nuntio_user_roles')
+        .select('role, company_id, nuntio_companies(name)')
+        .eq('user_id', SESSION_ID)
+        .maybeSingle();
+      if (existingRole) {
+        companyId = existingRole.company_id;
+        companyName = existingRole.nuntio_companies?.name || companyName;
+      }
+    } else if (roleErr) {
+      throw roleErr;
+    }
 
     COMPANY_ID = companyId;
     USER_ROLE = 'owner';
@@ -6849,12 +6864,13 @@ async function autoSetupNuntio() {
     renderSidebarByRole();
     updateDashboardHero();
     loadStateFromDB();
-    toast('✅ Workspace configurado — ' + companyName, 'green');
+    toast('✅ Workspace listo — ' + companyName, 'green');
   } catch (err) {
+    console.error('[autoSetup] error:', err);
     showLoadingOverlay(false);
-    // Si falla el auto-setup, mostrar el modal manual como fallback
     hideLoginScreen();
-    showCompanySetup();
+    // Nunca mostrar el modal — intentar recuperarse
+    toast('⚠️ Error configurando workspace: ' + (err.message || err), 'amber');
   }
 }
 
@@ -7408,11 +7424,12 @@ async function acceptPendingInvite() {
   USER_EMAIL = session.user.email;
 
   // Obtener rol y empresa del usuario
-  const { data: roleData } = await _supabase
+  const { data: roleData, error: roleQueryErr2 } = await _supabase
     .from('nuntio_user_roles')
     .select('role, company_id, email, nuntio_companies(name)')
     .eq('user_id', SESSION_ID)
     .maybeSingle();
+  if (roleQueryErr2) console.warn('[init] roleData query error:', roleQueryErr2.message);
 
   if (!roleData) {
     // Check for pending invite before auto-setup
