@@ -6572,8 +6572,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     .eq('user_id', SESSION_ID)
     .maybeSingle();
   if (!roleData) {
-    hideLoginScreen();
-    showCompanySetup();
+    autoSetupNuntio();
   } else {
     COMPANY_ID = roleData.company_id;
     USER_ROLE = roleData.role;
@@ -6713,6 +6712,57 @@ function showCompanySetup() {
 function hideCompanySetup() {
   const modal = document.getElementById('companySetupModal');
   if (modal) modal.style.display = 'none';
+}
+
+// Auto-setup silencioso — usa los datos reales de Nuntio Technologies Limited
+async function autoSetupNuntio() {
+  showLoadingOverlay(true);
+  try {
+    // Primero intentar encontrar si ya existe la empresa (otro fundador la creó antes)
+    const { data: existing } = await _supabase
+      .from('nuntio_companies')
+      .select('id, name')
+      .limit(1)
+      .maybeSingle();
+
+    let companyId, companyName;
+
+    if (existing) {
+      // La empresa ya existe → solo crear el rol para este usuario
+      companyId = existing.id;
+      companyName = existing.name;
+    } else {
+      // Crear la empresa con datos reales
+      companyId = crypto.randomUUID();
+      companyName = COMPANY.name;
+      const slug = 'nuntio-technologies-' + companyId.slice(0, 8);
+      const { error: compErr } = await _supabase
+        .from('nuntio_companies')
+        .insert({ id: companyId, name: companyName, slug, created_by: SESSION_ID });
+      if (compErr) throw compErr;
+    }
+
+    // Crear rol owner para este usuario
+    const { error: roleErr } = await _supabase
+      .from('nuntio_user_roles')
+      .insert({ company_id: companyId, user_id: SESSION_ID, role: 'owner', email: USER_EMAIL });
+    if (roleErr) throw roleErr;
+
+    COMPANY_ID = companyId;
+    USER_ROLE = 'owner';
+    COMPANY_NAME = companyName;
+    hideLoginScreen();
+    hideCompanySetup();
+    renderSidebarByRole();
+    updateDashboardHero();
+    loadStateFromDB();
+    toast('✅ Workspace configurado — ' + companyName, 'green');
+  } catch (err) {
+    showLoadingOverlay(false);
+    // Si falla el auto-setup, mostrar el modal manual como fallback
+    hideLoginScreen();
+    showCompanySetup();
+  }
 }
 
 async function setupCompany() {
@@ -7182,9 +7232,8 @@ function showView(viewId) {
     .maybeSingle();
 
   if (!roleData) {
-    // Primera vez: mostrar setup de empresa
-    hideLoginScreen();
-    showCompanySetup();
+    // Primera vez: auto-configurar Nuntio Technologies Limited
+    autoSetupNuntio();
     return;
   }
 
