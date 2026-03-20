@@ -13,12 +13,12 @@
   ],
   "routes": [
     {
-      "src": "/v2",
-      "dest": "/nuntio-legal-os-v2.html"
+      "src": "/v1",
+      "dest": "/nuntio-legal-os.html"
     },
     {
       "src": "/",
-      "dest": "/nuntio-legal-os.html"
+      "dest": "/nuntio-legal-os-v2.html"
     }
   ],
   "headers": [
